@@ -1,0 +1,52 @@
+\graphicspath{{figures_and_references/EELISA_conference/}}
+\renewcommand{\chapternametext}{Chapter \thechapter: Remote sensing techniques for height, roof material and construction year}
+\renewcommand{\shortchapternametext}{Chapter \thechapter: Remote sensing techniques}
+\begin{refsection}
+\chapter{\chapternametext}
+\
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+\flushbottom
+\setlength{\parskip}{0pt plus 1fil}%
+\localtableofcontents
+\endgroup
+
+\newpage
+\setcounter{section}{0}
+\renewcommand{\sectionnametext}{Photogrammetry}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+Photogrammetry is the technique of deriving three-dimensional spatial measurements from a series of overlapping two-dimensional images. The process begins with the identification of conjugate features, common points or edges visible across multiple images, captured from different camera angles. Through Structure-from-Motion (SfM) algorithms, the orientation and position of the camera are estimated for each exposure, enabling the reconstruction of the scene geometry in a sparse point cloud. This sparse cloud is subsequently densified using Multi-View Stereo (MVS) algorithms, resulting in a dense point cloud containing millions of (x, y, z) coordinates.
+From this dense point cloud, two primary elevation models are generated:
+\begin{itemize}
+\item \textbf{Digital Surface Model (DSM):} A representation of the Earth's surface that includes all objects above the ground, such as buildings, bridges, and vegetation. It is created by interpolating the uppermost surface of the point cloud, capturing the physical envelope of urban structures.
+\item \textbf{Digital Terrain Model (DTM):} A representation of the "bare earth" surface, stripped of all man-made structures and vegetation. The DTM is derived by applying ground-filtering algorithms, such as progressive triangulated irregular network (TIN) densification or morphological filters, which classify and remove non-ground points from the point cloud.
+\end{itemize}
+By calculating the difference between the DSM and DTM, a normalized Digital Surface Model (nDSM) is produced. The nDSM represents the precise relative height of vertical objects, providing the essential metric for assessing slenderness and building height in seismic risk applications.
+\section{Multispectral imagery classification}
+Multispectral remote sensing sensors capture electromagnetic energy reflected by the Earth's surface across discrete, non-contiguous bands. Unlike standard RGB sensors, which are limited to the visible spectrum (approx. 400–700 nm), multispectral platforms, such as the Sentinel-2 mission, capture data in the Near-Infrared (NIR), Red-Edge, and Short-Wave Infrared (SWIR) ranges.
+For roof material identification, these bands are indispensable: NIR and SWIR bands are highly sensitive to material composition, allowing the differentiation between metallic surfaces (which exhibit high metallic luster and specific spectral signatures in SWIR) and organic or asphalt-based materials. Because these satellite sensors often employ a variable spatial resolution, ranging from 10m (visible/NIR) to 60m (short-wave), fusion techniques such as Gram-Schmidt Spectral Sharpening are required. These techniques use high-resolution panchromatic or RGB orthophotos to "inject" spatial detail into the coarser multispectral data without degrading its spectral integrity \footcite{braun_identification_2019}.
+The classification is performed through unsupervised clustering methods, primarily the K-means algorithm. K-means iteratively groups pixels into a predefined number of clusters (
+k
+k
+) by minimizing the variance within each cluster in n-dimensional spectral space. This approach requires no prior knowledge of the ground labels; instead, it relies on the internal mathematical separation of reflectance values. After clustering, each group is assigned a land-cover type (e.g., concrete, metal, or vegetation) based on the analysis of the resulting cluster centers' spectral signatures \footcite{marconcini_understanding_2021}.
+
+\section{Remote-sensing derived products}
+
+Remote-sensing derived products synthesize raw satellite observations into global thematic layers. In the context of this thesis, two primary datasets are utilized to infer structural age and urban development: the Global Human Settlement Layer (GHSL) and the World Settlement Footprint (WSF).
+
+Unlike supervised deep learning models, these products are generated using large-scale geoprocessing workflows that integrate both optical and SAR (Synthetic Aperture Radar) data.
+\begin{itemize}
+\item \textbf{World Settlement Footprint (WSF):} This product integrates Landsat-8 optical imagery with Sentinel-1 SAR data. SAR is particularly valuable for mapping built-up areas because radar backscatter is highly sensitive to the geometric structure and dielectric properties of man-made materials, allowing for the detection of urban footprints even through cloud cover. The methodology employs a combination of temporal and spatial filtering to separate the permanent "built-up" surface from other land-cover types \footcite{marconcini_outlining_2020}.
+\item \textbf{Global Human Settlement Layer (GHSL):} This project utilizes multitemporal satellite data, typically from the Landsat archives, to produce "built-up" surfaces at various epochs (e.g., 1975, 1990, 2000, 2014). By analyzing the historical evolution of settlement footprints across these decades, the emergence of urban areas is established. This methodology provides the temporal proxy for the "era of construction" used in this thesis to classify buildings into ductility cohorts \footcite{pesaresi_advances_2024}.
+\end{itemize}
+
+
+\newpage
+\renewcommand{\sectionnametext}{References}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+\printbibliography[heading=none]
+\end{refsection}

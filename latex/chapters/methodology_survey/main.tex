@@ -1,0 +1,94 @@
+\graphicspath{{figures_and_references/EELISA_conference/}}
+
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter: Field survey of 3 pilot neighbourhoods in 3 Central American countries}
+\renewcommand{\shortchapternametext}{Chapter \thechapter: Field survey of 3 pilot neighbourhoods}
+
+\chapter{\chapternametext}
+\
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\chapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Survey}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+A comprehensive field survey was conducted by architecture and civil engineering students and experts across three pilot regions: San José (Costa Rica), Ciudad de Guatemala (Guatemala), and Ensanche Quisqueya in Santo Domingo (Dominican Republic). In each city, a representative and diverse neighborhood was selected, and buildings were individually analyzed through systematic on-site walkthroughs. All building footprints were manually digitized using GIS software and high-precision aerial imagery.
+
+
+The survey collected an extensive dataset. From this, five primary structural systems were identified and classified according to the GEM (Global Earthquake Model) taxonomy: masonry [M] (including both reinforced and unreinforced types), concrete [CR], adobe [M99-ADO], steel [S], and wood [W]. Classification was based on materials used in the roof, floor, and walls, as well as the type of lateral load-resisting system (MLLRS).
+
+
+In addition, the survey recorded key attributes such as footprint and elevation irregularities (noted as a boolean: [True, False]), the relative position of buildings within a block (categorized within the same class without torsional behavior), roof material (classified according to GEM standards), number of floors, and year of construction when available.
+
+The fieldwork was conducted between February and March 2024 by a team of trained experts. Each surveyed building was georeferenced, and at least one photograph of its facade was taken. The following variables were documented:
+
+\begin{itemize}
+    \item \textbf{Identification}: Surveyor ID and housing unit ID.
+    \item \textbf{Building Technical Data}: Year of construction, number of floors and approximate height, number of basement levels, footprint type and area, occupancy type and intensity of use, and overall building condition.
+    \item \textbf{Design Data}: Presence of elevation irregularities.
+    \item \textbf{Construction System}: Main Lateral Load-Resisting System (MLLRS) for each floor.
+    \item \textbf{Foundation Type}.
+    \item \textbf{Geotechnical Data}: Soil type, plot topography, proximity to rivers or slopes, and ground slope.
+    \item \textbf{Location within the Block}: Whether the unit was isolated, lateral, central, or corner, including assessment of contact with adjacent buildings.
+\end{itemize}
+
+
+\renewcommand{\sectionnametext}{Manual footprint digitalization}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\label{sec:manual_footprint}
+
+Digitization of the footprints of the three study areas was carried out using QGIS software manually. An orthophoto of the area is loaded, and building outlines are traced as polygons. When the image is unclear, Google Maps and its Street View function are recommended for verification.
+
+
+In the three areas of study the aerial imagery used was: San Jośe (Costa Rica) the national geographic institute provdes ortophotos with at least 1 meter per pixel resolution from the year 2018 for the whole country. In Guatemala Google Satellite imagery was used and in Santo Domingo (Domincan Republic) the project did a drone flight in cooperation with ONESVIE (Oficina Nacional de Evaluación Sísmica y Vulnerabilidad de Infraestructura y Edificaciones).
+
+
+Contact between buildings can affect seismic behavior. If facades are less than 15 cm apart, footprints share a side but are drawn as separate polygons. Otherwise, no sides are shared. 
+
+
+\textbf{Special Cases:}
+
+\begin{itemize}
+    \item \textbf{Parking roofs:} These are not considered part of the building footprint.
+    \item \textbf{Terraces:} Use Street View to determine whether they fall within the building outline.
+    \item \textbf{High-rise buildings:} Only the main structural volume is digitized; parking roofs and terraces are excluded.
+    \item \textbf{Distortion in aerial imagery:} In images lacking proper orthorectification, especially over tall buildings, facades may appear distorted or misidentified as roofs.
+    \item \textbf{Inner courtyards or shafts:} Include these elements in the footprint if they exceed the approximate size of a car (2 meters).
+    \item \textbf{Setbacks in facades:} Only significant and structurally relevant setbacks are included in the footprint.
+    \item \textbf{Large canopies and gas stations:} These are digitized for context but excluded from seismic analysis as they are not considered building.
+    \item \textbf{Building clusters and slums:} In dense or informal areas where individual buildings are indistinguishable, represent them as a single polygon classified as a “building cluster.”
+\end{itemize}
+
+\textbf{Challenges:}
+\begin{itemize}
+    \item Sudden changes in roof material or color, especially with tin roofs, complicate boundary identification.
+    \item Low-resolution orthophotos; when official sources are insufficient, consult Google Earth for improved clarity.
+    \item Lack of Street View coverage; Mapillary may serve as an alternative resource.
+    \item Visual obstructions such as vegetation, fences, or walls may require on-site verification.
+    \item Ambiguous adjoining structures may raise uncertainty about whether they are independent buildings or part of a single unit.
+    \item Complex or disorganized construction, especially in slums or precarious settlements, makes interpretation and digitization challenging.
+\end{itemize}
+
+
+This remote mapping approach enabled a systematic and consistent assessment of the building stock across the three pilot areas, supporting both the evaluation of the automatic extraction methodology and the training of computer vision models.
+

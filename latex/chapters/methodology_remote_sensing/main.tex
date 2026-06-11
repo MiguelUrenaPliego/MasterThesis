@@ -1,0 +1,117 @@
+\graphicspath{{figures_and_references/EELISA_conference/}}
+
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter: Remote sensing to extract building height, construction year and roof material}
+\renewcommand{\shortchapternametext}{Chapter \thechapter: Remote sensing methodology}
+
+\begin{refsection}
+
+\chapter{\chapternametext}
+\
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \locallistoftables
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Building height}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+Photogrammetry in Santo Domingo (Dominican Republic) was performed using drone imagery from ONESVIE to generate a Digital Surface Model (DSM). This was the only pilot region from the Adelante 2 project where the research group could access and plan drone flight on site. An alternative approach could involve acquiring high-resolution satellite imagery instead and doing the same photogrammetry process, although this requires purchasing the images. Global building height datasets such as \textit{GlobalMLBuildingFootprints} \footcite{microsoft_globalmlbuildingfootprints_2024} provide information on building footprints and building heights in some regions of the world and are created using high resolution satellite imagery. However, the three pilot areas selected for this study were not covered with height information by this dataset.
+
+
+To extract building heights from a DSM, a Digital Terrain Model (DTM) must first be created. This is achieved by sampling elevation points along roads, using road data from OpenStreetMap and then applying linear interpolation followed by smoothing with a Gaussian filter.
+
+
+The ground elevation of a building is estimated by generating a histogram of the DTM values within the building footprint, identifying all significant peaks, and selecting the one corresponding to the lowest elevation. Similarly, to obtain the building height, the same method is applied to the DSM values, but the highest peak is selected. The building height is then calculated as the difference between the highest DSM peak and the lowest DTM peak.
+
+
+The average gradient is used to estimate roof inclination. According to Eurocode 8, the building shape in elevation can be quantified by the \textit{elevation slenderness}, defined as the ratio of the building height to the width (or smallest side) of its footprint adding at least some information about elevation modifiers to the dataset (eq \ref{eq:elevation_irregularity}).
+
+\begin{equation}
+    \label{eq:elevation_irregularity}
+    elevation\_irregularity = \frac{height}{width}
+\end{equation}
+
+There are additional metrics for evaluating elevation irregularity and shape; however, using only aerial imagery presents limitations, as it is challenging to detect architectural features such as cantilevers or the configuration of ground floor walls, which are necessary for more detailed assessments. A potential future improvement would involve flying drones equipped with oblique cameras to generate dense point clouds for each building and not only DSMs and orthoimages. While this approach offers higher fidelity, it is resource-intensive and poses significant challenges for large-scale implementation, particularly in less developed regions of the world.
+
+\renewcommand{\sectionnametext}{Building code quality}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The ductility of structures depends on factors that cannot be obtained through observation, whether using geospatial techniques or field inspections. These factors include the quality of the construction process, the quality of materials, and other construction related aspects.
+
+
+To estimate the ductility of buildings, the regulations in force at the time of construction in each of the pilot areas were used as a reference. This estimation is based on the assumption that the buildings were designed in accordance with the standards applicable at that time. This is a better solution than directly collecting construction years as it allows for comparisons of buildings from multiple countries. 
+
+
+By analysing the guidelines and recommendations of each code, along with the building's construction date, it is possible to infer characteristics of the construction process and the quality standards of materials used during the execution of the work.
+
+
+Based on these parameters, a level of ductility is assigned to each building. In addition, the regulations of each study country have been classified according to their level of construction requirements, allowing for the identification of regulatory changes that reflect technological advancements in construction within each project region. These changes are presented in table \ref{tab:ductility_year}:
+
+\begin{table}[h]
+    \centering
+    \caption{Ductility classification by country and code period}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Ductility Level} & \textbf{Costa Rica} & \textbf{Guatemala} & \textbf{Dominican Republic} \\
+        \hline
+        Pre-code & Before 1974 & Before 1996 & Before 1979 \\
+        \hline
+        Low-code & 1975--1986 & 1996--present & 1979--2011 \\
+        \hline
+        Medium-code & 1987--2002 & -- & 2011--present \\
+        \hline
+        High-code & 2002--present & -- & -- \\
+        \hline
+    \end{tabular}
+    \label{tab:ductility_year}
+\end{table}
+
+The year of initial construction or urban development has been estimated using remote sensing products that have been tested and validated by space agencies and international organizations \footcite{pesaresi_advances_2024, marconcini_outlining_2020, marconcini_understanding_2021}. 
+
+
+\renewcommand{\sectionnametext}{Roof material}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+For the roof cover classification, Sentinel-2 images of the study area, a high-resolution orthophoto, and building footprints are utilized. The objective is to fuse the multi-band image with the orthophoto to enable an unsupervised classification \footcite{braun_identification_2019}.
+
+The first step involves the use of the SNAP software, where Sentinel-2 images are resampled to ensure that all bands have the same resolution (10x10 m). This is necessary because the 13 bands available have different resolutions (10m, 20m, and 60m). After resampling, the image undergoes reprojection with a specified Spatial Reference Coordinate (SRC). Although it is not mandatory, a "subset" of the area of interest can be extracted beforehand to streamline the process. The output from this step is then exported in GeoTIFF format for further processing.
+
+In parallel, the orthophoto is downgraded to a resolution of 2.5m to ensure compatibility during the fusion process. This is done using GlobalMapper software.
+
+The processed orthophoto and the multi-band image from the previous step are then opened in ENVI software. The first operation involves reprojecting the image using the “Layer Stacking” function, selecting the bands for fusion (excluding bands 1, 10, and 11), and setting the reference system to WGS-84 with UTM coordinates (19N). A similar process is applied to the orthophoto, with only the SRC set. Once these steps are completed, the fusion is performed using the "Gram Schmidt Spectral Sharpening" technique, where the multi-band image, orthophoto, and resampling method (nearest neighbor) are provided as inputs.
+
+After fusion, an unsupervised K-means classification is applied to the image in ENVI. The number of desired classes and the maximum number of iterations (recommended value close to the number of classes) are specified. Additionally, the building footprint vector layer can be used as a mask layer during the classification process. Python packages and open source alternatives are available and will be integrated into the \texttt{SeismicBuildingExposure} python package in the future. 
+
+\newpage
+
+\renewcommand{\sectionnametext}{References}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\printbibliography[heading=none]
+\end{refsection}

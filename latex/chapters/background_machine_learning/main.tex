@@ -1,0 +1,72 @@
+\graphicspath{{figures_and_references/EELISA_conference/}}
+
+\renewcommand{\chapternametext}{Chapter \thechapter: Machine learning classification and regression}
+\renewcommand{\shortchapternametext}{Chapter \thechapter: Machine learning}
+
+\begin{refsection}
+
+\chapter{\chapternametext}
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+\newpage
+\setcounter{section}{0} 
+
+\renewcommand{\sectionnametext}{Regression tasks}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+Regression analysis is basic in supervised machine learning. It is characterized by its focus on mapping input feature vectors to continuous target variables. The central objective is to approximate an unknown functional mapping $f: X \rightarrow Y$ by minimizing a loss function, typically the mean squared error, that quantifies the deviation between observed structural responses and model predictions. 
+
+\subsection{Gaussian Process Regression (GPR)}
+
+Gaussian Process Regression (GPR) \footcite{rasmussen2003gaussian} represents a non-parametric Bayesian approach that shifts the inferential focus from estimating specific parameters to defining a distribution over the space of functions themselves. In this paradigm, the model does not attempt to find a single "best" curve; instead, it considers all possible functions that are consistent with the observed simulation data. Formally, a Gaussian process is defined as a collection of random variables, any finite subset of which follows a joint multivariate Gaussian distribution. This distribution is uniquely determined by a mean function, often assumed to be zero for simplicity, and a covariance function, or kernel, $k(x, x')$. The kernel is the "engine" of the GPR, as it encodes prior assumptions about the physics of the system, such as smoothness, periodicity, and the length-scale of variations in structural capacity.
+
+The fundamental advantage of the GPR framework for structural engineering is its Bayesian nature. Unlike deep learning approaches, which yield deterministic, "black-box" outputs, GPR provides a posterior distribution for every prediction. For any given input vector, the model yields a mean prediction, $\mu_*$, accompanied by a variance, $\sigma^2_*$. These error bounds are a direct consequence of the Bayesian inference process: the variance increases in regions of the input space where training samples are sparse and decreases where training data are abundant.
+
+This explicit quantification of epistemic uncertainty is indispensable for engineering applications. In structural reliability and seismic risk assessment, the confidence level of a capacity prediction directly influences the validity of the resulting fragility curves. Because the GPR output inherently carries its own error bounds, the engineer can establish a "threshold of trust." If a specific building configuration results in a prediction with variance exceeding an acceptable tolerance, the researcher is alerted that the configuration is under-represented in the training set. This capability allows for an iterative, active learning process where the surrogate model itself identifies which structural configurations should be targeted for future high-fidelity finite element simulations to improve global performance.
+
+To handle the high-dimensional nature of structural capacity curves, which are typically defined by hundreds of discrete points, GPR is integrated with Principal Component Analysis (PCA). By performing a linear projection of the raw capacity curves into a lower-dimensional latent space of principal components, the model effectively decouples the global structural behavior from local noise. Training independent GPR models on these principal components dramatically reduces computational costs and mitigates the "curse of dimensionality," ensuring that the surrogate remains stable and physically consistent. This integrated workflow allows for the rapid, robust simulation of structural response while maintaining a rigorous probabilistic basis, which is essential for propagating model uncertainty through the entire seismic vulnerability assessment pipeline.
+
+\section{Classification tasks}
+
+Classification is a supervised learning problem where the objective is to assign input data to discrete, predefined categories. This is achieved by establishing an optimal decision boundary within the feature space that minimizes misclassification probability \footcite{parmar_review_2019}.
+
+\subsection{Models}
+Several model classes are commonly employed for tabular classification:
+\begin{itemize}
+    \item \textbf{Multinomial Logistic Regression:} A linear model that estimates class probabilities using the softmax function. It serves as a baseline for classification, providing insights into the individual contributions of features to the final class assignment.
+    \item \textbf{Random Forest (RF):} An ensemble method that constructs a multitude of decision trees during training. Each tree operates on a subset of features, and the final classification is determined by the majority vote (aggregation) of all trees. This reduces the risk of overfitting and provides a robust measure of feature importance.
+    \item \textbf{XGBoost (Extreme Gradient Boosting):} An advanced ensemble technique that implements gradient boosting. It iteratively trains new trees to correct the residual errors of previously trained trees. XGBoost is recognized for its high predictive performance on tabular data due to its ability to handle complex non-linear relationships through sequential error reduction \footcite{Chen:2016btl}.
+    \item \textbf{TabPFN:} A recently developed foundation model for tabular data. It utilizes a pre-trained transformer architecture to perform "in-context learning," which allows it to handle small, complex datasets without requiring the extensive iterative hyperparameter tuning necessitated by traditional gradient-boosted models \footcite{hollmann_tabpfn_2023, hollmann_accurate_2025}.
+\end{itemize}
+
+\subsection{Addressing class imbalance}
+
+In real-world applications, classification datasets are frequently imbalanced, where one category significantly outweighs others. This imbalance causes models to exhibit a bias toward the majority class, sacrificing the accuracy of minority-class predictions. Two primary strategies are applied:
+
+\begin{enumerate}
+    \item \textbf{Class-Dependent Weighting:} The loss function is modified to assign higher costs to misclassifications within minority classes. This encourages the optimizer to focus on the performance of rarer, yet often critical, categories.
+    \item \textbf{Synthetic Minority Oversampling Technique (SMOTE):} This method increases the representation of minority classes by interpolating new, synthetic instances between existing minority samples in the feature space. This adjustment prevents the decision boundary from being overly skewed toward the majority class, leading to more balanced predictive capabilities \footcite{hollmann_accurate_2025}.
+\end{enumerate}
+
+\section{Training and testing methodology}
+
+The training process is defined by the iterative minimization of a loss function, which quantifies the discrepancy between the model prediction and the ground truth. Optimization is typically performed via backpropagation or gradient-based algorithms to iteratively update model parameters.\\
+To assess performance, the dataset is partitioned into training and testing subsets (e.g., 80\%/20\%). The training set is utilized exclusively for weight optimization, while the testing set serves as an independent benchmark to evaluate generalization. Rigorous testing is further supported by stratified cross-validation, where the data is divided into $k$ folds. The model is trained and validated $k$ times, with each fold acting as the validation set exactly once, which provides a statistically stable estimate of model accuracy and robustness to variations in the data split \footcite{parmar_review_2019}.
+
+\newpage 
+
+\renewcommand{\sectionnametext}{References}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\printbibliography[heading=none]
+\end{refsection}

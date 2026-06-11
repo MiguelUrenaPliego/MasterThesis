@@ -1,0 +1,787 @@
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter . Budget for a traditional and an automated seismic risk hybrid twin in the 3 pilot regions}
+\renewcommand{\shortchapternametext}{Chapter \thechapter . Budget}
+
+
+\chapter{\chapternametext}
+\
+
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \locallistoftables
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Example application scenario in every capital city of the 3 pilot regions}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\begin{table}[htbp]
+\centering
+\caption{Pilot Area Population and Estimated Building Stock}
+\begin{tabular}{lccc}
+\hline
+\textbf{City / Country} & \textbf{Population} & \textbf{People per Building} & \textbf{Estimated Buildings} \\
+\hline
+San José (Costa Rica) & 364,062 & 10 & 36,406 \\
+Guatemala City (Guatemala) & 914,057 & 10 & 91,406 \\
+Santo Domingo (Dominican Republic) & 1,029,110 & 15 & 68,607 \\
+\hline
+\end{tabular}
+\label{tab:population_buildings}
+\end{table}
+
+\renewcommand{\sectionnametext}{Traditional seismic risk assessment workflow}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The traditional approach is based on full-field surveys, limited detailed structural modelling, and manual interpretation of building typologies. The workflow is structured as follows:
+
+\begin{itemize}
+    \item \textbf{Full field survey of all buildings (100\% coverage)} using a combination of skilled survey technicians, field assistants, and supervising engineers.
+    
+    \item \textbf{Detailed structural inspection subset (40 buildings per city)}:
+    selected as representative samples for Finite Element (FEM) modelling and nonlinear analysis.
+
+    \item \textbf{Manual data processing and GIS database construction}, including:
+    - cleaning and validation of field data  
+    - georeferencing and attribute structuring  
+    - photo annotation and QA review  
+
+    \item \textbf{Engineering interpretation and typology definition}, where structural engineers:
+    - define building typologies per city  
+    - assign capacity curves based on observed structural characteristics  
+    - extrapolate vulnerability parameters to full building stock  
+
+    \item \textbf{FEM modelling of representative buildings (40 models per city)}:
+    includes geometry idealization, meshing, nonlinear pushover analysis, and capacity curve extraction.
+
+    \item \textbf{Reporting and documentation}, including:
+    - seismic risk maps  
+    - vulnerability classification  
+    - final technical report preparation
+\end{itemize}
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – San José (Costa Rica, 36,406 buildings, Traditional Workflow)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD LABOUR}} \\
+
+Survey technician (Complete) & 18 USD/h & 60 min & 40 & 720.00 \\
+Survey technician (Fast) & 18 USD/h & 5 min & 36,406 & 54,609.00 \\
+Field assistant (Complete) & 12 USD/h & 60 min & 40 & 480.00 \\
+Field assistant (Fast) & 12 USD/h & 2 min & 36,406 & 14,562.40 \\
+Field engineer (Complete) & 65 USD/h & 10 min & 40 & 433.33 \\
+Field engineer (Fast) & 65 USD/h & 1 min & 36,406 & 39,439.83 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{OFFICE LABOUR}} \\
+
+GIS technician (Complete) & 16 USD/h & 10 min & 40 & 106.67 \\
+GIS technician (Fast) & 16 USD/h & 2 min & 36,406 & 19,416.53 \\
+QA analyst (Complete) & 18 USD/h & 5 min & 40 & 60.00 \\
+QA analyst (Fast) & 18 USD/h & 1 min & 36,406 & 10,921.80 \\
+Project supervisor (Complete) & 28 USD/h & 3 min & 40 & 56.00 \\
+Project supervisor (Fast) & 28 USD/h & 1 min & 36,406 & 16,989.47 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{ENGINEERING}} \\
+
+Structural engineer (Complete) & 65 USD/h & 2 min & 40 & 86.67 \\
+Structural engineer (Fast) & 65 USD/h & 0.5 min & 36,406 & 19,719.92 \\
+CPU FEM simulation & 0.07 USD/h & 10 h & 40 & 28.00 \\
+
+Structural system identification & 65 USD/h & 20 h & 1 & 1,300.00 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{VEHICLE OPERATIONS}} \\
+
+Car + driver + fuel (Complete) & 225 USD/day & 0.05 day & 40 & 450.00 \\
+Car + driver + fuel (Fast) & 225 USD/day & 0.0083 day & 36,406 & 67,792.91 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{IT INFRASTRUCTURE}} \\
+
+Cloud storage & 0.03 USD/GB-mo & 1,310.62 GB-mo & 36 mo & 39.32 \\
+
+Data transfer & 0.001 USD/GB & 36,406 GB & 1 & 36.41 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIXED COSTS}} \\
+
+Project setup & 65 USD/h & 80 h & 1 & 5,200.00 \\
+Report writing & 65 USD/h & 120 h & 1 & 7,800.00 \\
+\hline
+
+% ==========================================================
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{269,184.19} \\
+\hline
+
+\multicolumn{4}{r}{General and Administrative Overheads (13\%)} & 34,994.94 \\
+\multicolumn{4}{r}{Contractor Profit (6\%)} & 16,151.05 \\
+\multicolumn{4}{r}{VAT (13\%)} & 34,994.94 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{TOTAL COST – SAN JOSÉ}} & \textbf{355,325.12} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – Guatemala City (Guatemala, 91,406 buildings, Traditional Workflow)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD LABOUR}} \\
+
+Survey technician (Complete) & 7 USD/h & 60 min & 40 & 280.00 \\
+Survey technician (Fast) & 7 USD/h & 5 min & 91,406 & 53,320.17 \\
+Field assistant (Complete) & 7 USD/h & 60 min & 40 & 280.00 \\
+Field assistant (Fast) & 7 USD/h & 2 min & 91,406 & 21,328.07 \\
+Field engineer (Complete) & 15 USD/h & 10 min & 40 & 100.00 \\
+Field engineer (Fast) & 15 USD/h & 1 min & 91,406 & 22,851.50 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{OFFICE LABOUR}} \\
+
+GIS technician (Complete) & 9 USD/h & 10 min & 40 & 60.00 \\
+GIS technician (Fast) & 9 USD/h & 2 min & 91,406 & 27,421.80 \\
+QA analyst (Complete) & 10 USD/h & 5 min & 40 & 33.33 \\
+QA analyst (Fast) & 10 USD/h & 1 min & 91,406 & 15,234.33 \\
+Project supervisor (Complete) & 15 USD/h & 3 min & 40 & 30.00 \\
+Project supervisor (Fast) & 15 USD/h & 1 min & 91,406 & 22,851.50 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{ENGINEERING}} \\
+
+Structural engineer (Complete) & 40 USD/h & 2 min & 40 & 53.33 \\
+Structural engineer (Fast) & 40 USD/h & 0.5 min & 91,406 & 30,468.67 \\
+CPU FEM simulation & 0.05 USD/h & 10 h & 40 & 20.00 \\
+Structural system identification & 40 USD/h & 20 h & 1 & 800.00 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{VEHICLE OPERATIONS}} \\
+
+Car + driver + fuel (Complete) & 150 USD/day & 0.05 day & 40 & 300.00 \\
+Car + driver + fuel (Fast) & 150 USD/day & 0.0083 day & 91,406 & 114,257.50 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{IT INFRASTRUCTURE (COSTA RICA RATES)}} \\
+
+Cloud storage & 0.02 USD/GB-mo & 1,310.62 GB-mo & 36 mo & 39.32 \\
+Data transfer & 0.001 USD/GB & 91,406 GB & 1 & 91.41 \\
+\hline
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIXED COSTS}} \\
+
+Project setup & 40 USD/h & 80 h & 1 & 3,200.00 \\
+Report writing & 40 USD/h & 120 h & 1 & 4,800.00 \\
+\hline
+
+% ==========================================================
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{317,820.93} \\
+\hline
+
+\multicolumn{4}{r}{General and Administrative Overheads (13\%)} & 41,316.72 \\
+\multicolumn{4}{r}{Contractor Profit (6\%)} & 19,069.26 \\
+\multicolumn{4}{r}{VAT (12\%)} & 38,138.51 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{TOTAL COST – GUATEMALA CITY}} & \textbf{416,345.42} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – Santo Domingo (Dominican Republic, 68,607 buildings, Traditional Workflow)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Building} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD LABOUR}} \\
+
+Survey technician (Complete) & 8 USD/h & 60 min & 40 & 320.00 \\
+Survey technician (Fast) & 8 USD/h & 5 min & 68,607 & 45,738.00 \\
+Field assistant (Complete) & 8 USD/h & 60 min & 40 & 320.00 \\
+Field assistant (Fast) & 8 USD/h & 2 min & 68,607 & 18,295.20 \\
+Field engineer (Complete) & 20 USD/h & 10 min & 40 & 133.33 \\
+Field engineer (Fast) & 20 USD/h & 1 min & 68,607 & 22,869.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{OFFICE LABOUR}} \\
+
+GIS technician (Complete) & 11 USD/h & 10 min & 40 & 73.33 \\
+GIS technician (Fast) & 11 USD/h & 2 min & 68,607 & 25,153.80 \\
+QA analyst (Complete) & 12 USD/h & 5 min & 40 & 40.00 \\
+QA analyst (Fast) & 12 USD/h & 1 min & 68,607 & 13,721.40 \\
+Project supervisor (Complete) & 20 USD/h & 3 min & 40 & 40.00 \\
+Project supervisor (Fast) & 20 USD/h & 1 min & 68,607 & 22,869.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{ENGINEERING}} \\
+
+Structural engineer (Complete) & 50 USD/h & 2 min & 40 & 66.67 \\
+Structural engineer (Fast) & 50 USD/h & 0.5 min & 68,607 & 28,586.25 \\
+CPU FEM simulation & 0.06 USD/h & 10 h & 40 & 24.00 \\
+Structural system identification & 50 USD/h & 20 h & 1 & 1,000.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{VEHICLE OPERATIONS}} \\
+
+Car + driver + fuel (Complete) & 175 USD/day & 0.05 day & 40 & 350.00 \\
+Car + driver + fuel (Fast) & 175 USD/day & 0.0083 day & 68,607 & 99,931.61 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{IT INFRASTRUCTURE (COSTA RICA RATES)}} \\
+
+Cloud storage & 0.02 USD/GB-mo & 1,310.62 GB-mo & 36 mo & 39.32 \\
+Data transfer & 0.001 USD/GB & 68,607 GB & 1 & 68.61 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{FIXED COSTS}} \\
+
+Project setup & 50 USD/h & 80 h & 1 & 4,000.00 \\
+Report writing & 50 USD/h & 120 h & 1 & 6,000.00 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{293,471.42} \\
+\hline
+
+\multicolumn{4}{r}{General and Administrative Overheads (13\%)} & 38,151.28 \\
+\multicolumn{4}{r}{Contractor Profit (6\%)} & 17,608.29 \\
+\multicolumn{4}{r}{VAT (18\%)} & 52,825.85 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{TOTAL COST – SANTO DOMINGO}} & \textbf{402,056.84} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\renewcommand{\sectionnametext}{Hybrid digital twin workflow}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The hybrid digital twin approach developed in this thesis replaces full-field manual assessment with a data-driven pipeline based on sparse field sampling, computer vision classification, and cloud-based digital twin generation.
+
+The workflow is structured as follows:
+
+\begin{itemize}
+
+\item \textbf{Field sampling survey (5\% coverage)} using car-based rapid inspection.
+This phase collects geolocated imagery and minimal structural descriptors using survey technicians and field assistants.
+No full enumeration of buildings is required.
+
+\item \textbf{Computer vision model training (cloud-based)}:
+A deep learning model is trained for building classification and structural system recognition using the sampled dataset.
+This includes:
+- model training (10 hours GPU time)
+- feature engineering and dataset preparation
+- validation and accuracy calibration
+
+\item \textbf{Per-building inference (full building stock)}:
+The trained vision model is executed for every building in the city to segment the building footprint and humans revise the result.
+
+\item \textbf{Additional machine learning models (non-vision)}:
+Supporting ML models are applied for:
+- capacity curve generation
+- structural system estimation
+
+\item \textbf{Finite Element modelling of representative subset (40 buildings per city)}:
+A small sample is selected for high-fidelity FEM analysis, including:
+- geometry idealization
+- nonlinear pushover analysis
+- capacity curve extraction
+These results are used for calibration of ML predictions.
+
+\item \textbf{Digital twin construction (cloud-based)}:
+A city-scale digital twin is generated, integrating:
+- geospatial building database
+- structural classification outputs
+- vulnerability layers
+- FEM-calibrated response models
+
+\item \textbf{Web platform deployment and visualization}:
+Instead of a static report, outputs are deployed as an interactive system:
+- web-based seismic risk explorer
+- building-level query system
+- scenario simulation interface
+- API access for external integration
+
+\item \textbf{Final outputs}:
+- interactive digital twin platform  
+- structured geospatial database  
+- calibrated vulnerability model  
+- FEM validation dataset  
+- no manual typology assignment required
+
+\end{itemize}
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – San José (Costa Rica, 36,406 buildings, Hybrid Digital Twin)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD SAMPLING (5\% = 1,820 buildings)}} \\
+
+Survey technician & 18 USD/h & 5 min & 1,820 & 2,730.00 \\
+Field assistant & 12 USD/h & 2 min & 1,820 & 728.00 \\
+Field engineer & 28 USD/h & 1 min & 1,820 & 848.67 \\
+
+Vehicle + driver + fuel & 225 USD/day & 0.00833 day & 1,820 & 3,412.50 \\
+360° camera system & 40 USD/day & 0.00833 day & 1,820 & 606.67 \\
+GPS + IMU system & 8 USD/day & 0.00833 day & 1,820 & 121.33 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{OFFICE + SAMPLE PROCESSING (5\%)}} \\
+
+GIS technician & 16 USD/h & 5 min & 1,820 & 2,426.67 \\
+QA / photo analyst & 18 USD/h & 2 min & 1,820 & 1,092.00 \\
+Project supervisor & 28 USD/h & 1 min & 1,820 & 849.33 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{FULL POPULATION AUTOMATION (36,406 buildings)}} \\
+
+Footprint digitalization & 18 USD/h & 0.2 min & 36,406 & 2,184.36 \\
+
+Vision inference & 0.003 USD/building & 36,406 & 1 & 109.22 \\
+Additional ML models & 0.002 USD/building & 36,406 & 1 & 72.81 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{MACHINE LEARNING TRAINING (SAMPLE ONLY)}} \\
+
+GPU ML training & 1.20 USD/h & 10 h & 1 & 12.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DETAILED STRUCTURAL SUBSET (40 BUILDINGS)}} \\
+
+Structural engineer (complete) & 65 USD/h & 2 min & 40 & 86.67 \\
+FEM simulation (CPU) & 0.07 USD/h & 10 h & 40 & 28.00 \\
+FEM structural modelling & 65 USD/h & 200 h & 1 & 13,000.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DIGITAL TWIN + PLATFORM}} \\
+
+Cloud digital twin & 65 USD/h & 150 h & 1 & 9,750.00 \\
+Web platform + API & 28 USD/h & 100 h & 1 & 2,800.00 \\
+User interaction / hosting & 0.0005 USD/building-mo & 36,406 × 36 mo & 1 & 655.31 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DATA INFRASTRUCTURE}} \\
+
+Cloud storage & 0.03 USD/GB-mo & 1,310.616 GB-mo & 1 & 39.32 \\
+Internal data transfer & 0.001 USD/GB & 36,406 GB & 1 & 36.41 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{41,589.26} \\
+\hline
+\multicolumn{4}{r}{General and Administrative Overheads (13\%)} & 5,406.60 \\
+\multicolumn{4}{r}{Contractor Profit (6\%)} & 2,495.36 \\
+\multicolumn{4}{r}{VAT (13\%)} & 5,406.60 \\
+\hline
+\multicolumn{4}{r}{\textbf{TOTAL COST – SAN JOSÉ}} & \textbf{54,897.82} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – Guatemala City (Guatemala, 91,406 buildings, Hybrid Digital Twin)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD SAMPLING (5\% = 4,570 buildings)}} \\
+
+Survey technician & 7 USD/h & 5 min & 4,570 & 2,666.83 \\
+Field assistant & 7 USD/h & 2 min & 4,570 & 1,066.73 \\
+Field engineer & 15 USD/h & 1 min & 4,570 & 1,142.75 \\
+
+Vehicle + driver + fuel & 150 USD/day & 0.00833 day & 4,570 & 5,713.75 \\
+360° camera system & 40 USD/day & 0.00833 day & 4,570 & 1,522.67 \\
+GPS + IMU system & 8 USD/day & 0.00833 day & 4,570 & 304.53 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{OFFICE + SAMPLE PROCESSING (5\%)}} \\
+
+GIS technician & 9 USD/h & 5 min & 4,570 & 685.20 \\
+QA / photo analyst & 10 USD/h & 2 min & 4,570 & 152.33 \\
+Project supervisor & 15 USD/h & 1 min & 4,570 & 114.28 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{FULL POPULATION AUTOMATION (91,406 buildings)}} \\
+
+Footprint digitalization & 9 USD/h & 0.2 min & 91,406 & 2,742.18 \\
+
+Vision inference & 0.002 USD/building & 91,406 & 1 & 182.81 \\
+Additional ML models & 0.0015 USD/building & 91,406 & 1 & 137.11 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{MACHINE LEARNING TRAINING}} \\
+
+GPU ML training & 1.20 USD/h & 10 h & 1 & 12.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DETAILED STRUCTURAL SUBSET (40 BUILDINGS)}} \\
+
+Structural engineer & 40 USD/h & 2 min & 40 & 53.33 \\
+FEM simulation (CPU) & 0.05 USD/h & 10 h & 40 & 20.00 \\
+FEM structural modelling & 40 USD/h & 200 h & 1 & 8,000.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DIGITAL TWIN + PLATFORM}} \\
+
+Cloud digital twin & 40 USD/h & 150 h & 1 & 6,000.00 \\
+Web platform + API & 15 USD/h & 100 h & 1 & 1,500.00 \\
+User interaction / hosting & 0.0003 USD/building-mo & 91,406 × 36 mo & 1 & 983.58 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DATA INFRASTRUCTURE}} \\
+
+Cloud storage & 0.02 USD/GB-mo & 1,310.62 GB-mo & 1 & 39.32 \\
+Internal data transfer & 0.001 USD/GB & 91,406 GB & 1 & 91.41 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{34,067.82} \\
+\hline
+\multicolumn{4}{r}{Overheads (13\%)} & 4,428.81 \\
+\multicolumn{4}{r}{Profit (6\%)} & 2,044.07 \\
+\multicolumn{4}{r}{VAT (13\%)} & 4,428.81 \\
+\hline
+\multicolumn{4}{r}{\textbf{TOTAL COST – GUATEMALA}} & \textbf{44,969.51} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – Guatemala City (Guatemala, 91,406 buildings, Hybrid Digital Twin)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD SAMPLING (5\%)}} \\
+
+Survey technician & 7 USD/h & 5 min & 4,570 & 2,666.83 \\
+Field assistant & 7 USD/h & 2 min & 4,570 & 1,066.73 \\
+Field engineer & 15 USD/h & 1 min & 4,570 & 1,142.75 \\
+Vehicle + driver + fuel & 150 USD/day & 0.00833 day & 4,570 & 5,713.75 \\
+360° camera system & 40 USD/day & 0.00833 day & 4,570 & 1,522.67 \\
+GPS + IMU system & 8 USD/day & 0.00833 day & 4,570 & 304.53 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{OFFICE + SAMPLE PROCESSING}} \\
+
+GIS technician & 9 USD/h & 5 min & 4,570 & 685.20 \\
+QA analyst & 10 USD/h & 2 min & 4,570 & 152.33 \\
+Project supervisor & 15 USD/h & 1 min & 4,570 & 114.28 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{FULL POPULATION AUTOMATION}} \\
+
+Footprint digitalization & 9 USD/h & 0.2 min & 91,406 & 2,742.18 \\
+Vision inference & 0.002 USD/building & 91,406 & 1 & 182.81 \\
+Additional ML models & 0.0015 USD/building & 91,406 & 1 & 137.11 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{MACHINE LEARNING TRAINING}} \\
+
+GPU ML training & 1.20 USD/h & 10 h & 1 & 12.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DETAILED STRUCTURAL SUBSET}} \\
+
+Structural engineer & 40 USD/h & 2 min & 40 & 53.33 \\
+FEM simulation (CPU) & 0.05 USD/h & 10 h & 40 & 20.00 \\
+FEM structural modelling & 40 USD/h & 200 h & 1 & 8,000.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DIGITAL TWIN + PLATFORM}} \\
+
+Cloud digital twin & 40 USD/h & 150 h & 1 & 6,000.00 \\
+Web platform + API & 15 USD/h & 100 h & 1 & 1,500.00 \\
+User interaction / hosting & 0.0003 USD/building-mo & 91,406 × 36 mo & 1 & 983.58 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DATA INFRASTRUCTURE}} \\
+
+Cloud storage & 0.02 USD/GB-mo & 1,310.62 GB-mo & 1 & 39.32 \\
+Internal data transfer & 0.001 USD/GB & 91,406 GB & 1 & 91.41 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{31,668.00} \\
+\hline
+
+\multicolumn{4}{r}{Overheads (13\%)} & 4,116.84 \\
+\multicolumn{4}{r}{Profit (6\%)} & 1,900.08 \\
+\multicolumn{4}{r}{VAT (12\%)} & 3,800.16 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{TOTAL COST – GUATEMALA CITY}} & \textbf{41,485.08} \\
+\hline
+
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{longtable}{lrrrr}
+\caption{Total Cost Breakdown – Santo Domingo (Dominican Republic, 68,607 buildings, Hybrid Digital Twin)} \\
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Cost Item} & \textbf{Unit Cost} & \textbf{Per Unit} & \textbf{N} & \textbf{Total (USD)} \\
+\hline
+\endhead
+
+% ==========================================================
+\multicolumn{5}{l}{\textbf{FIELD SAMPLING (5\%)}} \\
+
+Survey technician & 8 USD/h & 5 min & 3,430 & 2,286.67 \\
+Field assistant & 8 USD/h & 2 min & 3,430 & 914.67 \\
+Field engineer & 20 USD/h & 1 min & 3,430 & 1,143.33 \\
+Vehicle + driver + fuel & 175 USD/day & 0.00833 day & 3,430 & 4,989.58 \\
+360° camera system & 40 USD/day & 0.00833 day & 3,430 & 1,143.33 \\
+GPS + IMU system & 8 USD/day & 0.00833 day & 3,430 & 228.67 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{OFFICE + SAMPLE PROCESSING}} \\
+
+GIS technician & 11 USD/h & 5 min & 3,430 & 628.53 \\
+QA analyst & 12 USD/h & 2 min & 3,430 & 137.20 \\
+Project supervisor & 20 USD/h & 1 min & 3,430 & 114.33 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{FULL POPULATION AUTOMATION}} \\
+
+Footprint digitalization & 11 USD/h & 0.2 min & 68,607 & 2,521.56 \\
+Vision inference & 0.0025 USD/building & 68,607 & 1 & 171.52 \\
+Additional ML models & 0.0018 USD/building & 68,607 & 1 & 123.49 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{MACHINE LEARNING TRAINING}} \\
+
+GPU ML training & 0.90 USD/h & 10 h & 1 & 9.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DETAILED STRUCTURAL SUBSET}} \\
+
+Structural engineer & 50 USD/h & 2 min & 40 & 66.67 \\
+FEM simulation (CPU) & 0.06 USD/h & 10 h & 40 & 24.00 \\
+FEM structural modelling & 50 USD/h & 200 h & 1 & 10,000.00 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DIGITAL TWIN + PLATFORM}} \\
+
+Cloud digital twin & 50 USD/h & 150 h & 1 & 7,500.00 \\
+Web platform + API & 20 USD/h & 100 h & 1 & 2,000.00 \\
+User interaction / hosting & 0.00035 USD/building-mo & 68,607 × 36 mo & 1 & 864.33 \\
+\hline
+
+\multicolumn{5}{l}{\textbf{DATA INFRASTRUCTURE}} \\
+
+Cloud storage & 0.02 USD/GB-mo & 1,310.62 GB-mo & 1 & 39.32 \\
+Internal data transfer & 0.001 USD/GB & 68,607 GB & 1 & 68.61 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{DIRECT COST SUBTOTAL}} & \textbf{32,958.30} \\
+\hline
+
+\multicolumn{4}{r}{Overheads (13\%)} & 4,284.58 \\
+\multicolumn{4}{r}{Profit (6\%)} & 1,977.50 \\
+\multicolumn{4}{r}{VAT (18\%)} & 5,932.49 \\
+\hline
+
+\multicolumn{4}{r}{\textbf{TOTAL COST – SANTO DOMINGO}} & \textbf{45,152.87} \\
+\hline
+
+\end{longtable}
+
+\renewcommand{\sectionnametext}{Cost comparison}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+\begin{table}[htbp]
+\centering
+\caption{Cost Comparison Between Traditional and Hybrid Digital Twin Workflows by City}
+\begin{tabular}{lrrr}
+\hline
+\textbf{Metric} & \textbf{San José (USD)} & \textbf{Guatemala City (USD)} & \textbf{Santo Domingo (USD)} \\
+\hline
+Traditional Workflow & 355,325.12 & 416,345.42 & 402,056.84 \\
+Hybrid Digital Twin & 54,897.82 & 41,485.08 & 45,152.87 \\
+Difference (USD) & 300,427.30 & 374,860.34 & 356,903.97 \\
+Reduction (\%) & 84.56\% & 90.06\% & 88.76\% \\
+Cost Reduction (×) & 6.47× & 10.04× & 8.91× \\
+\hline
+\end{tabular}
+\label{tab:cost_comparison_by_city}
+\end{table}
+
+The results clearly show that the hybrid digital twin approach provides a substantial and consistent cost advantage across all three pilot cities. While the traditional workflow scales approximately linearly with the number of buildings due to the need for full-field surveying, manual interpretation, and extensive engineering effort, the hybrid approach decouples most cost components from full population size through the use of sparse field sampling and automated inference. As a result, its scaling behaviour is significantly more favourable for large urban areas. This is reflected in cost reductions between 84\% and 90\%, corresponding to overall cost savings of approximately 6× to 10× depending on city size and labour cost structure (table \ref{tab:cost_comparison_by_city}). The gap widens further in larger cities, demonstrating that the hybrid method becomes increasingly economically advantageous as the spatial scale of application increases.
+
+This approach has the potential to represent a paradigm shift for developing countries in seismic risk assessment. By drastically reducing the cost and computational burden of large-scale vulnerability analysis, it enables a transition from predominantly reactive post-event damage assessment to a proactive, pre-event risk management strategy. In this framework, seismic risk can be continuously evaluated and updated at the urban scale, supporting evidence-based mitigation planning, prioritization of retrofitting interventions, and improved disaster preparedness. As a result, the hybrid digital twin methodology not only improves efficiency but also fundamentally enhances the capacity of resource-constrained regions to manage seismic risk before an event occurs rather than responding only after catastrophic losses have already taken place.
+
+

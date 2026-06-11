@@ -1,0 +1,46 @@
+# Sphinx build output
+docs/_build/
+_build/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+
+# Documentation build files
+docs/build/
+
+# Python packaging
+*.egg-info
+dist/
+build/
+
+# Project-specific files
+api_keys.py
+
+# PPTX conversion folder
+pptx_to_marp/
+
+# LaTeX project folders
+latex/memoria_tesis_doctoral/
+latex/scope_and_contents/
+latex/tecnicas_geomaticas/
+
+# Presentation output folder
+presentation/presentation_buscarest/
+
+# Ignore sensitive or auxiliary text files anywhere in the repo
+**/reparar.txt
+**/prompt.txt
+
+# Specific PDF files (any location in repo)
+**/declaracion autoria_formulario_2.pdf
+**/carta_permiso_autor_MASTER.pdf
+**/04AG_51482763T_IA.pdf
+**/FICHA_CARACTER_CONSTRUCTIVO_MUP_SIGNED.pdf
+
+**/to_be_processed.tex

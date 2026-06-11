@@ -1,0 +1,438 @@
+\graphicspath{
+{figures_and_references/footprints_paper/}
+}
+
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter .  Use case: Automated estimation of footprint-derived seismic behaviour modifiers in the 3 pilot regions}
+\renewcommand{\shortchapternametext}{Chapter \thechapter . Use case: Footprint-derived modifiers}
+
+\begin{refsection}
+
+\chapter{\chapternametext}
+\
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \locallistoffigures
+ \locallistoftables
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Abstract}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+This experiment was published in Springer Advanced Modeling and Simulation
+in Engineering Sciences (Q1 in Modeling and Simulation). Available under \url{https://doi.org/10.1186/s40323-026-00323-y}
+
+%%Graphical abstract
+
+\includegraphics[width=\linewidth]{figures/graphical_abstract.jpg}
+
+
+%%Research highlights
+\section*{Highlights}
+\begin{itemize}
+    \item Automated methodology for characterising seismic behaviour modifiers from building footprints
+    \item Fine-tuned instance segmentation models for accurate building footprint digitalisation from aerial imagery.
+    \item Geometric algorithms encode plan irregularity rules from international seismic codes (e.g., Eurocode-8, GNDT II, ASCE-7).
+    \item Automatically classify a building's relative position within an urban block (corner, lateral, confined).
+    \item Open-source Python package \texttt{SeismicBuildingExposure} to enable rapid exposure assessment in data-scarce regions.
+\end{itemize}
+
+%% Keywords
+\section*{Keywords}
+%% keywords here, in the form: keyword \sep keyword
+
+%% PACS codes here, in the form: \PACS code \sep code
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+seismic behaviour modifiers - seismic risk - image vision - geospatial analysis - building footprint - exposure inventory
+
+%% Add \usepackage{lineno} before \begin{document} and uncomment 
+%% following line to enable line numbers
+
+%% main text
+%%
+
+
+%% Abstract
+\section*{Abstract}
+%% Text of abstract
+Comprehensive and accurate Geospatial Exposure Databases (GED) are fundamental for seismic risk assessment, but their creation and maintenance is a major challenge in regions with limited or non-existent cadastral data. GEDs store the characterization of seismic exposure attributes at the individual building scale spatially linked to geometric footprints, usually developed after costly manual and field procedures. This manuscript presents a novel methodology for the automated obtention of seismic behaviour modifiers from individual building footprints, implemented in the accessible open-source Python package, \texttt{SeismicBuildingExposure}.
+
+The methodology employs a semi-automatic approach for footprint digitalisation. Fine-tuned instance segmentation models are used to extract initial building geometries from high-resolution aerial imagery, which can then be refined with user guidance. From these digitalised footprints, the tool automatically computes key behaviour modifiers, including building direction, relative position within an urban block (e.g., corner, confined), and plan irregularity.
+
+A key contribution is the translation of irregularity parameters from multiple international seismic codes, including Eurocode 8, ASCE-7, Mexican NTC-23, and GNDT II Livello, into robust geometric algorithms. This allows for the objective and automatic calculation of indices related to slenderness, eccentricity, and setbacks, that before depended on subjective expert assessment. 
+
+The methodology was trained and validated using detailed manually annotated field inventories from three pilot study areas in San José, Santo Domingo, and Guatemala City, selected for their representative construction systems and broad diversity of attributes within the three countries under study. In these pilot areas, the error of the automated analysis was found to be comparable to the variability among human surveyors, confirming its objectivity and consistency.
+
+The resulting workflow enables the rapid and automatic, large-scale generation of detailed exposure inventories, providing a critical resource for seismic vulnerability studies, urban planning, and disaster risk management, particularly in data-scarce environments.
+
+\renewcommand{\sectionnametext}{Introduction and Objectives}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+The primary contribution of this study lies in the automatic estimation of engineering attributes required for seismic vulnerability modelling of building stocks. To this end,the goal of this study is to develop a methodology for the automated evaluation of footprint-derived seismic exposure attributes and modifiers using geospatial imagery. While vertical features may be explored in future research and might have a high importance, this work is exclusively concerned with attributes and modifiers related to building footprints. The proposed approach combines geometric algorithms, remote sensing techniques, computer vision, and imagery acquired from drones or satellites (fig \ref{fig:comparison}) to automatically detect behaviour modifiers based on building footprints. This facilitates the precise assignment of these attributes to a georeferenced building stock inventory. The methodology aims to optimize resource use, minimizing cost, time, and effort, thereby offering a practical tool for professionals engaged in seismic exposure evaluations. To validate the approach, a manually annotated building stock inventory from three Central American and Caribbean cities is employed as a reference dataset. 
+
+\begin{figure}[htbp]
+    \centering
+    \scriptsize
+
+    \newlength{\imagewidth}
+    \setlength{\imagewidth}{0.27\textwidth}
+    \newlength{\itemwidth}
+    \setlength{\itemwidth}{\dimexpr 0.47\textwidth - 0.98\imagewidth}
+
+    \begin{minipage}[t]{\imagewidth}
+        \vspace{0pt}
+        \centering
+        \includegraphics[width=\linewidth]{figures/previous.jpg}
+        \caption*{\textbf{Existing remote sensing approaches}}
+    \end{minipage}
+    \begin{minipage}[t]{\itemwidth}
+        \vspace{0.25pt}
+        \begin{minipage}[c]{\linewidth}
+            \begin{itemize}
+                \item Building block or neighbourhood level attributes
+                \item Simple irregularity indices like Polsby-Popper
+                \item Manual process or low automation
+                \item Not adapted to seismic building codes
+            \end{itemize}
+        \end{minipage}
+    \end{minipage}
+    \begin{minipage}[t]{\imagewidth}
+        \vspace{0pt}
+        \centering
+        \includegraphics[width=\linewidth]{figures/ours.jpg}
+        \caption*{\textbf{Proposed \\ methodology}}
+    \end{minipage}
+    \begin{minipage}[t]{\itemwidth}
+        \vspace{0.25pt}
+        \begin{minipage}[c]{\linewidth}
+            \begin{itemize}
+                \item Individual building attributes
+                \item Irregularity indices following seismic codes
+                \item Fully automated parameter calculation
+                \item Semi-automated footprint digitalisation
+            \end{itemize}
+        \end{minipage}
+    \end{minipage}
+
+    \caption{Comparison between existing remote sensing approaches and the proposed methodology.}
+    \label{fig:comparison}
+\end{figure}
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Relative position within the block}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+\begin{figure}[hbp]
+    \centering
+    \begin{tabular}{ccc}
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/relative_position_san_jose.jpg}
+            \caption{San Jośe (Costa Rica)}
+        \end{subfigure}  & 
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/relative_position_santo_domingo.jpg}
+            \caption{Santo Domingo (Dominican Republic)}
+        \end{subfigure} & 
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/relative_position_guatemala.jpg}
+            \caption{Ciudad de Guatemala (Guatemala)}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Automatic relative position results in the three pilot regions.}
+    \label{fig:relative_pos_results}
+\end{figure}
+
+
+To evaluate the performance of the relative position code, all building footprints within the pilot region were manually labelled using aerial imagery. The torque class was excluded from manual labelling as only 3 buildings in the dataset belong to that class. All buildings classified as torque are considered confined.
+
+
+When comparing the human-labelled results with the automatic classification, a very high degree of overlap is observed (fig \ref{fig:relative_pos_eval}). It is important to note that the automatic relative position algorithm is deterministic and operates purely through geometric computations. Thus, the entire pilot region serves exclusively as a test region (fig \ref{fig:relative_pos_results}).
+
+Upon closer inspection of the discrepancies between manual and automatic classifications, most issues stem from the definition of "contact" between buildings. In the automatic process, buildings are considered in contact if they are separated by less than a minimum distance, that should be established depending on the pixel size of the image used to define the footprint geometry (15 centimetres in this case). In contrast, human labellers might apply additional visual criteria when interpreting contact from the imagery. Another source of discrepancy is the inconsistent application of criteria by human labellers, particularly in cases where only a portion of a wall is in contact, leading to potential ambiguity.
+
+Consequently, it can be concluded that if the building footprints exhibit sufficient geometric precision, the automatic could yield more consistent results  than a non-detailed or quick human classification.  This is because the criteria for identifying contacting surfaces are transparent and consistent. However, if the geometric precision of the footprints is low, the number of buildings classified as confined will likely be overestimated, as the contact buffer must be increased. In such cases, the relative position should only be considered if its configuration is likely to negatively impact its seismic response.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[c]{0.55\linewidth}
+        \centering
+        \begin{tabular}{|lccc|}
+            \hline
+            Class & Precision & Recall & F1-score \\
+            \hline
+            Confined & 0.78 & 0.88 & 0.83 \\
+            Corner   & 0.82 & 0.74 & 0.78 \\
+            Isolated & 0.90 & 0.88 & 0.88 \\
+            Lateral  & 0.73 & 0.73 & 0.73 \\
+            \hline
+            Accuracy & -    & -    & 0.80 \\
+            Macro Avg & 0.81 & 0.80 & 0.80 \\
+            Weighted Avg & 0.81 & 0.80 & 0.80 \\
+            \hline
+        \end{tabular}
+        \subcaption{Evaluation metrics}
+        \label{tab:relative_position_eval}
+    \end{minipage}%
+    \hspace{1em}  % Adds horizontal space between the table and the image
+    \begin{minipage}[c]{0.35\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_relative_position.jpg}
+        \subcaption{Confusion matrix}
+    \end{minipage}
+    \caption{Relative position automatic method evaluation (same weight for every class).}
+    \label{fig:relative_pos_eval}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/relative_position_sensibility.jpg}
+    \caption{Sensitivity of the relative position automatic estimation by applying increasing buffers to the footprint geometry.}
+    \label{fig:sens_rp}
+\end{figure}
+
+
+The sensitivity of the methodology to footprint resolution was assessed by progressively increasing the buffer used to determine whether buildings are in contact (Fig. \ref{fig:sens_rp}). When no buffer is applied (0 cm), some contacts are missed, leading to reduced accuracy. Accuracy peaks with a buffer of 5–10 cm, as this ensures no contacts are missed and aligns with the  resolution of the original footprint digitisation. As the buffer increases beyond this range, accuracy gradually declines. Nonetheless, the method maintains satisfactory performance (above 60\% accuracy) up to a resolution of 50–100 cm, making it suitable for use with high-resolution satellite imagery as well as aerial survey data.
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Building direction}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The direction of the major principal axis is presented in Figure \ref{fig:drection_results}. The major principal axis is orientated perpendicular to the minor principal axis.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{ccc}
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/direction_san_jose.jpg}
+            \caption{San Jośe (Costa Rica)}
+        \end{subfigure}  & 
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/direction_santo_domingo.jpg}
+            \caption{Santo Domingo (Dominican Republic)}
+        \end{subfigure} & 
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[height=0.8\linewidth]{figures/direction_guatemala.jpg}
+            \caption{Ciudad de Guatemala (Guatemala)}
+        \end{subfigure} 
+    \end{tabular}
+    \caption{Building direction (direction of the mayor principal axis).}
+    \label{fig:drection_results}
+\end{figure}
+
+\renewcommand{\sectionnametext}{Footprint shape}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\begin{center}
+\begin{longtable}{ccc}
+\toprule
+\textbf{San José} & \textbf{Santo Domingo} & \textbf{Ciudad de Guatemala} \\
+\midrule
+\endfirsthead
+
+\toprule
+\textbf{San José} & \textbf{Santo Domingo} &
+\textbf{Ciudad de Guatemala} \\
+\midrule
+\endhead
+
+\bottomrule
+%\multicolumn{3}{r}{\small\itshape Continued on next page} \\
+%\endfoot
+
+%\bottomrule
+%\endlastfoot
+
+% 1. Footprint shape index
+\includegraphics[height=0.25\linewidth]{figures/fsi_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/fsi_santo_domingo.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/fsi_guatemala.jpg} \\
+
+\multicolumn{3}{c}{\small Footprint shape index} \\
+
+% 2. EC8 eccentricity ratio
+\includegraphics[height=0.25\linewidth]{figures/eccentricity_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/eccentricity_santo_domingo.jpg} & \includegraphics[height=0.25\linewidth]{figures/eccentricity_guatemala.jpg}\\
+
+\multicolumn{3}{c}{\small EC8 eccentricity ratio} \\
+
+% 3. GNDT setback ratio
+\includegraphics[height=0.25\linewidth]{figures/setback_ratio_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/setback_ratio_santo_domingo.jpg} & \includegraphics[height=0.25\linewidth]{figures/setback_ratio_guatemala.jpg} \\
+
+\multicolumn{3}{c}{\small GNDT setback ratio ($\beta_2$)} \\
+% 4. Inertia-based slenderness
+\includegraphics[height=0.25\linewidth]{figures/slenderness_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/slenderness_santo_domingo.jpg}  & \includegraphics[height=0.25\linewidth]{figures/slenderness_guatemala.jpg} \\
+
+\multicolumn{3}{c}{\small Inertia-based slenderness} \\
+
+% 5. ASCE-7 parallelity
+\includegraphics[height=0.25\linewidth]{figures/parallelity_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/parallelity_santo_domingo.jpg}  & \includegraphics[height=0.25\linewidth]{figures/parallelity_guatemala.jpg} \\
+
+\multicolumn{3}{c}{\small ASCE-7 parallelity} \\
+
+% 6. EC8 compactness
+\includegraphics[height=0.25\linewidth]{figures/compactness_san_jose.jpg} &
+\includegraphics[height=0.25\linewidth]{figures/compactness_santo_domingo.jpg}  & \includegraphics[height=0.25\linewidth]{figures/compactness_guatemala.jpg} \\
+
+\multicolumn{3}{c}{\small EC8 compactness} \\
+
+\end{longtable}
+
+\captionof{figure}{Some shape indices in every pilot region.}
+\label{fig:shape_results}
+
+\end{center}
+
+
+
+
+
+To evaluate the effectiveness of the automatic geometric analysis in extracting relevant side lengths, a manual survey was conducted on 25 randomly selected buildings in each pilot region. Surveyors measured the primary building dimensions on aerial imagery in accordance with the GNDT and ASCE codes. The results show that the variability among surveyors is comparable to the mean absolute error (MAE) between the automatic method and the average of the manual surveys (tab \ref{tab:shape_results}).
+
+
+\begin{table}[ht]
+\centering
+\caption{Comparison of the mean absolute error (MAE) between the automatic methodology and manual survey mean, MAE for buildings with $b_{survey} > 1$ m and MAE between surveyors.}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+ & \multicolumn{2}{c|}{automatic} &
+\multicolumn{2}{c|}{surveyors} \\
+\hline
+\textbf{Feature} & \textbf{MAE} & \textbf{MAE ($b > 1m$)} & \textbf{MAE} & \textbf{MAE ($b > 1m$)} \\
+\hline
+$L$ & 0.315 m& 0.485 m& 0.343 m & 0.502 m \\
+$a$ & 0.854 m& 1.775 m& 1.272 m & 2.410 m \\
+$b$ & 0.491 m& 1.109 m& 0.574 m & 1.289 m \\
+Slenderness (L1/L2) & 0.039 & 0.029 & 0.062 & 0.028 \\
+Setback Ratio (ASCE) & 0.046 & 0.101 & 0.108 & 0.225 \\
+$\beta_1$ (GNDT) & 0.045 & 0.076 & 0.081 & 0.126 \\
+$\beta_2$ (GNDT) & 0.023 & 0.051 & 0.027 & 0.062 \\
+\hline
+\end{tabular}
+\label{tab:shape_results}
+\end{table}
+
+
+Figure \ref{fig:shape_results} presents the results for several shape indices across the three pilot regions discussed in this paper. The footprint shape index (fig \ref{fig:shape_results}) captures different types of plan irregularity using three metrics: the EC8 eccentricity ratio (with a threshold of 0.3), the GNDT setback ratio $\beta_2$ (also limited to 0.3), and an inertia-based slenderness index constrained by the EC8 limit of 4. When a building exceeds multiple thresholds, the setback ratio is prioritized over eccentricity, and slenderness is prioritized over both setbacks and eccentricity. Additionally, compactness (fig \ref{fig:shape_results}) significantly overlaps with both setback and eccentricity measures, and may serve as a broader indicator of plan regularity.
+
+ \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/sensitivity_betas.jpg}
+    \caption{Sensitivity of some shape parameters by applying increasing buffers to the footprint geometry.}
+    \label{fig:sens_beta}
+\end{figure}
+
+
+The automatic methodology demonstrates high stability with respect to the resolution of footprint digitisation, as shown by the sensitivity analysis conducted using increasing buffer sizes applied to the footprint geometry to simulate the effect of a lower resolution image, where buildings appear rounded and less detailed. Indices were computed automatically and compared to survey data. For most code parameters, the increase in error remains low even with buffer distances as large as 2 m (fig \ref{fig:sens_beta}). The only notable exception is the slenderness index, whose error increases with larger buffers due to the rounding of building geometries, which reduces their slenderness.
+
+\FloatBarrier
+
+
+\renewcommand{\sectionnametext}{Discussion}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+This study presents a comprehensive and automated methodology for characterising seismic behaviour modifiers at the individual building level using only geospatial data and a semi-automated methodology for footprint digitalisation. A central contribution is the development of the open-source \texttt{SeismicBuildingExposure} Python package, which integrates remote sensing, machine learning, and earthquake engineering into a single operational framework.
+
+A key innovation of this work is the systematic translation of seismic code attributes into computational geometric algorithms. While prior studies often relied on simplistic shape indices \footcite{polsby_third_1991} not based on any formal code or regulatory framework, our methodology implements detailed, code-specific metrics from multiple international standards (EC-8, Costa Rica, ASCE-7, NTC-23, GNDT). This required novel adaptations to generalise geometric definitions, such as side lengths $a$, $b$, and $L$ from the GNDT manual, to irregular real-world building footprints. Validation results show that the error in automated measurements is comparable to the variability among human surveyors, underscoring the objectivity, robustness, and validity of the approach across a wide range of footprint digitisation resolutions. This suggests that, for geometric irregularity assessment, a deterministic method may yield comparable results that manual interpretation, with improved consistency and reliability.
+
+Another novel element of this study is the algorithm for determining building position within the block, based on a "contact force" analogy. The F1-score obtained against expert-labelled data confirms the potential of this approach. Nevertheless, the definition of contact is sensitive to both the geometric quality of the footprints and the buffer distance adopted in the analysis. In low-resolution or poorly segmented cases, adjacent but distinct buildings may be incorrectly classified as confined. For this reason, the relative-position modifier should be interpreted conservatively and used primarily where it implies a degradation in expected seismic performance.
+
+Despite these strengths, the methodology has several limitations.  First, the analysis is restricted to 2D footprints and therefore does not capture vertical irregularities, such as setbacks in elevation, soft storeys, or other height-dependent features that are highly relevant to seismic vulnerability. Addressing these effects would require 3D building models, stereo imagery, LiDAR, or drone-based surveys, which fall outside the scope of a low-cost and scalable exposure methodology. Similarly, although building height is an essential variable in seismic risk assessment, it is not directly treated here and is left for future work as there is existing research on the estimation of this parameter with remote sensing \footcite{YADAV2025114556, LYU2024114017}. Second, several of the computed modifiers rely on structural simplifications. Parameters such as eccentricity are derived under assumptions of continuous and uniform walls, homogeneous material properties, and idealised structural behaviour. These assumptions are more consistent with masonry-dominated building stocks, which are common in many Caribbean and Central American contexts. For reinforced-concrete or frame buildings, such simplifications may overestimate eccentricity and related irregularity effects. The resulting indices should therefore be interpreted as robust footprint-based proxies rather than as exact engineering quantities. An additional limitation of the proposed workflow is that each footprint is implicitly assumed to represent a single structural unit. This assumption may not hold for large or geometrically complex buildings composed of multiple structurally independent bodies separated by expansion or seismic joints. In such cases, the methodology may analyse the aggregated footprint as a single building and consequently overestimate plan irregularity or assign an inappropriate behaviour modifier. Likewise, internal structural subdivisions or discontinuities that are not expressed in the external footprint cannot be identified. This limitation is inherent to any footprint-based approach and should be considered when interpreting the results, particularly for large institutional, commercial, or multi-block buildings.
+
+These limitations should be interpreted in light of the objective of the study. The proposed methodology is not intended to replace detailed structural surveys or building-specific engineering assessment. Rather, it is designed as a first-order, scalable, and low-cost approach for incorporating behaviour modifiers into building exposure inventories in regions where detailed cadastral and structural information is unavailable and these modifiers are therefore commonly neglected. In this sense, the methodology constitutes a substantial improvement over simplified exposure models that omit plan irregularity, building direction, or relative position within the block altogether.
+
+The practical implications of this study are therefore significant. In data-scarce regions, the proposed workflow provides a feasible path for generating detailed building-level exposure inventories suitable for large-scale seismic risk assessment. In post-disaster contexts, the methodology could also be applied to pre-event imagery to identify buildings with potentially unfavourable geometric characteristics, such as plan irregularities or vulnerable block positions, thereby supporting rapid screening, emergency planning, and damage prioritisation. As an open-source tool, \texttt{SeismicBuildingExposure} also facilitates reproducibility, adaptation, and transfer to other geographical contexts, although further local calibration may be beneficial in areas with markedly different urban morphologies or image characteristics.
+
+\renewcommand{\sectionnametext}{Conclusions}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+This study presents an automated and scalable workflow for the characterization of footprint-derived seismic behaviour modifiers and the open-source \texttt{SeismicBuildingExposure} Python package for practical implementation. The primary contribution of this research is the systematic translation of diverse international seismic norms, such as Eurocode 8, ASCE-7, Mexican NTC-23, and the Italian GNDT II Level, into robust, deterministic geometric algorithms. By converting complex and subjective criteria into computational geometric rules, the methodology enables the rapid and objective evaluation of critical vulnerability indicators, including plan irregularity, building direction, and relative block position.
+
+This algorithmic approach allows the consistent large-scale computation of irregularity indices, effectively eliminating the variability and subjectivity inherent in traditional manual surveys. Validation results confirm that these automated assessments achieve a level of consistency comparable to expert manual assessment, even across varying imagery resolutions. Furthermore, the study identifies a building’s relative position within an urban block (isolated, corner, edge, or confined) automatically, providing a critical metric for assessing structural interaction in dense urban centres.
+
+The resulting framework offers a transformative resource for disaster risk management and urban planning, particularly in data-scarce environments where high-resolution exposure inventories are essential for accurate seismic risk mitigation and resilience building.
+
+At the same time, the proposed workflow should be interpreted as a first-order, footprint-based approximation of seismic behaviour modifiers. Its purpose is to enrich large-scale exposure inventories in data-scarce environments, rather than to replace detailed structural characterisation at the individual-building level. In particular, the methodology cannot resolve non-observable structural features such as expansion joints, internal subdivision into independent seismic units, or other characteristics that are not expressed in the external footprint. The derived indices should therefore be understood as robust proxies for exposure and vulnerability modelling, rather than as exact engineering descriptors of structural behaviour.
+
+Overall, the proposed framework provides a substantial improvement over simplified exposure models in which these modifiers are omitted altogether due to the lack of a practical and low-cost means of obtaining them. As such, it offers a valuable resource for seismic risk assessment, urban planning, and disaster risk management, while also providing a foundation for future developments incorporating building height, vertical irregularities, and richer 3D structural information.
+
+
+\subsection{Future work}
+
+Future work will focus on integrating additional relevant modifiers, particularly those related to the vertical geometry of buildings and remote sensing techniques for material identification. In parallel, the team is advancing efforts in machine learning–based classification of structural systems using remote sensing data. The next major objective is the refinement of seismic fragility curves. Traditionally, assigning fragility curves to individual buildings based on their attributes requires computationally intensive simulations. To overcome this challenge, current efforts are focused on developing a large language model trained on simulation outputs, with the goal of enabling efficient and scalable fragility curve estimation. Once complete, the envisioned fully automated workflow would allow for the generation of individualized and accurate building fragility curves, facilitating precise simulations of seismic risk, particularly in data-scarce regions around the world.
+
+\section*{Declarations}
+
+\begin{itemize}
+\item \textbf{Ethics approval and consent to participate} \\
+Not applicable. This study does not involve human participants or animals.
+
+\item \textbf{Consent for publication} \\
+Not applicable.
+
+\item \textbf{Data availability} \\
+The dataset generated during the current study is available in GitHub at \url{https://github.com/GeomaticsCaminosUPM/SeismicBuildingExposure}
+Any additional information is available on reasonable request from the corresponding author.
+
+\item \textbf{Materials availability} \\
+Not applicable.
+
+\item \textbf{Code availability} \\
+The \texttt{SeismicBuildingExposure} Python package developed in this study is open-source and available in GitHub at \url{https://github.com/GeomaticsCaminosUPM/SeismicBuildingExposure}.
+\end{itemize}
+
+\newpage
+
+\renewcommand{\sectionnametext}{References}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\printbibliography[heading=none]
+\end{refsection}

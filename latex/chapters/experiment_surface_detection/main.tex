@@ -1,0 +1,679 @@
+\graphicspath{{figures_and_references/urban_surface_detection/}}
+
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter .  Use case: Urban surface detection and segmentation by use in the transportation system}
+\renewcommand{\shortchapternametext}{Chapter \thechapter . Experiment: Transportation surface segmentation}
+
+\begin{refsection}
+
+\chapter{\chapternametext}
+\
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shortchapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \locallistoffigures
+ \locallistoftables
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Abstract}
+\renewcommand{\headingtextL}{\shortchapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+
+This experiment was published in Elsevier Remote Sensing Applications: Society and Environment (Q1 in Geography, Planning and Development). Available under \url{https://doi.org/10.1016/j.rsase.2025.101503}
+
+%%Graphical abstract
+
+\includegraphics[width=\linewidth]{figures/graphical_abstract.png}
+
+
+%%Research highlights
+\section*{Highlights}
+\begin{itemize}
+    \item Foundational vision models were fine-tuned to detect urban transport surfaces in aerial imagery.
+    \item Training datasets were generated using open aerial imagery and OpenStreetMap data without manual labeling; the code is efficient and user-friendly.
+    \item The models detected streets, sidewalks, parking areas, and related classes with medium to high accuracy.
+    \item Temporal analysis of images from 10–20 years ago revealed a decrease in parking and road surfaces and an increase in pedestrian-related surfaces in central Madrid.
+    \item Vienna's suburbs showed a larger increase in parking surfaces compared to Madrid's.
+\end{itemize}
+
+%% Keywords
+\section*{Keywords}
+%% keywords here, in the form: keyword \sep keyword
+
+%% PACS codes here, in the form: \PACS code \sep code
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+image vision - OSM - parking - geospatial dataset - foundational models - sustainable urban transport
+
+%% Add \usepackage{lineno} before \begin{document} and uncomment 
+%% following line to enable line numbers
+
+%% main text
+%%
+
+
+%% Abstract
+\section*{Abstract}
+%% Text of abstract
+This study investigates the integration of machine learning into urban aerial image analysis, focusing on identifying mobility-related surfaces for cars and pedestrians, such as parking spaces, road surfaces, and sidewalks, while also analyzing historical trends. It highlights the potential of foundational models and the advantages of fine-tuning them for global geospatial analysis. A workflow is proposed for automatically generating geospatial datasets, facilitating the creation of semantic segmentation datasets from diverse sources, including WMS/WMTS links, vector-based cartography, and OpenStreetMap (OSM) overpass-turbo requests. The developed code streamlines dataset generation for training machine learning models using publicly available data, eliminating the need for manual labeling.
+
+Two datasets for car- and pedestrian-related surface detection were generated using aerial imagery and vector data from the geographical offices of Madrid and Vienna, with a particular focus on parking surfaces. A transformer-based model was trained and evaluated for each city, achieving strong accuracy with F1 scores exceeding 0.5 in most classes in just less than 10 epochs. Historical trend analysis was conducted by applying the trained model to images from 10 to 20 years ago, prior to the availability of vector data, successfully uncovering temporal infrastructure trends for cars and pedestrians in different city areas. The trends discovered in Madrid and Vienna showed distinct differences: Madrid's periphery is experiencing a slower growth in parking surface, while Vienna is seeing a greater increase in parking compared to newly built road surfaces.
+
+This method offers a cost-effective solution for municipal governments to gather valuable urban data.
+
+\renewcommand{\sectionnametext}{Introduction and Objectives}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+Foundational image vision models often lack precision when applied to tasks that differ significantly from their training data, such as analyzing aerial imagery or segmenting uncommon elements like parking surfaces. With the increasing availability of high-resolution aerial imagery and detailed cartography, it is essential to establish automated workflows for creating specialized training datasets using open data and developing fine-tuning methodologies to adapt foundational models for specific tasks and diverse environments. Fine-tuning transformer-based vision models has already been explored in other contexts \footcite{sandler_fine-tuning_2022}.\\ 
+
+
+Analyzing surfaces dedicated to cars and pedestrians is crucial for evaluating car use in neighborhoods \footcite{nurul_habib_integrating_2012}. Although government and OSM data exist, they often lack quality and historical data are often not available. Image vision models can address these gaps. Other approaches rely on openly available data combined with an intensive manual labeling post-process to create datasets for training convolutional vision models specifically targeted at this task \footcite{henry_citywide_2021, hellekes_parking_2023}. In this study, we demonstrate the flexibility of newly available foundational models to achieve similar results without the need for any manual labeling in the creation of training data. \\ 
+
+
+Our research aims to create a workflow for developing datasets from global aerial imagery and vectorial cartography, applied to Madrid and Vienna for car and pedestrian surfaces. This workflow accelerates dataset creation, the most time-consuming part of a machine learning project. We want to demostrate the possibility of adapting and fine tuning existing semantic segmentation models for gathering data on urban infrastructure, especially for classes like parking spaces and demonstrate the viability of extracting historical trends using this method. 
+
+\renewcommand{\sectionnametext}{Background}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+While there are methods for detecting vehicles and monitoring parking space occupancy, they do not specifically extract the parking and road surface from individual images as it is intended in this study. These methods focus on detecting the cars rather than the parking surface itself. There are techniques involving surveillance cameras \footcite{amato_deep_2016} and UAV high-resolution images, with resolutions ranging from 5 to 1.5 cm per pixel \footcite{audebert_segment-before-detect_2017, kumar_deep_2022} and 
+multispectral high resolution aerial imagery \footcite{merkle_semantic_2019}. Our objective is to create an inventory using openly available data with much lower resolution and to segment surfaces independently of the presence of cars.
+
+
+Additionally, there is a method using satellite imagery that statistically evaluates image histograms to extract parking space occupancy without detecting individual cars \footcite{drouyer_parking_2020}. However, this method is not suitable for our purpose.
+
+
+Another intriguing area of research involves utilizing OpenStreetMap (OSM) data to generate datasets for tasks similar to ours. Some studies have created datasets to analyze transportation infrastructure, particularly parking and road surfaces \footcite{henry_citywide_2021, hellekes_parking_2023}, aiming to develop a comprehensive parking space inventory. These studies achieved good results with Intersection over Union (IoU) values exceeding 60. In these cases, OSM data were refined and manually annotated, which is both time-consuming and expensive. The generability of the model was not 
+evaluated, so applications in areas different from the training set could not be suitable.
+
+\subsection{The relevance of road and parking surface in encouraging car usage}
+
+When studying the reasons people commute by car, research has long shown \footcite{abrahamse_factors_2009, carse_factors_2013} that the main factors are related to self-interest. Specifically, people choose to drive because it is the most convenient way for them to commute. Additionally, individuals who are more morally aware tend to avoid using cars. Those who do choose to drive often feel more guilt or responsibility regarding the environmental and social problems associated with car-centric behavior \footcite{abrahamse_factors_2009}.
+
+
+The amount of car-related infrastructure is therefore one of the main factors encouraging car use and diverting financing away from more sustainable alternatives \footcite{mattioli_political_2020}. Parking space availability, in particular, has long been recognized as one of the most critical factors influencing the choice of travel by car \footcite{feeney_review_1989, christiansen_parking_2017, mccahill_effects_2016, pandhe_parking_2012}. This is acknowledged by the European Commission in its technical guide for parking policy \footcite{tom_rye_parking_2022}. Parking space availability in urban environments can be indirectly inferred from the amount of paved surface \footcite{litman_why_2011} or directly evaluated by segmenting the area dedicated to that purpose from aerial images.
+
+
+For another important factor in the modal split, the surface dedicated to active modes in already developed urban areas competes directly with surface dedicated to cars \footcite{gerike_built_2021}. The relationship between surfaces dedicated to cars and pedestrians has a major and direct influence on walkability and the choice of active modes instead of driving \footcite{gerike_built_2021}. In new urban developments, dedicating too much surface to cars makes distances and destinations farther apart, encouraging urban sprawl and car use \footcite{alshammari_compactness_2022, glaeser_chapter_2004}. New approaches to street design consider reallocating urban space from cars to pedestrians and cyclists, redesigning streets to consider the needs of all users and encourage sustainable behavior \footcite{halpern_road_2022, rodriguez-valencia_understanding_2021, schroter_guidance_2021}. This new paradigm has been adopted by the European Commission and is encouraged in its technical topic guides for developing Sustainable Urban Mobility Plans (SUMP) \footcite{fabian_kuster_practitioner_2019, jim_walker_supporting_2019}.
+
+
+Therefore, the main interests for the purpose of this study are pedestrian spaces, road surfaces, and car parking surfaces.
+
+\renewcommand{\sectionnametext}{Methodology}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\subsection{Segmentation mask cleaning}
+
+Segmentation results are cleaned using morphological operations from the \texttt{scikit-image} library \footcite{van_der_walt_scikit-image_2014}. Holes in masks are closed, and noise is removed. Erosion thins objects by deleting border pixels, while dilation thickens objects by adding border pixels. Opening (erosion followed by dilation) removes noise, and closing (dilation followed by erosion) fills holes.
+
+Erosion and dilation use image convolutions with specific kernels. Different kernels enhance various features \footcite{jamil_noise_2008, serra_introduction_1986}. A round kernel rounds mask edges, a rectangular kernel creates rectangular shapes, and an octagon kernel sharpens edges optimally without limiting to rectangles \footcite{srisha_morphological_2013}.
+
+Segmentation classes have known area ranges, used to further clean results. For example, parking spaces should be at least $3 \text{ m}^2$ in area and $1.5 \text{ m}$ in width. Similar logic is applied to other classes.
+
+The cleaning process is:
+
+\begin{enumerate}
+\item Erosion with a kernel of $\frac{1}{4}$ minimum width.
+\item Deleting detections smaller than half the minimum area using binary opening.
+\item Dilation.
+\end{enumerate}
+
+Then, the inverse:
+
+\begin{enumerate}
+\item Dilation.
+\item Deleting dark spots smaller than $\frac{1}{4}$ minimum area using binary opening.
+\item Erosion.
+\end{enumerate}
+
+This process is repeated for each class, treating other pixels as background.
+
+\subsection{Aerial imagery datasets}
+
+To illustrate the functionality of the developed code, two datasets were generated 
+for the purpose of parking space detection in the cities of Vienna and Madrid. 
+Creating the dataset in both scenarios can be accomplished with just a few 
+lines of code, utilizing the library developed alongside this study. 
+To generate the dataset, it is necessary to define a link to a WMTS 
+service, specify the dataset area, and provide either a vectorial 
+geometry file containing the ground truth or an overpass-turbo request. Historic aerial images since 1950 are  available for both cities.
+
+Image resolution and orthorectification are vital for classes like road surface, parking spaces, or sidewalks. Objects near buildings may be occluded, and trees pose challenges. Winter images have larger shadows, while summer images have less shadows but may obscure streets with trees [fig \ref{fig:issues_providers
+}]. The experiment required images better than 20 cm per pixel, which can be challenging in regions with only satellite imagery.
+
+\begin{figure}[!htp]
+\centering
+\begin{tabular}{cc}
+\begin{subfigure}[t]{0.4\linewidth}
+\centering
+\includegraphics[width=4.5cm, height=3cm, ]{figures/fig_google.jpg}
+\caption{Vienna winter image 2021 \footcite{noauthor_google_nodate}.}
+\label{fig:vienna_winter_a
+}
+\end{subfigure} &
+\begin{subfigure}[t]{0.4\linewidth}
+\centering
+\includegraphics[width=4.5cm, height=3cm, ]{figures/fig_Vienna.jpg}
+\caption{Vienna summer image 2022 \footcite{noauthor_stadtvermessung_nodate}.}
+\label{fig:vienna_summer_b
+}
+\end{subfigure}
+\end{tabular}
+\caption{Issues with different image providers.}
+\label{fig:issues_providers
+}
+\end{figure}
+
+\subsubsection{Ground truth}
+
+The main inaccuracies found on the data used for this experiment are: 
+
+\begin{itemize}
+    \item Different or unclear criteria from the responsible organization when classifying the data. 
+    \item Even though the organization states the data where updated, new infrastructure or changes shown on the images are missing. 
+    \item Mistakes or inaccuracies in the boundaries of object.
+    \item Inaccuracies or missing data when converting from line to polygon geometry. 
+\end{itemize}
+
+
+\subsubsection{Madrid dataset}
+
+Two version of the dataset were created (fig. \ref{fig:MadGrid}). The main version has 6 classes: background, building, road, sidewalk, swimming pool, bike path and parking. The swimming pool class was chosen as it is considered an important factor for suburbanization and car-centric developments in Spain. The second version only has parking spaces. The selection of the training and testing areas aimed for diversity, encompassing poorer neighborhoods in the southern periphery characterized by dense and unorganized urban structures, newer neighborhoods from the 2000s in the eastern region featuring grid street patterns and multi-family housing with shared swimming pools, richer areas in the north with high rise buildings from the 80s and 90s, as well as neighborhoods from the historic medieval center and 19th-century developments. 
+
+
+The train dataset (4778 images and masks with a size of 1024x1024 pixels) encompasses all tiles contained inside the official boundaries of the following neighbourhoods of Madrid: 
+Berruguete, Costillares, El Viso,Castellana, Quintana, Embajadores, Puerta del Angel, Los Rosales, Acacias, Goya, Numancia, Palomeras Bajas, Valderrivas, Orcasitas, Almendrales, Universidad, Almagro, Bellas Vistas and Hispanoamerica.
+
+
+
+The test dataset (1238 images and masks with a size of 1024x1024 pixels) encompasses all tiles contained inside the official boundaries of the following neighbourhoods of Madrid. It is used exclusively for evaluation: Gaztambide, Cuatro Caminos, Pilar, Arcos and San Diego.
+
+\begin{figure}[!htp]
+    \centering
+    \begin{tabular}{ccc}
+        \begin{subfigure}[t]{0.31\linewidth}
+            \centering
+            \includegraphics[width=4cm, height=3cm]{figures/fig_vector_gt.png}
+            \caption{Madrid's cartography provides parking spaces as lines (yellow).}
+            \label{fig:parkinglines}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.31\linewidth}
+            \centering
+            \includegraphics[width=4cm, height=3cm]{figures/fig_raster_gt_madrid.png}
+            \caption{Tile 771 of the dataset. In red the parking polygons in raster format created using the available line geometry.}
+            \label{fig:madtile771}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.31\linewidth}
+            \centering
+            \includegraphics[width=4cm, height=3cm]{figures/fig_madrid_1941.png}
+            \caption{High resolution historic image from 1941.}
+            \label{fig:mad1941}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Madrid dataset details (Background image source: Ayuntamiento de Madrid).}
+    \label{fig:madrid_ds_exaple}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{cccc}
+        \begin{subfigure}[t]{0.24\linewidth}
+            \centering
+            \includegraphics[width=\linewidth, height=2.5cm]{figures/wrong_data_madrid_gt.JPG}
+            \caption{Ground truth data in the test set is missing the new bike lane. Parking and sidewalk were displaced too.}
+            \label{fig:wrong_gt_1_mad}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.24\linewidth}
+            \centering
+            \includegraphics[width=\linewidth, height=2.5cm]{figures/wrong_data_madrid_model.JPG}
+            \caption{Model's results show inaccurate results. Some bike lanes are detected, but most are missing.}
+            \label{fig:wrong_1_mad}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.24\linewidth}
+            \centering
+            \includegraphics[width=\linewidth, height=2.5cm]{figures/wrong_data_madrid_2_gt.JPG}
+            \caption{Ground truth shows big areas classified as road that are wrong.}
+            \label{fig:wrong_gt_2_mad}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.24\linewidth}
+            \centering
+            \includegraphics[width=\linewidth, height=2.5cm]{figures/wrong_data_madrid_2_model.JPG}
+            \caption{The model correctly does not classify the wrong areas as road but this will be negatively evaluated.}
+            \label{fig:wrong_2_mad}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Some examples about mistakes in the ground truth from the Madrid test set.}
+    \label{fig:madwrong}
+\end{figure}
+
+For the conversion from line to polygon geometry for the parking class the accuracy of the data was measured calculating the length of the parking lines contained in the parking polygon boundaries. The ratio over the total length of the parking lines show that the worst neighbourhood passes 85\% and that usual values where over 90\%. 
+
+
+The inaccuracies found in the Madrid dataset are especially related to unclear criteria to classify data and data that is not up to date even though the 2023 cartography was used. The figure \ref{fig:madwrong} shows some examples of the problems found in the dataset and the models output. 
+
+
+\subsubsection{Vienna Dataset}
+
+The Vienna dataset encompasses a rectangular region situated to the east and west 
+of the Danube, combining old and dense urbanisation with newer developments and even single family homes (fig. \ref{fig:VieGrid}).  
+
+Two versions of the Vienna Dataset were created. The main version has 7 categories: background, public road, tram or train tracks, crosswalk, on street parking, private road surface, sidewalk and separated pedestrian or bicycle path. The dataset has 1826 images for training and 156 for testing all with a size of 1024x1024 pixels. Another version with 2 classes (background and on street parking) was created only to detect parking spaces. 
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{cc}
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=3cm]{figures/incomplete_gt_vienna_parking_2c.jpg}
+            \caption{Ground truth data in the test set is missing some parking spaces. The model's results correctly classify all parking spaces as parking, but it will be negatively evaluated as most of the parking is missing in the ground truth.}
+            \label{fig:wrong_vie_1}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=3cm]{figures/fig_osm_request.png}
+            \caption{Overpass-turbo request results (in yellow) are not accurate enough compared to actual parking spaces (in red), and the data is incomplete. (In the top right corner, there is an unlabeled parking area)}
+            \label{fig:wrong_vie_osm}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Examples of mistakes in the ground truth from the Vienna test set.}
+    \label{fig:viewrong}
+\end{figure}
+
+
+Especially the OSM requests have many mistakes, as shown in figure \ref{fig:wrong_vie_osm}. In the case of the Vienna dataset, most issues are related to missing data, particularly for the parking class, both in OSM and in the government's data (fig. \ref{fig:viewrong}).
+
+\renewcommand{\sectionnametext}{Results}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The metrics chosen for model evaluation are: 
+
+\begin{itemize}
+    \item \textbf{IoU}: Jaccard Index or Intersection over Union (IoU). 
+    \item \textbf{F1 score}: F1 score or Dice score.
+    \item \textbf{IoU\_200}: IoU using a 200-centimeter buffer for the ground truth before calculating the intersection.
+    \item \textbf{Street ratio}: Amount of the model's output falling inside one of the classes related to streets in ground truth data (classes 2 and 6).
+    \item \textbf{Pedestrian ratio}: Amount of the model's output falling inside one of the classes related to pedestrians in ground truth data (classes 3 and 5).
+    \item \textbf{$\frac{\text{area (model)}}{\text{area (GT)}}$}: Area of the model output with class \(i\) divided by the area of the ground truth with class \(i\). This ratio measures the amount of over or under detection in the model.
+\end{itemize}
+
+\subsection{Madrid}
+
+\subsubsection{Model evaluation}
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{cc}
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=4cm]{figures/madrid_grid.jpg}
+            \caption{Training and testing neighbourhoods.}
+            \label{fig:MadGrid}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=4cm]{figures/MadridCM.png}
+            \caption{Normalized confusion matrix for the Madrid test set (Class 0 is background).}
+            \label{fig:CMMadrid}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Madrid dataset and model results.}
+    \label{fig:resMad}
+\end{figure}
+
+\begin{table}[!htb]
+\centering
+\caption{Evaluation results for the Madrid test set.}
+\label{tab:madridtest}
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Class \\ id\end{tabular}} & \textbf{Class name} & \textbf{\begin{tabular}[c]{@{}c@{}}model \\ area\end{tabular}} & \textbf{GT area} & \textbf{IoU} & \textbf{IoU\_200} & \textbf{F1} & \textbf{\begin{tabular}[c]{@{}c@{}}street \\ ratio\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}pedestrian \\ ratio\end{tabular}} & \textbf{$\frac{\text{area (model)}}{\text{area (GT)}}$} \\ \hline
+1                                                            & building            & 2,769,163                                                    & 2,601,307      & 0.73         & 0.82              & 0.86        & 0.01                                                             & 0.02                                                                 & 1.07                                    \\ \hline
+2                                                            & road                & 1,343,829                                                    & 1,776,690      & 0.50         & 0.55              & 0.67        & 0.81                                                             & 0.06                                                                 & 0.77                                    \\ \hline
+3                                                            & sidewalk            & 1,103,500                                                    & 1,127,623      & 0.40         & 0.52              & 0.56        & 0.22                                                             & 0.57                                                                 & 0.99                                    \\ \hline
+4                                                            & pool                & 21,403                                                       & 12,624         & 0.25         & 0.33              & 0.47        & 0.07                                                             & 0.02                                                                 & 2.61                                    \\ \hline
+5                                                            & bike path           & 11,250                                                       & 18,060         & 0.06         & 0.08              & 0.19        & 0.18                                                             & 0.32                                                                 & 0.75                                    \\ \hline
+6                                                            & parking             & 541,439                                                      & 438,223        & 0.36         & 0.52              & 0.55        & 0.75                                                             & 0.14                                                                 & 1.26                                    \\ \hline
+\end{tabular}
+\end{table}
+
+
+The building class shows the highest accuracy among all classes. For the rest of the classes, the IoU and F1 score is in a medium to high range (fig. \ref{fig:resMad} and tab \ref{tab:madridtest}). However IoU\_200 indicates that the accuracy improves significantly if a deviation of a few centimeters or meters around the ground truth is allowed. The street and pedestrian ratios reveal minor errors in distinguishing between infrastructure intended for vehicles and pedestrians. Most inaccuracies arise between classes within closely related categories, such as confusions between parking areas and roads or between bike paths and sidewalks. 
+
+The bike lane and swimming pool classes have the lowest accuracies (fig. \ref{fig:resMad} and tab \ref{tab:madridtest}). However, the area covered by these classes in the ground truth is minimal or none in many training and testing areas, leading to inconsistent results for these classes. Nonetheless, as explained in the following section, correct trends over time were observed for all classes, including pool and bike lane. Overall, the model's results demonstrate that it is effective for predicting exact building boundaries and providing general statistical data for the other classes.
+
+Even though there can be significant differences (over 15\%) in the area picked up by the model in comparison with ground truth for some classes, the assumption is made that the mistakes or differences between ground truth and model will not occur between the results of the same model evaluated with different images. For the comparison between 2001 and 2023, the model will apply the same criteria, overrepresenting or underrepresenting the classes in the images from both times by the same amount, allowing for a valid comparison. This is the reason why the model's output from 2001 is not compared directly to the ground truth from 2023.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{ccccc}
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Gaztambide_gt.jpg}
+            \caption{Gaztambide ground truth}
+            \label{fig:gt_Gaztambide}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_cuatrocaminos_gt.jpg}
+            \caption{Cuatro Caminos ground truth}
+            \label{fig:gt_cc}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Pilar_gt.jpg}
+            \caption{Pilar ground truth}
+            \label{fig:gt_Pilar}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Arcos_gt.jpg}
+            \caption{Arcos ground truth}
+            \label{fig:gt_Arcos}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_sdiego_gt.jpg}
+            \caption{San Diego ground truth}
+            \label{fig:gt_sdiego}
+        \end{subfigure} \\
+        
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Gaztambide.jpg}
+            \caption{Gaztambide model 2023}
+            \label{fig:2023_Gaztambide}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_cuatrocaminos.jpg}
+            \caption{Cuatro Caminos model 2023}
+            \label{fig:2023_cc}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Pilar.jpg}
+            \caption{Pilar model 2023}
+            \label{fig:2023_Pilar}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Arcos.jpg}
+            \caption{Arcos model 2023}
+            \label{fig:2023_Arcos}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_sdiego.jpg}
+            \caption{San Diego model 2023}
+            \label{fig:2023_sdiego}
+        \end{subfigure} \\
+        
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Gaztambide_2001.jpg}
+            \caption{Gaztambide model 2001}
+            \label{fig:2001_Gaztambide}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_cuatrocaminos_2001.jpg}
+            \caption{Cuatro Caminos model 2001}
+            \label{fig:2001_cc}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Pilar_2001.jpg}
+            \caption{Pilar model 2001}
+            \label{fig:2001_Pilar}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_Arcos_2001.jpg}
+            \caption{Arcos model 2001}
+            \label{fig:2001_Arcos}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.19\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/madrid_street_sdiego_2001.jpg}
+            \caption{San Diego model 2001}
+            \label{fig:2001_sdiego}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Madrid test dataset. An example region is shown for each testing neighbourhood. Ground truth from 2023 and model output for images from 2023 and 2001 are shown.}
+    \label{fig:madridtest}
+\end{figure}
+
+\subsubsection{Temporal trends (2001-2023)}
+
+Images from the same testing neighborhoods but from the year 2001 (RGB images with 10 cm per pixel resolution) were inputted into the model that was trained with images from 2023. The model's output from 2001 was compared to the model's output from 2023, evaluated previously. The IoU values indicate if the classes overlap and show the amount of variation that occurred during the timeframe. Very low IoU values (below 0.1), especially if the areas have not changed much, can indicate that the model is not providing accurate predictions for that class. The change in area shows the trend over time.
+
+\begin{table}[!htb]
+\centering
+\small
+\caption{Temporal trend (area in 2023 / area in 2001) for the Madrid test dataset and iou\_200 (in red) between the 2001 and 2023 geometries to show the validity of the results.}
+\label{tab:mad2001}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \textbf{Dataset} & \textbf{1 building} & \textbf{2 road} & \textbf{3 sidewalk} & \textbf{4 pool} & \textbf{5 bike Path} & \textbf{6 parking} \\
+    \hline
+    Gaztambide & 1.11 \textcolor{red}{(0.80)} & 1.45 \textcolor{red}{(0.51)} & 1.27 \textcolor{red}{(0.46)} & 0.87 \textcolor{red}{(0.08)} & 0.11 \textcolor{red}{(0.00)} & 0.81 \textcolor{red}{(0.48)} \\
+    \hline
+    C. Caminos & 1.13 \textcolor{red}{(0.71)} & 1.36 \textcolor{red}{(0.57)} & 1.22 \textcolor{red}{(0.45)} & 1.07 \textcolor{red}{(0.10)} & 1.00 \textcolor{red}{(0.00)} & 0.79 \textcolor{red}{(0.38)} \\
+    \hline
+    Pilar & 1.15 \textcolor{red}{(0.52)} & 1.67 \textcolor{red}{(0.41)} & 1.65 \textcolor{red}{(0.29)} & 1.31 \textcolor{red}{(0.23)} & 2.17 \textcolor{red}{(0.02)} & 1.40 \textcolor{red}{(0.31)} \\
+    \hline
+    Arcos & 1.22 \textcolor{red}{(0.53)} & 1.64 \textcolor{red}{(0.46)} & 1.54 \textcolor{red}{(0.32)} & 2.04 \textcolor{red}{(0.20)} & 2.88 \textcolor{red}{(0.01)} & 1.41 \textcolor{red}{(0.31)} \\
+    \hline
+    San Diego & 1.10 \textcolor{red}{(0.69)} & 1.85 \textcolor{red}{(0.41)} & 1.41 \textcolor{red}{(0.41)} & 1.02 \textcolor{red}{(0.08)} & 2.01 \textcolor{red}{(0.05)} & 1.34 \textcolor{red}{(0.35)} \\
+    \hline
+    ALL & 1.13 \textcolor{red}{(0.65)} & 1.58 \textcolor{red}{(0.47)} & 1.42 \textcolor{red}{(0.39)} & 1.34 \textcolor{red}{(0.14)} & 2.35 \textcolor{red}{(0.02)} & 1.15 \textcolor{red}{(0.37)} \\
+    \hline
+\end{tabular}
+\end{table}
+
+In the city center (Table \ref{tab:mad2001}), particularly in the Gaztambide and Cuatro Caminos areas, parking spaces show a declining trend, with a reduction of approximately 20\%. In contrast, the surface areas dedicated to roads and sidewalks have increased by 30–40\%. The number of buildings has remained largely stable, with a modest growth of 10\%, consistent with urban development patterns in these areas over the past two decades. This slight building increase is attributed to urban regeneration projects initiated by the city council in the early 2000s.
+
+The reduction in parking spaces reflects transformations of roads into mixed-use spaces for pedestrians and vehicles, with many parking areas removed to expand sidewalk widths. The presence of bike paths and swimming pools in these neighborhoods is negligible (less than 0.01\% of the total area), making temporal trends in these features insignificant.
+
+In the periphery of the city (Table \ref{tab:mad2001}), including Pilar, Arcos, and San Diego, trends indicate a notable increase in surface areas dedicated to parking, roads, and sidewalks, with approximately a 50\% growth. Building expansion varies across neighborhoods, with Pilar and San Diego showing modest growth of 10–15\%, while Arcos experiences a more pronounced 22\% increase. This growth aligns with the developmental timeline of each neighborhood: most buildings in Pilar and San Diego date back to before 1990, whereas Arcos, a newly developed area, has seen many empty lots from the early 2000s now built upon.
+
+Arcos stands out with a significant 104\% increase in swimming pools, reflecting the trend during its development toward multifamily housing complexes with shared pools. This contrasts with Pilar and San Diego, where swimming pool growth remains below 30\%, highlighting disparities between wealthier areas like Arcos and Pilar and less affluent ones like San Diego, where pools are less common.
+
+The construction of a bike path, the Anillo Verde Ciclista in 2006, is evident in the temporal trends for Pilar, Arcos, and San Diego. Road and sidewalk surface areas show comparable growth, generally surpassing the increase in parking spaces. This suggests that on-street parking provision is lower in newly developed areas.
+
+
+There are no significant differences in the trends in road and parking surface between richer neighborhoods, such as Pilar, and poorer neighborhoods, such as San Diego. The most notable differences are observed between the city's periphery and its center. 
+
+ 
+
+
+\subsection{Vienna}
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{cc}
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=4cm]{figures/vienna_grid.jpg}
+            \caption{Training and testing areas.}
+            \label{fig:VieGrid}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.47\linewidth}
+            \centering
+            \includegraphics[width=5cm, height=4cm]{figures/ViennaCM.png}
+            \caption{Normalized confusion matrix for the Vienna test set (Class 0 is background).}
+            \label{fig:CMVienna}
+        \end{subfigure}
+    \end{tabular}
+    \caption{Vienna dataset and model results.}
+    \label{fig:resVie}
+\end{figure}
+
+
+Public road and tram tracks show the best accuracies. For the rest of the classes the IoU is lower, but the rest of the indices can validate the results (tab \ref{tab:viennatest}). IoU\_200 (23-GT calculated with ground truth and model results for 2023 images) indicates that the accuracy improves significantly if a deviation of a few centimeters or meters around the ground truth is allowed. The street and pedestrian ratios show small amounts of errors between detecting infrastructure for cars or for pedestrians. Most of the inaccuracies arise between similar looking classes, like parking and road. 
+
+\begin{table}[!htb]
+\centering
+\small
+\caption{Evaluation metrics and temporal trend (20\textbf{14}-20\textbf{23}) for the Vienna model (GT: ground truth).}
+\label{tab:viennatest}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Class \\ id\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Class \\ name\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}model \\ area\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}GT \\ area\end{tabular}} & \textbf{IoU} & \textbf{\begin{tabular}[c]{@{}c@{}}IoU\_200 \\ (23-GT)\end{tabular}} & \textbf{F1} & \textbf{\begin{tabular}[c]{@{}c@{}}street \\ ratio\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}pedes-\\ trian \\ ratio\end{tabular}} & \textbf{$\frac{\text{area (model)}}{\text{area (GT)}}$} & \textbf{\begin{tabular}[c]{@{}c@{}}iou\_200   \\ (14-23)\end{tabular}} & \textbf{$\frac{\text{area}-23}{\text{area}-14}$} \\ \hline
+1                                                            & \begin{tabular}[c]{@{}c@{}}public \\ road\end{tabular}         & 163,676                                                        & 159,214                                                     & 0.47         & 0.56                                                                 & 0.69        & 0.79                                                             & 0.11                                                                     & 1.03                                    & 0.59                                                                   & 1.09                                 \\ \hline
+2                                                            & \begin{tabular}[c]{@{}c@{}}rail \\ tracks\end{tabular}         & 31,696                                                         & 28,819                                                      & 0.55         & 0.66                                                                 & 0.76        & 0.09                                                             & 0.04                                                                     & 1.10                                    & 0.46                                                                   & 0.69                                 \\ \hline
+3                                                            & crosswalk                                                      & 4,781                                                          & 2,999                                                       & 0.33         & 0.57                                                                 & 0.51        & 0.37                                                             & 0.52                                                                     & 1.59                                    & 0.40                                                                   & 1.37                                 \\ \hline
+4                                                            & parking                                                        & 71,956                                                         & 50,593                                                      & 0.23         & 0.37                                                                 & 0.45        & 0.61                                                             & 0.13                                                                     & 1.42                                    & 0.35                                                                   & 1.61                                 \\ \hline
+5                                                            & \begin{tabular}[c]{@{}c@{}}private \\ road\end{tabular}        & 157,414                                                        & 166,984                                                     & 0.32         & 0.36                                                                 & 0.51        & 0.55                                                             & 0.06                                                                     & 0.94                                    & 0.37                                                                   & 0.89                                 \\ \hline
+6                                                            & sidewalk                                                       & 153,034                                                        & 97,993                                                      & 0.25         & 0.44                                                                 & 0.45        & 0.20                                                             & 0.40                                                                     & 1.56                                    & 0.42                                                                   & 1.33                                 \\ \hline
+7                                                            & \begin{tabular}[c]{@{}c@{}}pedestrian \\ path\end{tabular}     & 195,103                                                        & 145,929                                                     & 0.20         & 0.33                                                                 & 0.37        & 0.08                                                             & 0.34                                                                     & 1.34                                    & 0.39                                                                   & 0.99                                 \\ \hline
+\end{tabular}
+\end{table}
+
+The model trained with 2023 imagery was tested using images from 2014, the earliest available RGB images. The outputs for both time periods are compared in Table \ref{tab:viennatest} and Figure \ref{fig:viennatest}. The results reveal a decline in tram tracks and private roads, while the areas dedicated to road surfaces, bike paths, and pedestrian paths remain unchanged. Sidewalks and crosswalks have seen a more significant increase than road surfaces, indicating a growing effort to enhance walkability and pedestrian-friendly environments.
+
+The most notable growth is observed in public on-street parking, which has increased at a rate higher than that of road surfaces, highlighting the trend toward car-centric development in newer areas of Vienna. This trend is more pronounced in Vienna than in Madrid, where, unlike Vienna, on-street parking provision is not increasing.
+
+
+\begin{figure}[!htb]
+    \centering
+    \begin{tabular}{ccc}
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_1_gt.jpg}
+            \caption{Vienna test set ground truth}
+            \label{fig:gt_vienna_1}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_1.jpg}
+            \caption{Model output for the 2023 image}
+            \label{fig:2023_vienna_1}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_1_2014.jpg}
+            \caption{Model output for the 2014 image}
+            \label{fig:2014_vienna_1}
+        \end{subfigure} \\
+        
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_2_gt.jpg}
+            \caption{Vienna test set ground truth}
+            \label{fig:gt_vienna_2}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_2.jpg}
+            \caption{Model output for the 2023 image}
+            \label{fig:2023_vienna_2}
+        \end{subfigure} &
+        \begin{subfigure}[t]{0.3\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/vienna_street_2_2014.jpg}
+            \caption{Model output for the 2014 image}
+            \label{fig:2014_vienna_2}
+        \end{subfigure} \\
+    \end{tabular}
+    \caption{Vienna test dataset. The two regions cover most of the test set. Ground truth from 2023, model output for images from 2023 and 2014.}
+    \label{fig:viennatest}
+\end{figure}
+
+\subsection{Additional performance evaluation}
+
+To further validate the transfer learning approach, a model was trained on the Vienna dataset using the SAM encoder, while another UNet model was trained without utilizing SAM's encoder weights. The transfer learning SAM model outperformed the UNet model in the mean IoU metric by 7\%, despite being trained with only 10 epochs compared to the UNet's 30 epochs.
+
+Two models were trained using only the parking datasets, each with two classes. One model was trained on Madrid data and evaluated on Vienna, while the other was trained on Vienna data and evaluated on Madrid. The Madrid-trained model achieved an IoU of 0.18 and an IoU\_200 of 0.31 in the Vienna test set, showing a decrease of only 0.06 compared to the Vienna-trained model. Similarly, the Vienna-trained model achieved an IoU of 0.2 and an IoU\_200 of 0.3 in the Madrid test set. In this case, the decrease was more substantial (0.2), but it is important to note that the IoU\_200 value for the Vienna-trained model in Vienna was 0.37. These results demonstrate the generalizability of the models and the effectiveness of the method when applied to images from cities with significantly different characteristics. Images from the same city but different time periods are generally more similar, suggesting that results would be more accurate in such cases.
+
+\renewcommand{\sectionnametext}{Discussion}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+Results indicate that the models are accurate enough to gather statistical data, such as the overall area in a neighborhood used for various purposes like housing, cars, parking, or pedestrians. The models exhibit sufficient generalizability to work in environments different from the training dataset as it was shown running tests on the Madrid-trained model in Vienna and on the Vienna-trained model in Madrid. It was possible to compare results from 2023 and 2014 for Vienna and from 2001 for Madrid, dates before government official data is available. This allowed us to compare trends over time and distinguish increases, decreases, and stable tendencies, though exact values exhibit errors if more than one decimal of precision is desired. The difference in the area between the models and ground truth is significant for some classes, with values over 15\%. However, as the ground truth can have missing data, overestimations in area might actually be correct. Unfortunately, it was not possible to provide exact estimates for the amount of over- or under-detection for the classes with the worst performance. To achieve this, a small dataset with manual labels could be created, but this is a very time-consuming task and is not desirable for the objectives of this study.
+
+
+Overall, evaluating the precision of the models remains a challenge, as ground truth data is inaccurate. For certain classes, the models' results are accurate, but the ground truth is wrong, as shown in figures \ref{fig:madwrong} and \ref{fig:viewrong}. This issue makes testing results appear worse than those of other research \footcite{henry_citywide_2021} (which reported IoU values around 0.6), where the test and train datasets were refined with extensive manual work. Image resolution appears to be an influential factor, as the Madrid-trained models with images at 10 cm per pixel achieved much better results than the Vienna-trained models with images at 15 cm per pixel. 
+
+
+OSM data proved to be valuable in creating datasets covering topics not included in official data, such as private parking surfaces in Vienna. However, evaluating the model remains a challenge. Without a high-quality test set, it is impossible to determine the validity of the model. Therefore, if OSM data is to be used, manual labeling for a small test set would be necessary to establish the model's validity. 
+
+The transfer learning approach provided better results with less training epochs than a non-transfer learning approach. 
+
+
+The trends observed in Madrid show an increase in walkability and the replacement of parking spaces with sidewalks in the urban center, along with a slight decrease in parking provision in the newly developed peripheral areas. The only significant difference between rich and poor areas during the period from 2001 to 2023 is in the number of swimming pools built. When it comes to walkability and parking provision, the primary distinction is between neighborhoods in the city center and those on the periphery.
+
+In Vienna, the neighborhood analyzed is located on the periphery of the city. Results for the 2014-2023 period show an increase in pedestrian-related infrastructure. However, the expansion of parking surfaces exceeds the growth of road infrastructure, indicating a rise in parking provision in newer developments and a trend toward car-centric urban planning.
+
+\renewcommand{\sectionnametext}{Conclusions}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+This study has demonstrated the feasibility of creating training datasets for machine learning vision models using openly available data as ground truth, eliminating the need for manual labeling. The proposed process is both efficient and adaptable to diverse regions, tasks, and datasets. This methodology was successfully employed to fine-tune a foundational model for segmenting parking-related surfaces in high-quality aerial imagery. While OpenStreetMap (OSM) and official open data provide valuable sources of ground truth in areas with limited cartographic resources, their incompleteness and inaccuracies present challenges that may impact model outcomes. Despite these limitations, the models developed in this study showed strong performance and adaptability across varied urban landscapes.
+
+
+Nevertheless, the experimental approach has certain limitations. The reliance on incomplete or inconsistent ground truth data can result in discrepancies between model predictions and actual conditions, making the validation of trained models a significant challenge. A promising direction for addressing this issue is cross-validation using data from cities different from those where the training datasets were generated, as demonstrated in this study with parking models for Vienna and Madrid.
+
+
+Foundational image vision models like SAM may struggle with non-standard tasks or data from non-Western contexts. This highlights the importance of domain-specific fine tuning methodologies, as proposed in this study, for extending applicability to diverse environments.
+
+
+It was possible to detect temporal trends differentiating the tendencies in different areas of the city, contributing to the advancement of urban analytics. Additionally, the findings provide valuable insights into how urban development is shaping the city's infrastructure, with a particular focus on walkability and the increasing car-centric trends in newer developments. Differences between two cities in different countries were also established, offering a comparative perspective on urban planning. This research could help city administrations assess whether their policies to reduce car usage have effectively altered the city's land use, as well as road and parking surface distribution. The ability to track such trends provides a foundation for informed policy adjustments aimed at fostering more sustainable urban environments and improving mobility options.
+
+\subsection{Future research}
+
+To improve the dataset, future research could explore semi-supervised and self-supervised methods \footcite{pelaez-vegas_survey_2023}, particularly those tailored for aerial image semantic segmentation. These approaches could help correct errors in the training dataset and implement workflows where high-probability model predictions automatically flag discrepancies with ground truth for review \footcite{tang_semantic_2023}. Additionally, incorporating class uncertainties into the loss function could improve model robustness and performance \footcite{bressan_semantic_2022}.
+
+For precise accuracy assessments, manually labeling a small test set remains an option, albeit resource-intensive. Collaboration with official agencies represents another promising avenue, enabling the use of model predictions to identify and correct errors in existing data or supervise areas where discrepancies arise. Advancements in machine learning could encourage agencies to establish clearer criteria and standards for cartography, fostering improved integration of automated methods with traditional practices.
+
+\section*{Code}
+
+The code developed for this paper is accessible on github: \url{https://github.com/MiguelUrenaPliego/GeoimageVision}.
+An example notebook to create a dataset: \url{https://github.com/MiguelUrenaPliego/GeoimageVision/blob/main/geodataset_example.ipynb}.
+A notebook to try the SAM model: \url{https://github.com/MiguelUrenaPliego/labTopoSAM/blob/main/SAM_text_based_segmentation_english.ipynb}.
+
+
+
+
+%% The Appendices part is started with the command \appendix;
+%% appendix sections are then done as normal sections
+
+\newpage
+
+\renewcommand{\sectionnametext}{References}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+\printbibliography[heading=none]
+
+
+\end{refsection}
+
+\endinput
+%%
+%% End of file `elsarticle-template-num.tex'.

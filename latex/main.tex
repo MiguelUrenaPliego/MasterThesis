@@ -1,0 +1,425 @@
+%LTeX: language=en
+%\documentclass[landscape,twocolumn,a3paper, 12pt]{book}
+
+% REGEX replacements 
+% find: \[(.*?)\\ref\{(.*?)\}(.*?)\]
+% replace: ($1\\ref{$2}$3)
+% find: (?<=\([^)]*)(Figure|figure|Fig\.?|fig\.?)(?=[^()]*\\ref\{)
+% replce: fig.
+%LTeX: language=en
+
+\documentclass[a4paper,12pt]{book}
+
+% =========================================================
+% DOCUMENT METADATA
+% =========================================================
+
+\newcommand{\shorttitle}{Seismic Digital Twin}
+\newcommand{\longtitle}{MASTER THESIS: \\[0.5em] Towards a Seismic Digital and Hybrid Twin}
+\newcommand{\subtitle}{An AI-Assisted Framework for Scalable Exposure and Vulnerability Assessment of Buildings in Data-Scarce Urban Environments}
+
+\title{\longtitle}
+\author{}
+\date{2026}
+
+% =========================================================
+% PAGE GEOMETRY
+% =========================================================
+
+\usepackage[a4paper,
+top=3cm,
+bottom=3cm,
+left=2cm,
+right=2cm]{geometry}
+
+% =========================================================
+% ENCODING & LANGUAGE
+% =========================================================
+
+\usepackage[utf8]{inputenc}
+% \usepackage[spanish,es-noshorthands]{babel}
+
+% =========================================================
+% TYPOGRAPHY
+% =========================================================
+
+\usepackage{mathptmx}
+\usepackage{parskip}
+\usepackage[defaultlines=3,all]{nowidow}
+
+% =========================================================
+% MATHEMATICS
+% =========================================================
+
+\usepackage{amsmath}
+
+% =========================================================
+% FIGURES & TABLES
+% =========================================================
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{supertabular}
+\usepackage{multicol}
+\usepackage[table,xcdraw]{xcolor}
+
+% =========================================================
+% GENERAL UTILITIES
+% =========================================================
+
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{changepage}
+\usepackage{placeins}
+\usepackage{transparent}
+\usepackage{pdfpages}
+\usepackage{eso-pic}
+
+% =========================================================
+% COLORS & LINKS
+% =========================================================
+
+\usepackage{color}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+    filecolor=magenta,
+    pdftitle={\shorttitle},
+    pdfpagemode=FullScreen,
+}
+
+\urlstyle{same}
+
+% =========================================================
+% HEADERS & FOOTERS
+% =========================================================
+
+\usepackage{fancyhdr}
+
+% -------------------------
+% header variables
+% -------------------------
+\newcommand{\chapternametext}{}
+\newcommand{\shortchapternametext}{}
+\newcommand{\sectionnametext}{}
+\newcommand{\headingtextR}{\shorttitle}
+\newcommand{\headingtextL}{}
+
+% -------------------------
+% main fancy style
+% -------------------------
+\pagestyle{fancy}
+\fancyhf{} % IMPORTANT: clear everything first
+
+\fancyhead[L]{\headingtextL}
+\fancyhead[R]{\headingtextR}
+\fancyfoot[R]{\thepage}
+
+% -------------------------
+% plain pages (chapters, TOC, LOF, LOT)
+% -------------------------
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% =========================================================
+% SECTION / CHAPTER STYLE
+% =========================================================
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}
+  [display]
+  {\normalfont\bfseries\Huge}
+  {}
+  {0pt}
+  {}
+
+% =========================================================
+% TOC / LOF / LOT
+% =========================================================
+
+\usepackage{titletoc}
+\usepackage[lof,lot]{etoc}
+
+
+\setcounter{tocdepth}{0}
+
+% Chapters
+\titlecontents{chapter}
+  [0em]
+  {\smallskip}
+  {}
+  {\itshape\bfseries}
+  {\titlerule*[0.5pc]{.}\contentspage}
+
+% Sections
+\titlecontents{section}
+  [3em]
+  {}
+  {\contentslabel{2em}}
+  {}
+  {\titlerule*[0.5pc]{.}\contentspage}
+
+% Subsections
+\titlecontents{subsection}
+  [6em]
+  {}
+  {\contentslabel{3em}}
+  {}
+  {\titlerule*[0.5pc]{.}\contentspage}
+
+% Figures
+\titlecontents{figure}
+  [0em]
+  {}
+  {Figure~\thecontentslabel\quad}
+  {}
+  {\titlerule*[0.5pc]{.}\contentspage}
+
+% Tables
+\titlecontents{table}
+  [0em]
+  {}
+  {Table~\thecontentslabel\quad}
+  {}
+  {\titlerule*[0.5pc]{.}\contentspage}
+  
+% =========================================================
+% NUMBERING STYLE
+% =========================================================
+
+\usepackage{chngcntr}
+
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
+\counterwithin{equation}{chapter}
+
+% Remove chapter dependency
+% \counterwithout{figure}{chapter}
+% \counterwithout{table}{chapter}
+% \counterwithout{equation}{chapter}
+
+% Section numbering without chapter prefix
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+% =========================================================
+% BIBLIOGRAPHY
+% =========================================================
+
+\usepackage[
+backend=biber,
+citestyle=verbose,
+bibstyle=verbose,
+sorting=none
+]{biblatex}
+
+\addbibresource{figures_and_references/urban_surface_detection/references.bib}
+\addbibresource{figures_and_references/EELISA_conference/references.bib}
+\addbibresource{figures_and_references/footprints_paper/references.bib}
+
+% =========================================================
+% CUSTOM FOOTNOTE CITATION STYLE
+% =========================================================
+
+\makeatletter
+
+\renewbibmacro*{cite:full}{%
+  \printnames{labelname}%
+  \setunit{\addcomma\space}%
+  \printfield{year}%
+  \setunit{\addcomma\space}%
+  \printtext{%
+    \iffieldundef{doi}
+      {
+        \iffieldundef{url}
+          {\printfield{title}}
+          {\href{\thefield{url}}{\printfield{title}}}
+      }
+      {\href{https://doi.org/\thefield{doi}}{\printfield{title}}}
+  }%
+  \usebibmacro{shorthandintro}%
+  \ifcsdef{cbx@\thefield{entrykey}@footnotenumber}
+    {\edef\cbx@number{\csuse{cbx@\thefield{entrykey}@footnotenumber}}}
+    {\edef\cbx@number{\the\value{footnote}}}%
+  \csxdef{cbx@\thefield{entrykey}@footnotenumber}{\cbx@number}%
+}
+
+\DeclareFieldFormat{prefixnumber}{}
+\DeclareFieldFormat{labelnumber}{}
+
+\makeatother
+
+% =========================================================
+% MISC
+% =========================================================
+
+\renewcommand{\$}{\text{ €}}
+
+\interfootnotelinepenalty=10000
+
+% =========================================================
+% DOCUMENT
+% =========================================================
+
+\begin{document}
+
+% =========================================================
+% FRONT PAGE
+% =========================================================
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{front_page/front_page.tex}
+
+\clearpage
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/acknowledgments.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/abstract.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+% =========================================================
+% TABLE OF CONTENTS
+% =========================================================
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\tableofcontents
+
+\clearpage
+
+% =========================================================
+% LIST OF FIGURES
+% =========================================================
+
+\listoffigures
+
+\clearpage
+
+% =========================================================
+% LIST OF TABLES
+% =========================================================
+
+\listoftables
+
+\clearpage
+
+\setcounter{tocdepth}{4}
+
+% =========================================================
+% CONTENT
+% =========================================================
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/introduction.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+% % =========================
+\part{Background}
+% % =========================
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/background_seismic_risk/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/background_image_vision/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/background_remote_sensing/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/background_machine_learning/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+% =========================
+\part{Methodology}
+% =========================
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_survey/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_image_vision/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_SeismicBuildingExposure/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_remote_sensing/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_footprints/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_structural_system/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/methodology_curves/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+% =========================
+\part{Practical Application}
+% =========================
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_surface_detection/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_pilot_regions/footprint_segmentation/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_pilot_regions/footprint_attributes/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_pilot_regions/remote_sensing/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_pilot_regions/structural_system/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_pilot_regions/fragility_curves/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/experiment_evacuation/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+\part{Budget \& Conclusions}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/budget/main.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+\include{chapters/conclusion.tex}
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\shorttitle}
+
+% =========================================================
+% BIBLIOGRAPHY
+% =========================================================
+
+% \printbibliography
+
+\end{document}

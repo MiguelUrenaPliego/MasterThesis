@@ -1,0 +1,513 @@
+%  LaTeX support: latex@mdpi.com 
+%  For support, please attach all files needed for compiling as well as the log file, and specify your operating system, LaTeX version, and LaTeX editor.
+
+%=================================================================
+\documentclass[journal,article,submit,pdftex,moreauthors]{Definitions/mdpi} 
+% For posting an early version of this manuscript as a preprint, you may use "preprints" as the journal and change "submit" to "accept". The document class line would be, e.g., \documentclass[preprints,article,accept,moreauthors,pdftex]{mdpi}. This is especially recommended for submission to arXiv, where line numbers should be removed before posting. For preprints.org, the editorial staff will make this change immediately prior to posting.
+
+%--------------------
+% Class Options:
+%--------------------
+%----------
+% journal
+%----------
+% buildings
+%---------
+% article
+%---------
+
+% supfile = supplementary materials
+
+%----------
+% submit
+%----------
+% The class option "submit" will be changed to "accept" by the Editorial Office when the paper is accepted. This will only make changes to the frontpage (e.g., the logo of the journal will get visible), the headings, and the copyright information. Also, line numbering will be removed. Journal info and pagination for accepted papers will also be assigned by the Editorial Office.
+
+%------------------
+% moreauthors
+%------------------
+% If there is only one author the class option oneauthor should be used. Otherwise use the class option moreauthors.
+
+%---------
+% pdftex
+%---------
+% The option pdftex is for use with pdfLaTeX. If eps figures are used, remove the option pdftex and use LaTeX and dvi2pdf.
+
+%=================================================================
+% MDPI internal commands
+\firstpage{1} 
+\makeatletter 
+\setcounter{page}{\@firstpage} 
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2022}
+\copyrightyear{2022}
+%\externaleditor{Academic Editor: Firstname Lastname}
+\datereceived{} 
+%\daterevised{} % Only for the journal Acoustics
+\dateaccepted{} 
+\datepublished{} 
+%\datecorrected{} % Corrected papers include a "Corrected: XXX" date in the original paper.
+%\dateretracted{} % Corrected papers include a "Retracted: XXX" date in the original paper.
+\hreflink{https://doi.org/} % If needed use \linebreak
+%\doinum{}
+%------------------------------------------------------------------
+% The following line should be uncommented if the LaTeX file is uploaded to arXiv.org
+%\pdfoutput=1
+
+%=================================================================
+% Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, cleveref, amsthm, hyphenat, natbib, hyperref, footmisc, url, geometry, newfloat, caption
+
+\usepackage{derivative}
+\usepackage{amsmath}
+%=================================================================
+%% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
+%% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
+
+%=================================================================
+% Full title of the paper (Capitalized)
+\Title{AUTOMATIC BUILDING HEIGHT ESTIMATION: MACHINE LEARNING MODELS FOR URBAN IMAGE ANALYSIS}
+
+% MDPI internal command: Title for citation in the left column
+\TitleCitation{Automatic building height estimation: Machine learning models for urban image analysis}
+
+% Author Orchid ID: enter ID or remove command
+\newcommand{\orcidauthorA}{0000-0001-6594-2566} % Add \orcidA{} behind the author's name
+%\newcommand{\orcidauthorB}{0000-0000-0000-000X} % Add \orcidB{} behind the author's name
+\newcommand{\orcidauthorB}{0000-0002-2433-9354}
+\newcommand{\orcidauthorC}{0000-0003-1038-7459}
+\newcommand{\orcidauthorD}{0000-0001-9237-4146}
+
+% Authors, for the paper (add full first names)
+\Author{Miguel Ureña Pliego $^{1,\dagger}$*\orcidA{}, Rubén Martínez Marín $^{2,\dagger}$\orcidB{}, Beatriz González Rodrigo $^{3,\dagger}$\orcidC{} and Miguel Marchamalo Sacristán $^{4,\dagger}$\orcidD{}}
+
+
+%\longauthorlist{yes}
+
+% MDPI internal command: Authors, for metadata in PDF
+\AuthorNames{Miguel Ureña Pliego, Rubén Martínez Marín, Beatriz González Rodrigo and Miguel Marchamalo Sacristán}
+
+% MDPI internal command: Authors, for citation in the left column
+\AuthorCitation{Ureña, M.; Martínez, R.; González, B.; Marchamalo, M.}
+% If this is a Chicago style journal: Lastname, Firstname, Firstname Lastname, and Firstname Lastname.
+
+% Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
+\address{%
+$^{1}$ \quad Researcher, Land Morphology \& Engineering Dept., Civil Engineering School, Universidad Politécnica de Madrid; miguel.urena@upm.es\\
+$^{2}$ \quad Full Professor, Land Morphology \& Engineering Dept., Civil Engineering School, Universidad Politécnica de Madrid\\%; ruben.martinez@upm.es\\
+$^{3}$ \quad Professor, Dept. of Environmental and Forestry Engineering and Management, Civil Engineering School, Universidad Politécnica de Madrid\\%; beatriz.gonzalez.rodrigo@upm.es\\
+$^{4}$ \quad Professor, Land Morphology \& Engineering Dept., Civil Engineering School, Universidad Politécnica de Madrid}%; miguel.marchamalo@upm.es}
+
+% Contact information of the corresponding author
+\corres{Correspondence: miguel.urena@upm.es}
+
+% Current address and/or shared authorship
+\firstnote{Current address: Universidad Politécnica de Madrid, 28040 Madrid, Spain.} 
+%\secondnote{These authors contributed equally to this work.}
+% The commands \thirdnote{} till \eighthnote{} are available for further notes
+
+%\simplesumm{} % Simple summary
+
+%\conference{} % An extended version of a conference paper
+
+% Abstract (Do not insert blank lines, i.e. \\) 
+\abstract{Artificial intelligence (AI) is delivering major advances in the construction engineering sector in this era of Building Information Modelling, applying data collection techniques based on urban image analysis. In this study, building heights were calculated from street view imagery based on a semantic segmentation machine learning model. The model has a fully convolutional architecture, and  is based on the HRNet encoder and  ResNexts depth separable convolutions, achieving fast runtime and state of the art results on standard semantic segmentation tasks. Average building heights on a pilot German street were satisfactorily estimated with a maximum error of 3 meters. Further research alternatives are discussed, as well as the difficulties of obtaining valuable training data to apply these models in countries with no training datasets and different urban conditions. This line of research contributes to the characterization of buildings and the estimation of attributes essential for the assessment of seismic risk using automatically processed street-view imagery.} %A single paragraph of about 200 words maximum. For research articles, abstracts should give a pertinent overview of the work. We strongly encourage authors to use the following style of structured abstracts, but without headings: (1) Background: place the question addressed in a broad context and highlight the purpose of the study; (2) Methods: describe briefly the main methods or treatments applied; (3) Results: summarize the article's main findings; (4) Conclusions: indicate the main conclusions or interpretations. The abstract should be an objective representation of the article, it must not contain results which are not presented and substantiated in the main text and should not exaggerate the main conclusions.}
+
+
+% Keywords
+\keyword{artificial intelligence; semantic segmentation; convolutional neural networks; building height estimation; seismic exposure; street view imagery} 
+
+% The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
+%\PACS{J0101}
+%\MSC{}
+%\JEL{}
+
+%\noindent This is an obligatory section in “Advances in Respiratory Medicine”, whose goal is to increase the discoverability and readability of the article via search engines and other scholars. Highlights should not be a copy of the abstract, but a simple text allowing the reader to quickly and simplified find out what the article is about and what can be cited from it. Each of these parts should be devoted up to 2~bullet points.\vspace{3pt}\\
+%\textbf{What are the main findings?}
+% \begin{itemize}[labelsep=2.5mm,topsep=-3pt]
+% \item First bullet.
+% \item Second bullet.
+% \end{itemize}\vspace{3pt}
+%\textbf{What is the implication of the main finding?}
+% \begin{itemize}[labelsep=2.5mm,topsep=-3pt]
+% \item First bullet.
+% \item Second bullet.
+% \end{itemize}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{figure}[H]
+\includegraphics[scale = 0.5]{graphical_abstract.png}
+\label{graphical_abstract}
+\end{figure}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\setcounter{section}{-1} %% Remove this when starting to work on the template.
+%\section{How to Use this Template}
+
+%The template details the sections that can be used in a manuscript. Note that the order and names of article sections may differ from the requirements of the journal (e.g., the positioning of the Materials and Methods section). Please check the instructions on the authors' page of the journal to verify the correct order and names. For any questions, please contact the editorial office of the journal or support@mdpi.com. For LaTeX-related questions please contact latex@mdpi.com.%\endnote{This is an endnote.} % To use endnotes, please un-comment \printendnotes below (before References). Only journal Laws uses \footnote.
+
+% The order of the section titles is different for some journals. Please refer to the "Instructions for Authors” on the journal homepage.
+\section{Introduction}
+\label{sec:introduction}
+Digital transformation in the construction sector can lead to the introduction of disruptive technologies and tools that can result in innovative business models, materials, and solutions that benefit the entire value chain \cite{EuropeanConstructionSectorObservatory2021DigitalisationSector}.
+Artificial intelligence is considered within one of the three categories of digital technologies in construction, namely Data Information and Analysis \cite{2019DigitalAdministration}. It has been observed that the adoption of artificial intelligence in the construction industry has been limited to pilot projects, with tests being conducted in structural analysis, design, and optimization.  Results show that the implementation of Artificial Neural Networks can be used for structural damage assessment (e.g. detecting structural damage after earthquakes) or structural health monitoring (e.g. identification of damage and nonlinearities in wind turbine blades based on a pattern recognition technique).
+
+In recent decades, managers and scientists have faced the challenging task of developing tools to assess the seismic vulnerability of existing building parks to define reliable risk mitigation plans. Several large-scale approaches have been proposed to identify the most vulnerable sets in a building stock, using established procedures \citep{BaggioFieldGORETTI,BrzevGEMModelling}. In this field, urban image analysis is being used to estimate the seismic exposure of buildings, an essential step to calculate their seismic vulnerability. There is a need for new automated tools capable of rapidly estimating the vulnerability of existing buildings from pictures, such as VULMA, a tool for the evaluation of the vulnerability response of individual buildings and for large-scale seismic risk estimation \cite{Ruggieri2021Machine-learningBuildings}. This line of research necessarily includes the development of specific training datasets for this purpose, as proposed by Cardellicchio et al.  \cite{Cardellicchio2022ViewBuildings}.
+
+The determination of seismic exposure is based on the characterization of the attributes of the structure with different levels of detail to define the class of exposure of each building \cite{Esquivel-Salas2022RemoteRica}, as in the methods proposed by the Global Earthquake Model (GEM) foundation \cite{BrzevGEMModelling}. Previous research identified that one of the most influential attributes for the seismic exposure classification is the height of the building or the number of floors \citep{Esquivel-Salas2022RemoteRica,Rodriguez-Saiz2022ExposicionGeoespaciales}. As the attribute that is needed is the number of floors, a building height estimation with a maximum absolute error of one floor would be sufficient. There is a need for automated machine learning models to estimate this parameter in cities with no available data, as is the case of the capitals in Central America, subjected to high potential seismic hazard and  high physical and social vulnerability \cite{Benito2012ARegion}. 
+
+Street view images are readily available in cities in developing countries or can be obtained at little cost. It is necessary to develop models capable of obtaining building heights from single-view images, allowing researchers to obtain this parameter in cities in developing countries from images available on the Internet or captured using mobile phones, creating the necessary databases for obtaining the seismic exposure of the buildings in a city. 
+
+The aim of this research is to develop low-cost methods for building- height data collection for the purposes of seismic risk assessment in cities in developing countries in Central America. This research contributes to determining the exposure of buildings using street view images processed by various convolutional neural networks. This will provide valuable tools that accurately estimate relevant seismic exposure features using free imagery, thus being easily applicable to the monitoring of large areas of cities in developing countries.
+
+This research applies technology originally developed for autonomous car driving to the gathering of building data and automatic building surveying. A new model is proposed combining RestNext and HRNet and a method is developed for building height estimation using semantic segmentation and a single street view image. 
+
+\section{Background}
+
+Research on the seismic vulnerability of buildings using imagery to extract basic parameters such as height or facade material is increasing worldwide \cite{Esquivel-Salas2022RemoteRica}. Surveys are traditionally performed manually through visually inspection, which is time consuming and expensive. A current trend is moving towards the automation of these processes, as in the recently published  VULMA model, which performs surveys automatically through a categorical classification machine learning model \cite{Cardellicchio2023AProject}. 
+The reviewed experiences involve taking an image of the facade of a single building and applies the required labels using a classifier model. In real-world applications using street view images, multiple buildings and other elements such as the street are visible, hence the classifier model would not function correctly as it is not able to focus on the building of interest.
+
+A building is defined in the INSPIRE scheme \cite{2013INSPIREGuidelines} as a construction, above and below ground, for the purpose of accommodating people, animals and things, or production and distribution of goods or services, this construction being a permanent structure on the ground. In the definition of a building, one or many BuildingParts are characterised, as each of the constructed areas in a cadastral parcel having homogeneous volume, either above and/or below ground. A BuildingPart element hosts the attributes related to height, namely, number of floors above ground, below ground level height in meters and number of floors below ground \cite{2013INSPIREGuidelines}.
+
+As building heights are usually available through INSPIRE in Europe, new techniques were developed for automatic building height estimation, in part to aid data collection for cadasters in cities without data. Using ESA’s Sentinel 1 and 2 data series and particularly Synthetic Aperture Radar (SAR) data \citep{Drusch2012Sentinel-2:Services,Frantz2021National-scaleSeries}, it was possible to extract building height data automatically on a large scale \cite{Frantz2021National-scaleSeries} with an error of less than 5 meters for average height buildings but much larger error for higher buildings. Satellite techniques were improved using multi-view satellite imagery \cite{Cao2021ACities} achieving an error of around 2 meters. Aerial imagery \cite{Xiao2012BuildingDetection} and Aerial Laser Imaging Detection and Ranging (LIDAR) can be used to measure building heights \cite{Bonczak2019Large-scaleData}, although this approach is expensive and requires manual work, so the viability of using it for large scale data collection is questionable. Other recently developed methods use street view imagery, that is, driver's view images taken from a car. The image is segmented using machine learning methods and the top corners of the buildings are detected. The horizontal distance from the camera to the building is then calculated using the camera position and a database such as Openstreetmap, which registers the x and y coordinates of the corners of the building \cite{AlaAnProjects} and building rooflines \cite{Zhao2019CBHE:Images}. Having determined certain parameters like camera height, estimation of three vanishing points and the detection of the vertical lines of a building with the help of semantic segmentation, the height can be computed by considering the perspective of the image \cite{Yan2022EstimationNetworks}. The relative error obtained using this method is \(5\%\). Finally, the height can be obtained through trigonometry. Spherical images allow other more complex geometrical methods to be used which do not require 2D external corner coordinates \cite{Diaz2016AnSystem}.
+
+In the field of computer vision, substantial advances have been made in recent years with regard to image classification tasks using new machine learning models such as the vision transformer \cite{Dosovitskiy2020AnScale} or its version for semantic segmentation \cite{Strudel2021Segmenter:Segmentation}. These models are developed by large companies and contain a large number of parameters, hence they are difficult to train. Other simpler models developed recently for image classification are RestNexts \citep{Xie2016AggregatedNetworks, Hitawala2018EvaluatingClassification}. With regard to semantic segmentation, very good results have been achieved with HRNets \cite{Wang2019DeepRecognition}, a model which processes an image in multiple resolutions.
+Computer vision is used primarily in the context of cities for tasks related to autonomous car driving, especially with regard to currently available public datasets, such as Cityscapes or Vistas \citep{Cordts2016TheUnderstanding, NeuholdTheScenes}. Its use for other tasks such as building inspection or data collection has scarcely been developed to date. 
+
+\section{Image processing methods}
+In this section we present various image convolutions used for image processing, which constitute the core of our model.
+
+\subsection{Image convolutions}
+An image convolution is a mathematical operation that consists of convolving a linear kernel function over each pixel of an image. The image is interpreted as a matrix with w pixels in the width parameter and h pixels in the height parameter. A RGB image would have a third dimension containing three features, the red, green and blue channels. The image would therefore be a \(wxhx3\) matrix. A kernel on an  image convolution would be a matrix with a given width and height and a third dimension equal to the number of features in the image.  A \(500x250x3\) RGB image could be convolved with a kernel of size \(5x4x3\) obtaining a \(500x250x1\) result. The convolution operation is performed by multiplying the kernel and the image pointwise and sliding the kernel over each pixel of the image \ref{Fig1}.
+\begin{figure}[H]
+\includegraphics[width=14 cm]{fig_1_convolution.png}
+\caption{Figure showing the effects of a convolution on an image: (\textbf{a}) Original image from the Cityscapes test dataset. (\textbf{b}) Result of applying a $\big(\begin{smallmatrix}
+1 & 0 & -1\\
+1 & 0 & -1\\
+1 & 0 & -1
+\end{smallmatrix}\big)$ 
+kernel to the greyscaled original image. This kernel highlights edges on the image as it computes the local difference around every pixel.}
+\label{Fig1}
+\end{figure}   
+\unskip
+
+\subsection{Depthwise separable convolutions}
+
+A depthwise convolution consists of using one different two-dimensional convolution for each feature dimension. A \(500x250x3\) image could be convolved with three \(5x4\) convolutions, obtaining a \(500x250x3\) result. A pointwise convolution is a \(1x1x \ number \ of \ features\) convolution. A \(500x400x3\) image could be convolved with a pointwise convolution \(1x1x3\), obtaining a \(500x250x1\) result. A depthwise separable convolution consists of applying first a depthwise and then a pointwise convolution. A layer of a convolutional network that uses depthwise convolutions applies a single depthwise and then multiple pointwise convolutions. This produces the same result as a normal convolution but requires significantly less computations \cite{Chollet2016Xception:Convolutions}. This can be better understood witthrough an example: A \(500x250x3\) image is convolved with \(32\) normal \(3x3\) kernels. The number of multiplications that are performed is \(500 * 250\) pixels in the input image, \(3 * 3 * 3\) parameters in each of the \(32\) kernels. \(500 * 250 * 3 * 3 * 3 * 32= 108 \ million\). However, when depthwise separable convolutions are used, a single depthwise \(3x3\) convolution would be applied which has \(500 * 250\) pixels in the input image, \(3 * 3\) parameters in the kernel and \(1\) different kernel for each input of the \(3\) input features. The pointwise convolution has \(500 * 250\) pixels in the input image, \(1 * 1 * 3\) parameters in each kernel and \(32\) kernels. The number of computations with this type of convolution is \(500 * 250 * 3 * 3 * 3 + 500 * 250 * 1 * 1 * 3 * 32 = 15 \ million\) multiplications, which is more than \(7\) times less operations compared to normal convolutions.
+
+\subsection{Dilated convolutions}
+\begin{figure}[H]
+\includegraphics[width=5 cm]{fig_3_dilated_kernel.jpg}
+\caption{A \(3x3\) kernel with dilation rate \(d=2\) has a field of view of \(5x5\).}
+\label{Fig3}
+\end{figure}   
+\unskip
+A dilated or atrous convolution is an image convolution with spacing between the values in the kernel so that the field of view is widened \ref{Fig3}. These convolutions are the basis for the spatial atrous pyramid layer \cite{Chen2016DeepLab:CRFs}. This consists of applying a series of dilated convolutions with various dilation rates over the input and subsequently, concatenating all outputs over the feature dimension. This gives the network a more global understanding of the image.
+
+\section{Machine learning methods}
+In this section we will give a brief explanation of the machine learning algorithms and datasets available for urban image analysis.
+
+\subsection{Convolutional neural networks}
+
+Convolutional neural networks are a type of neural network developed specifically for image processing \cite{OShea2015AnNetworks}. Each layer in a convolutional network consists of applying an image convolution using various kernels and obtaining several new images. All images are concatenated over the feature dimension. This means that, given an input image with \(3\) features, red, green and blue channels and size \(widthxheightx3\), applying \(32\) different kernels would result in a matrix with \(32\) features and size \(widthxheightx32\). The parameters that will be optimised are those of all kernels from all image convolutions in the network. 
+
+\begin{figure}[H]
+\includegraphics[width=10.5 cm]{fig_2_relu_gelu.png}
+\caption{Comparison of the ReLu and GeLu activation functions, ReLu is simpler to compute, but GeLu avoids overfitting as it is able to work better with negative valued neurons.}
+\label{Fig2}
+\end{figure}   
+\unskip
+
+After a convolution is applied, a non-linear activation function is applied to each pixel of the output image. This makes the neural network a nonlinear function, achieving complex behaviour. ReLu is the most widely used activation function as it is simple and fast to compute. On most layers we use a variation of ReLu called GeLu \ref{Fig2}, which performs better for classification tasks \cite{Xie2016AggregatedNetworks}. A depthwise separable convolution \cite{Chollet2016Xception:Convolutions} is a type of convolution that uses even fewer parameters, achieving the same result as a normal convolution. Therefore, in our models, we almost exclusively use this type of convolution. Convolutional networks usually extract local information from an image, although it is not suitable for extracting global information as two distant pixels in the image will not be processed by the same or by nearby kernels. To avoid this problem, models usually include a bottleneck. This consists of gradually reducing the resolution of the image and increasing the feature dimension. This brings all the pixels closer together. After running through the bottleneck for semantic segmentation tasks, the image enters the decoder, which gradually upsamples the image to its original resolution. This approach presents the disadvantage that detail is lost in the output image. The atrous spatial pyramid layer \cite{Chen2016DeepLab:CRFs} is a convolutional layer that is also aimed at solving the global information problem by using dilated kernels, that is, kernels that skip proximate pixels and use those which are further away.
+
+\subsection{Loss functions}
+The aim of the training process is to minimize the loss function, thus achieving the best possible prediction.
+For classification tasks, the cross-entropy loss function \ref{eq2} is used \cite{Janocha2017OnClassification}. It computes the difference between two probability distributions. Here, \(.*\) denotes pointwise vector product, \(y\hat{}\) is the model output and y is the real output.
+\begin{equation} \label{eq2}
+crossentropy(y\hat{},y)= -sum(y .*  log(y\hat{}))
+\end{equation}
+To obtain a probability distribution, the prediction is passed through the softmax function \cite{BridleTrainingParameters}, which transforms an arbitrary vector into a vector whose sum is one and which has elements ranging from (0) to (1) \ref{eq3}. The target must also be transformed into a probability distribution.
+\begin{equation} \label{eq3}
+softmax(x)_i=exp(x_i)/sum(exp(x_j))
+\end{equation}
+To obtain a single error value, crossentropy is applied pointwise to the output image and the mean is then computed.
+
+\subsection{Optimization}
+Batch gradient descent \cite{Ruder2016AnAlgorithms} updates the model’s parameters after computing the mean of the gradient of a certain number of training examples. This makes the steps more robust and precise, but takes more computation effort and time. In our training procedure we start updating the parameters in every single training example and, when the model is found not to be improving, the batch size is increased, updating parameters after a larger number of training examples.
+The ADAM optimiser \cite{Kingma2014Adam:Optimization} is used for all our models.
+
+\subsection{Categorical classification}
+Categorical classification is a task in machine learning that consists of assigning a unique class to an image, thus identifying the general content of the picture \cite{Lorente2021ImageTechniques}. For instance, in the case of a model developed for vehicle classification, when a street view image showing a car is inputted, the class “car” would be the output. If the image contained a car and a bus the model would probably encounter difficulty as it is not able to assign the image to a unique vehicle class. This is solved by building a model that outputs a vector with a length equal to the number of possible classes and applying the softmax function, hence providing a kind of probability distribution expressing how likely the model considers the image to belong to a given class. The correct class must also be expressed as a probability vector. In particular, one with a length equal to the number of possible classes and which is one for the assigned class and zero for all other possible classes. 
+\subsection{Label smoothing}
+When training, the strategy of expressing classes as probability distributions can produce overfitting problems, as the model is trained to output probabilities near to one, which will usually not resemble the confidence level of the model, thus producing a model that outputs high probabilities for wrong classification. To correct this problem, label smoothing is usually applied, which consists of reducing the probabilities in the correct class probability distribution \ref{eq5}. For instance, for three possible classes the distribution used for training could be \([0.8,0.1,0.1]\) instead of \([1,0,0]\). Label smoothing is only applied for training.
+\begin{equation} \label{eq5}
+ysmooth = 1 - \alpha y+\alpha k
+\end{equation}
+\(\alpha\) is the smooth factor, which is the probability that will be subtracted from the value of one and k is the number of classes.
+
+\subsection{Semantic segmentation}
+Semantic segmentation is similar to categorical classification, with the difference that it assigns a unique class to each pixel in an image \cite{Liu2019RecentSegmentation}. In the example used previously, when this type of model is inputted with a street view image showing a car and a bus, the model would assign the class 'car' to the pixels belonging to the car and the class 'bus' to the pixels of the bus. In this task, losing detail in the output image is an unwanted effect of the bottleneck of convolutional networks. A new type of machine learning model has recently been developed to address this issue, the HRNet \cite{Wang2019DeepRecognition}. Here, the image is copied, and multiple branches are processed at the same time. Each branch has a different resolution, thus having at least one high-resolution branch which helps maintain all the detail in the output image and a low-resolution branch that provides the bottleneck effect. The branches are combined through cross-convolutional layers  that upscale or downscale each resolution path and concatenate all branches together over their feature dimension. 
+
+\subsection{datasets}
+Datasets are essential for developing a working machine learning model. They must contain a sufficient number of correctly labelled images from a variety of contexts. The model will only be able to solve similar cases to those contained in the dataset used for training. A problem that we are facing and that occurs frequently in research dealing with machine learning is that the trained model is unable to generalize, to work with real world data that are too different from the data used for training. This can happen with real world imagery as the camera and lighting conditions of the images are different from those of the training datasets. This problem is usually solved by changing the model architecture and training with more diverse data. The manual work needed to create a dataset is substantial, hence it is often the case that the datasets already created are insufficiently diverse. In our case, we had a lack of images from countries in the developing world, as only largeinstitutions can afford to create large datasets, especially in the semantic segmentation task, which requires the most manual work. This is a problem, as the light conditions and urbanism in the cities for which data is lacking are different from  the cities where models are usually trained (mainly in Germany).
+Data augmentation addresses the issue of a lack of generalization  and consists of altering the input images of a dataset, thus creating new data from the existing dataset \cite{Buslaev2020Albumentations:Augmentations}. We used horizonal flipping, low image rotations as augmentation options.
+
+
+\section{Artificial intelligence applied to building height estimation}
+In this section, neural network algorithms are applied to obtain building heights. The neural network developed for this purpose and the post processing algorithm are presented.
+\subsection{Facade detection: semantic segmentation model}
+
+
+The first step in any tool for data collection from images is to detect the spatial and categorical information of a certain object in the input images. In our case, the input images are street view images from the point of view of a car driver, from which we extract spatial information of buildings, cars, pavement and other objects. This is done with a semantic segmentation machine learning model that assigns a class to each pixel of the input image. We developed a fully convolutional neural network based on the HRNet encoder \cite{Wang2019DeepRecognition}, which maintains a high-resolution representation of the input image during the whole model representation. The output labelled image has half the resolution of the input to enable faster runtime. The HRNet encoder \ref{Fig5} splits the input image into two branches, one with half the original resolution and the other one with one sixteenth of the original resolution. The second branch acts as the bottleneck, while the first one acts as a high-resolution representation of the image. The downscaling process of the input image takes place gradually through the encoder, halving the resolution in the second branch in each encoder layer. Both branches are correlated together through cross-convolutions \ref{Fig4}.
+
+\begin{figure}[H]
+\includegraphics[width=14 cm]{fig_4_encoder_layer.png}
+\caption{Encoder layer. The first cross-convolution is not applied, and mean pool is applied on branch 1 in the encoder layer 1.}
+\label{Fig4}
+\end{figure}   
+\unskip
+
+In the encoder, ResNext \ref{Fig7} convolutions \cite{Xie2016AggregatedNetworks} are used and, subsequently, an atrous spatial pyramid \ref{Fig8} convolution \cite{Chen2016DeepLab:CRFs} is applied. ResNext is a recently proposed model that uses depth separable convolutions \cite{Chollet2016Xception:Convolutions} with an inverse bottleneck and achieves state of the art results using less training parameters. DenseNet layers are layers that increase the feature dimension by concatenating outputs from convolutions to the input and repeating this process multiple times \cite{Huang2016DenselyNetworks}.
+
+\begin{figure}[H]
+\includegraphics[width=14 cm]{fig_5_model_encoder.png}
+\caption{Model encoder.}
+\label{Fig5}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+\includegraphics[width=14 cm]{fig_6_model_decoder.png}
+\caption{Model decoder.}
+\label{Fig6}
+\end{figure}   
+\unskip
+In the decoder \ref{Fig6}, simple depthwise convolutions without bottleneck are used. After applying an attention mechanism \ref{Fig7}, skip connections coming from layers 5, 4 and 3 are fused with the decoder layers 1, 2 and 3, respectively, concatenating over the feature dimension of each branch. In every decoder layer the second branch is upsampled until the size of the first branch is achieved in the last decoder layer, just before both branches are fused together using an attention mechanism. The attention mechanism assigns an attention, which establishes how important each pixel is and provides a criterion for fusing two images together.
+
+\begin{figure}[H]
+\includegraphics[width=14 cm]{fig_7_basic_layers.png}
+\caption{Basic layers of the model.}
+\label{Fig7}
+\end{figure}   
+\unskip
+
+The model is programmed in the Julia programming language \cite{Bezanson2014Julia:Computing} using Zygote \cite{Innes2019AComputing} and Flux \cite{Innes2018FashionableFlux} libraries, cross-entropy \cite{Zhang2018GeneralizedLabels} as the loss function for classification tasks. Optimization is done with supervised learning using the ADAM optimizer \cite{Kingma2014Adam:Optimization}. Training is done with a A100 Nvidia GPU at Magerit supercomputer at Cesvima UPM. For model parameter initialization a glorot uniform distribution \cite{GlorotUnderstandingNetworks} is used.
+
+\begin{figure}[H]
+\includegraphics[width=10 cm]{fig_8_atrous_spatial_pyramid.png}
+\caption{Atrous spatial pyramid layer}
+\label{Fig8}
+\end{figure}   
+\unskip
+
+\subsection{Extracting spatial information}
+
+This model provides 2D relative spatial information from the image. However, we would like to obtain 3D real world spatial information, as we could then measure building height directly. This requires a point cloud to be generated from the input image. There are machine learning models that provide pixelwise depth estimation from single view images. With the depthmap of the image and camera data such as focal length, we would be able to assign a distance and direction to every pixel of the image and thus create the point cloud. Unfortunately, the precision of the single view depth estimation models \cite{LiBinsFormer:Estimation} developed to date is insufficient for this purpose. In the KITTI benchmark, the best models present an error of around \(8\%\). This means an error of \(8\) metres in the depth estimation of a building at a distance of \(100\) metres from the camera. We carried out tests with depth models trained on KITTI, but the point cloud we obtained was not accurate. As it was not possible to generate a point cloud from single view images, we are following two alternative approaches. Firstly, a point cloud can be generated through photogrammetry from multiple images or a video \cite{Muller2022InstantEncoding}. This implies a high computational cost and takes away versatility from our method, as it is much more difficult to obtain multiple images with the necessary characteristics from a video. The second option is to develop a method that does not require a point cloud, which is the approach we have found to be most feasible.
+
+\subsection{Height comparison method}
+
+In this chapter building height is estimated using the 2D information from the image. On a given street, there are certain objects with known height, such as cars, people or the windows and doors of buildings. By Comparing the size of the building with the size of a reference class such as those mentioned, we are able to obtain the building height. Windows and doors would be our best option as a reference class but, unfortunately, these are not labels contained in the training dataset.  Hence, in order to use these objects as a reference class, we would need to create our own semantic segmentation dataset, which is a task beyond the capabilities of this research. We therefore decided to use cars and people as the reference classes, although cars only provide a good reference if they are parked near the building that is being measured. 
+
+Local building height is obtained as the quotient on each column of pixels belonging to a building in the segmented image and pixels belonging to one of the reference classes multiplied by the height of the latter. The result of this operation is a vector with a length equal to the horizontal dimension of the image. 
+
+This method is only accurate if the reference object is next to the building. If this is not the case, then the reference object will appear larger on the image and the measurement will not be valid. This may occur if street geometry is not standard, such as at an intersection, or where there is a moving car or a person crossing the street. Reference objects with non-standard sizes can also lead to inadequate measurements. As the output is the average height prior to calculating the mean of the local building height vector, invalid data can be statistically discarded. This is done by calculating the mean and standard deviation of the local height vector and cleaning the vector of data that deviate excessively from the mean value. It is important to note that invalid measurements tend to belower than the true height as inappropriate reference objects appear larger in almost every case. Hence, positive deviation over the mean of the height vector should be less tolerated than negative deviation. Should multiple images and reference classes be used, it is possible to perform more statistical computations to further clean up the height vectors.
+
+\subsection{Model training datasets}
+
+In semantic segmentation, most datasets with street view imagery are created for tasks related to self-driving cars. These datasets usually contain a building class, a sky class and a road class, which are all useful to us. Unfortunately, other useful classes such as windows and doors of buildings, building materials, etc. are not available in most datasets, as these classes are not relevant in the case of self-driving vehicles. To perform an initial, broad, low precision training, we used the Vistas \cite{NeuholdTheScenes}, the GTA5 \cite{Richter2016PlayingGames} and the Cityscapes coarse \cite{Cordts2016TheUnderstanding} datasets. The Vistas and Cityscapes coarse sets are coarsely annotated, which means that labels are only assigned to a small percentage of the pixels of an image. Vistas has around 25000 images from countries all over the world, which makes it the only dataset with images from Central America. GTA5 is a dataset with around 25000 images taken from the GTA5 videogame. The labels were automatically generated from game images from the city of Los Angeles,which appear in this videogame. The images, therefore, have different lighting conditions and even night scenes. Finally, the Cityscapes is a dataset with images from German cities which has around 18000 coarsely labelled and 5000 fine labelled images. The coarse dataset was used for a broad, initial training and the fine set was used as a last refinement. Through this training scheme, the model was trained with more diverse data and to a certain degree we were able to overcome the problems associated with real world data.
+
+The model was initially trained using the 18000 images from the Cityscapes coarse dataset followed by 25000 images from Vistas (adapting the labels of the latter to the Cityscapes labelling scheme), 25000 images from GTA5 and 5000 images from the Cityscapes fine dataset.
+Data augmentation was applied through 10 degree rotations and horizontal flipping.
+
+\section{Case study: extraction of building height in Cityscapes}
+\subsection{Results}
+
+\begin{figure}[H]
+\includegraphics[width=10 cm]{fig_9_example.png}
+\caption{Example of the method with an image from the Cityscapes test set: (\textbf{a}) Input image. (\textbf{b}) Model output segmentation. (\textbf{c}) Building height vector considering car height 1.}
+\label{Fig9}
+\end{figure}   
+\unskip
+
+The semantic segmentation model achieved an \(86,13 \% \) IoU metric (PASCAL VOC intersection-over-union metric IoU) on the Cityscapes fine val set \cite{Cordts2016TheUnderstanding}. To illustrate the results, a case study with a Cityscapes image is presented and discussed. An image from the Cityscapes val set was run through the model as a \(widthxheightx3\) matrix with values ranging from \(0\) to \(1\). The result is a \(classesxwidth*heightx1\)  matrix ranging from \(0\) to \(1\). The values of the vector represent how likely the model considers a pixel to belong to a given class. In this case there are \(3\) classes, sky, building and car. The vector is reshaped to the size \(widthxheightx1\), there now beingan integer representing the class with highest probability for each pixel. The height vector is then obtained \ref{Fig9}, comparing the pixels belonging to the building and the car class for each row, after discarding the columns with no pixels belonging to the sky class. In this example,having cleaned the height vector,the building height ranges between \(3,8\) and \(4,7\) with a mean of \(4,34\). This means that the buildings are around \(4,34\) times higher than a car in this street. Now the predicted average building height for this street would be \(4,34 * car\_height \). The car\_height that must be used would be calibrated through measurements of the city with buildings of known height. This method requires uniform street alignment and sufficient visible sky in the image. As street view images are cheap and simple to obtain, erroneous measurements from images with moving cars or a non-uniform street could be statistically discarded. This method could provide average building heights on a street with a maximum error of (\(3\) meters) (around 1 floor) and a relative error of \(9\%\) in a given city with uniform streets.
+
+\subsection{Discussion}
+
+The image segmentation results are promising, achieving a high performance in the Citiscapes fine val set \cite{Cordts2016TheUnderstanding}. This opens the way to further automatization of the detection of buildings and their parts and features.
+
+The results obtained in the case study are satisfactory for the estimation of the building exposure attribute "height", which is defined as the height above ground in terms of the number of storeys (e.g. a building being 3-storeys high). The height class is usually defined as a range of storeys or floors, such as 1-3, 4-7 and > 8 \citep{FEMA2001HazusManual,BrzevGEMModelling}. Thus, the determination of seismic exposure classes can be performed with 1-floor-precision building height estimates. The proposed method fulfills this requirement with a maximum error of around 1 floor. 
+
+These results are comparable with those of other methods, such as those using satellite imagery with absolute errors of around 2-5 meters, whichusually require SAR data \cite{Frantz2021National-scaleSeries} or multi-view imagery \citep{Cao2021ACities,Xiao2012BuildingDetection}, therefore being more complicated.
+
+Street view methods that use machine learning can achieve a lower relative error of \(5\%\) but require more data such as building footprints \citep{AlaAnProjects,Zhao2019CBHE:Images} or camera heights \cite{Yan2022EstimationNetworks}.
+
+The proposed method works without the need for extra parameters, allowing the use of images from the Internet or images captured by mobile phones for other purposes as long as the problem associated with an insufficiently diverse dataset can be overcome.
+
+\section{Conclusions}
+
+In light of this research, the notable potential of artificial intelligence in terms of automating the extraction of relevant parameters of buildings can be confirmed, although there is still a long way to go in the field of computer vision. 
+
+There is a lack of high-quality datasets with urban street imagery for tasks like image segmentation, especially in the case of imagery from developing countries. Moreover, the datasets currently available have been created mainly for self-driving car technology, not for uses related to the construction sector. 
+
+It is possible to estimate the average height of the buildings in pilot images with errors of just a few metres, under conditions that are versatile and which allow easy matching without the need for point clouds or any kind of image depth estimation. The semantic segmentation model achieves noteworthy results, and is more versatile as well as faster than other models, successfully addressing the issues of lack of global information extraction and image detail loss. However, the model still needs improvements in order to function adequatly for non-European cities due to the lack of suitable datasets.
+
+Further research could address the lack of training data for the segmentation model through domain adaptation, with a model that converts street images to the style of a German city. However, it is crucial that datasets are created for other regions of the world. 
+
+A promising line of research includes the development of building height estimation classifier models. Classifier machine learning models are among the most studied fields in artificial intelligence. These models will assign the number of floors to each building as a categorical class. This information is essential for the assessment of seismic exposure and the calculation of building vulnerability, an urgent issue in many regions of the world.  
+
+%\end{linenumbers}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Discussion}
+
+%Authors should discuss the results and how they can be interpreted from the perspective of previous studies and of the working hypotheses. The findings and their implications should be discussed in the broadest context possible. Future research directions may also be highlighted.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Conclusions}
+
+%This section is not mandatory, but can be added to the manuscript if the discussion is unusually long or complex.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Patents}
+
+%This section is not mandatory, but may be added if there are patents resulting from the work reported in this manuscript.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{6pt} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% optional
+%\supplementary{The following supporting information can be downloaded at:  \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title.}
+
+% Only for the journal Methods and Protocols:
+% If you wish to submit a video article, please do so with any other supplementary material.
+% \supplementary{The following supporting information can be downloaded at: \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title. A supporting video article is available at doi: link.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\authorcontributions{Conceptualization, M.U., R.M. and M.M..; methodology, M.U. and R.M.; software, M.U.; validation, M.U. and M.M.; writing—original draft preparation, M.U.; writing—review and editing, B.G., R.M. and M.M.; visualization, M.U.; supervision, R.M. and B.G. All authors have read and agreed to the published version of the manuscript.}
+%For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used ``Conceptualization, X.X. and Y.Y.; methodology, X.X.; software, X.X.; validation, X.X., Y.Y. and Z.Z.; formal analysis, X.X.; investigation, X.X.; resources, X.X.; data curation, X.X.; writing---original draft preparation, X.X.; writing---review and editing, X.X.; visualization, X.X.; supervision, X.X.; project administration, X.X.; funding acquisition, Y.Y. All authors have read and agreed to the published version of the manuscript.'', please turn to the  \href{http://img.mdpi.org/data/contributor-role-instruction.pdf}{CRediT taxonomy} for the term explanation. Authorship must be limited to those who have contributed substantially to the work~reported.}
+
+\funding{This research received public funds from the grants for the completion of industrial doctorates (IND2020/TIC-17528) funded by Comunidad de Madrid.} 
+%\funding{Please add: ``This research received no external funding'' or ``This research was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded by XXX''. Check carefully that the details given are accurate and use the standard spelling of funding agency names at \url{https://search.crossref.org/funding}, any errors may affect your future funding.}
+
+%\institutionalreview{In this section, you should add the Institutional Review Board Statement and approval number, if relevant to your study. You might choose to exclude this statement if the study did not require ethical approval. Please note that the Editorial Office might ask you for further information. Please add “The study was conducted in accordance with the Declaration of Helsinki, and approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving humans. OR “The animal study protocol was approved by the Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies involving animals. OR “Ethical review and approval were waived for this study due to REASON (please provide a detailed justification).” OR “Not applicable” for studies not involving humans or animals.}
+
+%\informedconsent{Any research article describing a study involving humans should contain this statement. Please add ``Informed consent was obtained from all subjects involved in the study.'' OR ``Patient consent was waived due to REASON (please provide a detailed justification).'' OR ``Not applicable'' for studies not involving humans. You might also choose to exclude this statement if the study did not involve humans.
+
+%Written informed consent for publication must be obtained from participating patients who can be identified (including by the patients themselves). Please state ``Written informed consent has been obtained from the patient(s) to publish this paper'' if applicable.}
+
+\dataavailability{Not applicable}
+%In this section, please provide details regarding where data supporting reported results can be found, including links to publicly archived datasets analyzed or generated during the study. Please refer to suggested Data Availability Statements in section ``MDPI Research Data Policies'' at \url{https://www.mdpi.com/ethics}. If the study did not report any data, you might add ``Not applicable'' here.} 
+
+\acknowledgments{The authors gratefully acknowledge the KUK\_AHPAN project (RTI2018-094827-B-C21/C22) and the Universidad Politécnica de Madrid (www.upm.es) for providing computing resources on Magerit Supercomputer.} %In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments).}
+
+\conflictsofinterest{The authors declare no conflict of interest. The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.} %Declare conflicts of interest or state ``The authors declare no conflict of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript; or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the~results''.} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Optional
+%\sampleavailability{Samples of the compounds ... are available from the authors.}
+
+%% Only for journal Encyclopedia
+%\entrylink{The Link to this entry published on the encyclopedia platform.}
+
+\abbreviations{Abbreviations}{
+The following abbreviations are used in this manuscript:\\
+GEM, Global Earthquake Model\\
+INSPIRE, European Comision: Infrastructure for spatial information in Europe\\
+ESA, European Space Agency\\
+LIDAR, Light Detection and Ranging\\
+SAR, Synthetic Aperture Radar\\
+ReLu, Rectified Linear Activation Unit\\
+GeLu, Gaussian Error Linear Unit\\
+HRNet, High Resolution Network\\
+GTA5, Grand Theft Auto 5 videogame\\
+KITTI, Karlsruhe Institute of Technology
+and Toyota Technological Institute at Chicago\\
+GPU, Graphics Processing Unit\\
+UPM, Universidad Politécnica de Madrid\\
+
+\noindent 
+\begin{tabular}{@{}ll}
+MDPI & Multidisciplinary Digital Publishing Institute\\
+DOAJ & Directory of open access journals\\
+TLA & Three letter acronym\\
+LD & Linear dichroism
+\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Optional
+%\appendixtitles{no} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
+%\appendixstart
+%\appendix
+%\section[\appendixname~\thesection]{}
+%\subsection[\appendixname~\thesubsection]{}
+%The appendix is an optional section that can contain details and data supplemental to the main text---for example, explanations of experimental details that would disrupt the flow of the main text but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data are shown in the main text can be added here if brief, or as Supplementary Data. Mathematical proofs of results not central to the paper can be added as an appendix.
+%\begin{table}[H] 
+%\caption{This is a table caption.\label{tab5}}
+%\newcolumntype{C}{>{\centering\arraybackslash}X}
+%\begin{tabularx}{\textwidth}{CCC}
+%\toprule
+%\textbf{Title 1}	& \textbf{Title 2}	& \textbf{Title 3}\\
+%\midrule
+%Entry 1		& Data			& Data\\
+%Entry 2		& Data			& Data\\
+%\bottomrule
+%\end{tabularx}
+%\end{table}
+
+\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{adjustwidth}{-\extralength}{0cm}
+%\printendnotes[custom] % Un-comment to print a list of endnotes
+
+\reftitle{References}
+
+% Please provide either the correct journal abbreviation (e.g. according to the “List of Title Word Abbreviations” http://www.issn.org/services/online-services/access-to-the-ltwa/) or the full name of the journal.
+% Citations and References in Supplementary files are permitted provided that they also appear in the reference list here. 
+
+%=====================================
+% References, variant A: external bibliography
+%=====================================
+%\bibliography{your_external_BibTeX_file}
+
+%=====================================
+% References, variant B: internal bibliography
+%=====================================
+%\begin{thebibliography}{999}
+
+\bibliography{references}
+\bibliographystyle{Definitions/mdpi.cls}
+
+%\end{thebibliography}
+
+% If authors have biography, please use the format below
+%\section*{Short Biography of Authors}
+%\bio
+%{\raisebox{-0.35cm}{\includegraphics[width=3.5cm,height=5.3cm,clip,keepaspectratio]{Definitions/author1.pdf}}}
+%{\textbf{Firstname Lastname} Biography of first author}
+%
+%\bio
+%{\raisebox{-0.35cm}{\includegraphics[width=3.5cm,height=5.3cm,clip,keepaspectratio]{Definitions/author2.jpg}}}
+%{\textbf{Firstname Lastname} Biography of second author}
+
+% For the MDPI journals use author-date citation, please follow the formatting guidelines on http://www.mdpi.com/authors/references
+% To cite two works by the same author: \citeauthor{ref-journal-1a} (\citeyear{ref-journal-1a}, \citeyear{ref-journal-1b}). This produces: Whittaker (1967, 1975)
+% To cite two works by the same author with specific pages: \citeauthor{ref-journal-3a} (\citeyear{ref-journal-3a}, p. 328; \citeyear{ref-journal-3b}, p.475). This produces: Wong (1999, p. 328; 2000, p. 475)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% for journal Sci
+%\reviewreports{\\
+%Reviewer 1 comments and authors’ response\\
+%Reviewer 2 comments and authors’ response\\
+%Reviewer 3 comments and authors’ response
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{adjustwidth}
+\end{document}
+

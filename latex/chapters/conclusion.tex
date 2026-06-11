@@ -1,0 +1,97 @@
+\graphicspath{{figures_and_references/EELISA_conference/}}
+
+% \selectlanguage{english}
+\renewcommand{\chapternametext}{Chapter \thechapter: Conclusions}
+
+\chapter{\chapternametext}
+\
+
+\renewcommand{\headingtextL}{}
+\renewcommand{\headingtextR}{\chapternametext}
+\begingroup
+ \flushbottom
+ \setlength{\parskip}{0pt plus 1fil}%
+ \localtableofcontents 
+\endgroup
+
+
+\newpage
+
+\setcounter{section}{0} 
+
+
+
+\FloatBarrier
+
+\renewcommand{\sectionnametext}{Summary of contributions}
+\renewcommand{\headingtextL}{\chapternametext}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+This thesis, \textit{Towards a Seismic Digital Twin: A Scalable AI-Assisted Workflow for Automated Exposure Assessment in Data-Scarce Urban Environments}, proposes a shift in how urban seismic risk is understood, modeled, and addressed. By combining computer vision, structural engineering, and geospatial analysis, it introduces a workflow that moves seismic risk assessment away from static, manual, and often outdated procedures toward more dynamic and scalable approaches.
+
+The novelty of the approach can be summarized in four main points:
+\begin{enumerate}
+    \item \textbf{AI-Assisted scalable footprint digitalization:} The thesis develops a workflow that uses foundation models, such as Mask2Former and SAM2, to reduce the need for manual digitization of building footprints. Through the \texttt{GeoImageVision} and \texttt{SeismicBuildingExposure} Python packages, it supports the creation of detailed building databases from remote sensing imagery.
+    
+    \item \textbf{Algorithmic translation of seismic codes:} A key contribution is the transformation of qualitative seismic design guidelines from standards such as Eurocode 8, ASCE-7, NTC-23, and the Italian GNDT manual into computational rules. This reduces interpretative variability and enables more consistent evaluation of structural irregularities at scale.
+    
+    \item \textbf{Data-driven structural inference:} The thesis links geospatial indicators with underlying structural characteristics. Using machine learning classification, it supports the inference of structural types, such as masonry, concrete, and adobe, based on building geometry and surrounding context.
+    
+    \item \textbf{Integration of seismic and urban analytics:} By incorporating accessibility-based evacuation modelling for tsunami scenarios, the framework extends beyond exposure estimation. It connects structural vulnerability with urban planning considerations, supporting more operational risk assessment.
+\end{enumerate}
+
+\renewcommand{\sectionnametext}{Impact on seismic risk assessment}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The proposed methodology changes seismic risk assessment practices in several important ways:
+
+\subsection*{From reactive to proactive planning}
+In many data-scarce regions, current practice remains largely reactive, with assessments carried out after damaging events. This work enables a more proactive approach, where potential seismic impacts can be simulated in advance and used to prioritise mitigation and retrofitting strategies.
+
+\subsection*{Economic viability}
+The proposed hybrid workflow reduces costs by approximately 84\% to 90\% compared to conventional field-based surveys. This shift makes large-scale seismic risk modelling feasible for cities with limited financial and human resources.
+
+\subsection*{Democratisation of data}
+By relying on open satellite imagery and open-source tools, the framework lowers barriers to entry for seismic risk assessment. This allows local authorities, including those in the Global South, to develop and maintain their own exposure datasets using automated workflows.
+
+\renewcommand{\sectionnametext}{Advantages of the proposed framework}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+The strengths of the proposed framework lie in its scalability, consistency, and adaptability:
+
+\begin{itemize}
+    \item \textbf{Scalability:} Traditional approaches scale with field effort and personnel. In contrast, the proposed workflow separates analysis effort from population size through automation. Once trained for a specific urban context, the system can process large areas with relatively low marginal cost.
+
+    \item \textbf{Objectivity and reproducibility:} The use of geometric and rule-based methods, such as the contact force analogy for building arrangement and the Footprint Shape Index (FSI), reduces subjective interpretation. This improves consistency across studies and supports long-term comparisons.
+
+    \item \textbf{Adaptive learning:} Fine-tuned foundation models allow the system to adapt to different urban morphologies. This flexibility is demonstrated through applications in San José, Guatemala City, and Santo Domingo, where varying architectural patterns were successfully handled.
+\end{itemize}
+
+\renewcommand{\sectionnametext}{Future research directions}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+Future work will focus on improving integration, reliability, and interpretability of the system:
+
+\begin{itemize}
+    \item \textbf{Unified software ecosystem:} A key goal is to merge the existing components into a single software suite. This includes a QGIS plugin for geomatics workflows and a web application that serves as a central platform for risk visualisation, scenario testing, and exposure data access.
+
+    \item \textbf{Uncertainty quantification:} Future developments will focus on propagating uncertainty throughout the full pipeline, from image segmentation to structural classification. Providing confidence intervals alongside predictions will help users better understand reliability and identify cases requiring manual review.
+
+    \item \textbf{Model explainability (XAI):} To improve transparency, explainable AI techniques such as SHAP and LIME will be integrated. These methods will help identify which features, such as geometric irregularities, contribute most to model predictions, supporting more informed engineering interpretation.
+
+    \item \textbf{Scalability through partnerships:} Future deployment will explore collaborations with public institutions and organisations working in disaster risk reduction. This includes potential use in large cities for supporting planning regulations and resilience strategies.
+
+    \item \textbf{Extension to 3D geometry and fragility modelling:} Further work will incorporate LiDAR and 3D building representations to capture vertical irregularities. This will also enable the generation of more detailed, building-specific fragility curves.
+\end{itemize}
+
+\renewcommand{\sectionnametext}{Closing remarks}
+\renewcommand{\headingtextR}{\thesection. \sectionnametext}
+\section{\sectionnametext}
+
+This thesis presents a framework that transforms raw geospatial imagery into structured information for seismic risk assessment. By automating building extraction and integrating seismic engineering principles into a scalable workflow, it offers a practical approach to large-scale exposure modelling.
+
+The transition toward a hybrid digital twin approach is increasingly relevant in the context of rapid urban growth. As cities expand, the ability to assess risk efficiently and support evidence-based mitigation becomes more important. This work shows how combining machine learning with structural engineering principles can contribute to more accessible and scalable seismic resilience tools.
