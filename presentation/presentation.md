@@ -393,7 +393,7 @@ $$
 ---
 
 <!-- header: "Methodology" -->
-<!-- _class: col2-50 img-align img-align-90 -->
+<!-- _class: col2-50 img-align img-align-80 -->
 
 <div class="onecolumn">
 
@@ -1011,7 +1011,7 @@ header: ""
 
 - Paper transport surface estimation: [Elsevier](https://www.sciencedirect.com/science/article/pii/S2352938525000564?via%3Dihub)
 
-- Paper footprint attributes [Springer](https://link.springer.com/article/10.1186/s40323-026-00323-y)
+- Paper footprint attributes: [Springer](https://link.springer.com/article/10.1186/s40323-026-00323-y)
 
 ---
 
