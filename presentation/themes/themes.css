@@ -1,0 +1,967 @@
+/* @theme default_theme */
+
+/*
+ * ╔══════════════════════════════════════════════════════════════╗
+ * ║              HOW TO CUSTOMISE THIS THEME                    ║
+ * ╠══════════════════════════════════════════════════════════════╣
+ * ║                                                              ║
+ * ║  Most tunable values are collected in config.css (not this  ║
+ * ║  file). Variables defined there control colours, logo URLs,  ║
+ * ║  presenter name, etc.  Open config.css first.               ║
+ * ║                                                              ║
+ * ║  FOOTER / SAFE-AREA MODEL (READ THIS FIRST)                  ║
+ * ║  Footer occupies the bottom 60px of every slide:             ║
+ * ║      footer.bottom (10px) + footer.height (50px) = 60px      ║
+ * ║  EVERY section reserves this via:                            ║
+ * ║      section { padding-bottom: 70px }                        ║
+ * ║                                                              ║
+ * ║  CRITICAL CSS RULE FOR THIS FILE:                            ║
+ * ║  Comma-separated selector lists must be on ONE LINE.         ║
+ * ║  NEVER split them across lines — Marpit drops the first.     ║
+ * ║                                                              ║
+ * ║  VERTICAL CENTERING (default ON for all normal slides)       ║
+ * ║    Content below the last heading is vertically centred      ║
+ * ║    in the space between it and the footer.                   ║
+ * ║    Disable:  <!-- _class: no-vcenter -->                     ║
+ * ║                                                              ║
+ * ║  TEXT ALIGNMENT                                              ║
+ * ║    Body text is left-aligned by default.                     ║
+ * ║    Image captions must be explicitly tagged:                 ║
+ * ║        <span class="caption">My caption</span>               ║
+ * ║    Plain text below an image is NOT auto-captioned.          ║
+ * ║                                                              ║
+ * ║  MODIFIER CLASSES (combine freely)                           ║
+ * ║    no-footer   — hide footer bar + page number               ║
+ * ║    no-header   — hide the top-right running header           ║
+ * ║    no-margin   — remove all outer padding (full-bleed)       ║
+ * ║    no-vcenter  — disable vertical centring of content        ║
+ * ║    bg-image    — use _backgroundImage as full-bleed bg       ║
+ * ║    bg-image-dim — add dark overlay over bg-image             ║
+ * ║    light       — switch to light colour palette              ║
+ * ║                                                              ║
+ * ║  TWO-COLUMN LAYOUTS                                          ║
+ * ║    <!-- _class: col2-61 -->   (1% steps, 1–99)               ║
+ * ║                                                              ║
+ * ║  SYNCED IMAGE HEIGHT                                         ║
+ * ║    <!-- _class: col2-50 col-sync-img -->                     ║
+ * ║                                                              ║
+ * ║  ALIGNED IMAGE HEIGHT                                        ║
+ * ║    <!-- _class: col2-61 img-align img-align-63 -->           ║
+ * ║    img-align-N: 1% steps, 30–75 (% of slide height)         ║
+ * ║                                                              ║
+ * ╚══════════════════════════════════════════════════════════════╝
+ */
+
+@import "./config.css";
+
+
+
+/* =========================================================
+   0. GLOBAL SAFETY & BASE LAYOUT
+   ========================================================= */
+
+section {
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+
+    font-family: 'Helvetica', Arial, sans-serif;
+
+    padding: 10px 50px 70px 50px;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    --text: var(--dark-text);
+    --current-logos-image: var(--logos-main-dark);
+    --current-symbols-image: var(--symbols-footer-dark);
+    --link-color: var(--link-dark);
+    --current-logo-positions: var(--logos-1line-positions);
+    --current-logo-sizes:     var(--logos-1line-sizes);
+    --current-logo-height:    var(--logos-1line-height);
+}
+
+section .canvas {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+section .canvas > div[style*="aspect-ratio"], section .canvas > div[style*="height"], section > div[style*="aspect-ratio"], section > div[style*="height"] {
+    height: auto !important;
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+section .canvas > div[style*="aspect-ratio"] img, section .canvas > div[style*="height"] img, section > div[style*="aspect-ratio"] img, section > div[style*="height"] img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+section.map .canvas, section.map .canvas > * {
+    overflow: hidden;
+    min-height: 0;
+}
+
+section.map img, section.map iframe, section.map .img-frame, section.map .img-frame img {
+    max-height: 100% !important;
+    flex-shrink: 1;
+    overflow: hidden;
+}
+
+section.light {
+    background-color: var(--light-bg)   !important;
+    color:            var(--light-text) !important;
+    --text:                   var(--light-text);
+    --current-logos-image:    var(--logos-main-light);
+    --current-symbols-image:  var(--symbols-footer-light);
+    --link-color:             var(--link-light);
+}
+
+section.two-line-logos {
+    --current-logo-positions: var(--logos-2lines-positions);
+    --current-logo-sizes:     var(--logos-2lines-sizes);
+    --current-logo-height:    var(--logos-2lines-height);
+}
+
+
+
+/* =========================================================
+   1. MEDIA CLAMP
+   ========================================================= */
+
+section img, section iframe, section iframe.map-frame {
+    object-fit: contain;
+    display: block;
+    max-width: 100%;
+}
+
+
+
+/* =========================================================
+   2. NORMAL SLIDES — STRUCTURE & LINKS
+   ========================================================= */
+
+a { color: var(--link-color); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: #ff6347; text-decoration: underline; }
+
+section:not(.title):not(.last) { display: flex; flex-direction: column; min-height: 0; }
+section:not(.title):not(.last) h1, section:not(.title):not(.last) h2, section:not(.title):not(.last) h3 { flex-shrink: 0; }
+
+/* ── .content-area — vertically centres everything below the heading ──
+   Wraps all slide body content (after h1/h2/h3) by default.
+   justify-content: center  = vertical centring in remaining space.
+   Disable per-slide with:  <!-- _class: no-vcenter -->
+   ──────────────────────────────────────────────────────────────────── */
+section:not(.title):not(.last):not(.no-vcenter) .content-area {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    gap: 1rem;
+}
+
+/* no-vcenter: content area still fills space but starts at top */
+section.no-vcenter .content-area {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    gap: 1rem;
+}
+
+/* Legacy .body wrapper — same behaviour as .content-area */
+section:not(.title):not(.last):not(.no-vcenter) .body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    gap: 1rem;
+}
+
+section.no-vcenter .body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    gap: 1rem;
+}
+
+
+
+/* =========================================================
+   3. NORMAL SLIDE TYPOGRAPHY
+   ========================================================= */
+
+section:not(.title):not(.last) h1 { font-size: 36pt; margin: 30px 0 20px 0; }
+section:not(.title):not(.last) h2 { font-size: 24pt; margin: 0 0 14px 0; }
+section:not(.title):not(.last) h3 { font-size: 20pt; margin: 0 0 12px 0; }
+
+/* Body text — left-aligned by default */
+section:not(.title):not(.last) p, section:not(.title):not(.last) li { font-size: 20pt; line-height: 1.4; text-align: left; }
+
+/* .caption — explicit image caption tag, always centred, smaller size.
+   Usage:  <span class="caption">My caption</span>
+   Plain text below an image is NOT treated as a caption. */
+.caption { display: block; font-size: 20pt; text-align: center; margin: 6px 0 0 0; line-height: 1.3; opacity: 0.85; }
+
+
+
+/* =========================================================
+   3b. SLIDE HEADER — top-right running text
+   ========================================================= */
+
+section header {
+    position: absolute;
+    top:   16px;
+    right: 50px;
+    font-size: 24pt;
+    color: var(--text);
+    text-align: right;
+    z-index: 0;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* no-header: hide the running top-right header */
+section.no-header header { display: none !important; }
+
+
+
+/* =========================================================
+   4. TITLE SLIDE  <!-- _class: title -->
+   ========================================================= */
+
+section.title { justify-content: flex-start; padding: 0; }
+
+section.title::before {
+    content: "";
+    position: absolute;
+    top:   50px;
+    left:  80px;
+    right: 80px;
+    height: var(--current-logo-height);
+    background-image:    var(--current-logos-image);
+    background-repeat:   no-repeat;
+    background-position: var(--current-logo-positions);
+    background-size:     var(--current-logo-sizes);
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+section.title h1 { margin-top: calc(var(--current-logo-height) + 70px); font-size: 36pt; text-align: center; padding: 0 20px;}
+section.title h2 { font-size: 24pt; opacity: 0.8; text-align: center; padding: 0 40px;}
+section.title h1::before { content: var(--presentation-title); }
+section.title h2::before { content: var(--presentation-subtitle); }
+section.title h2::after {
+    content: var(--presenter-name-full) "\A" var(--other-names);
+    display: block;
+    margin-top: 40px;
+    font-size: 14pt;
+    opacity: 0.8;
+    white-space: pre-line;
+}
+
+section.title footer, section.title footer::before, section.title footer::after, section.title::after { display: none !important; }
+
+
+
+/* =========================================================
+   5. FOOTER
+   ========================================================= */
+
+footer {
+    display: block !important;
+    position: absolute;
+    bottom: 10px;
+    height: 50px;
+    left:  80px;
+    right: 80px;
+    border-top: 1px solid var(--text);
+    background:     transparent;
+    z-index:        200;
+    color:          transparent;
+    pointer-events: none;
+}
+
+footer::before {
+    content:     var(--presenter-name);
+    white-space: pre;
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: calc(var(--symbols-footer-total-width) + 20px);
+    font-size: 12pt;
+    color: var(--text);
+    background-image:    var(--current-symbols-image);
+    background-repeat:   no-repeat;
+    background-position: var(--symbols-footer-positions);
+    background-size:     auto 80%;
+}
+
+footer::after {
+    content: var(--presentation-title-short);
+    position: absolute;
+    top: 0; right: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    max-width: 350px;
+    white-space: pre-line;
+    font-size:  12pt;
+    color:      var(--text);
+    text-align: right;
+}
+
+
+
+/* =========================================================
+   6. PAGINATION
+   ========================================================= */
+
+section::after {
+    content: attr(data-marpit-pagination) " | " attr(data-marpit-pagination-total);
+    position: absolute;
+    bottom: -44px;
+    right:  0px;
+    font-size:   12pt;
+    font-weight: bold;
+    color:       var(--text);
+    z-index:     201;
+    pointer-events: none;
+    opacity: 1 !important;
+}
+
+section.title::after, section.last::after { display: none !important; }
+
+
+
+/* =========================================================
+   7. LAST SLIDE  <!-- _class: last -->
+   ========================================================= */
+
+section.last { justify-content: flex-start; padding: 60px 80px 80px 80px; }
+
+section.last::before {
+    content: "";
+    position: absolute;
+    top:   100px;
+    left:   80px;
+    right:  80px;
+    height: var(--current-logo-height);
+    background-image:    var(--current-logos-image);
+    background-repeat:   no-repeat;
+    background-position: var(--current-logo-positions);
+    background-size:     var(--current-logo-sizes);
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+section.last h1 { margin-top: calc(var(--current-logo-height) + 120px); font-size: 60pt; text-align: center; }
+section.last h2 { font-size: 25pt; opacity: 0.8; text-align: center; }
+section.last p, section.last li { margin-top: auto; text-align: right; font-size: 20pt; opacity: 0.8; }
+section.last footer, section.last footer::before, section.last footer::after, section.last::after { display: none !important; }
+
+
+
+/* =========================================================
+   8. SINGLE-IMAGE SLIDE  (.img-frame)
+   ========================================================= */
+
+section .img-frame {
+    flex: 1;
+    height: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    overflow: hidden;
+}
+
+section .img-frame img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; flex-shrink: 1; min-height: 0; }
+section .img-frame p { margin: 0; font-size: 20pt; text-align: left; flex-shrink: 0; }
+section .img-frame .caption, section .img-frame figcaption { margin: 6px 0 0 0; font-size: 14pt; text-align: center; flex-shrink: 0; }
+
+
+
+/* =========================================================
+   8b. IMAGE + CENTERED CAPTION  (.img-caption)
+   ========================================================= */
+
+.img-caption { display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 0; overflow: hidden; width: 100%; }
+.img-caption img { max-width: 100%; max-height: 100%; object-fit: contain; flex-shrink: 1; min-height: 0; }
+.img-caption p { margin: 0; flex-shrink: 0; font-size: 20pt; text-align: left; }
+.img-caption .caption, .img-caption figcaption { margin: 6px 0 0 0; flex-shrink: 0; font-size: 14pt; text-align: center; }
+section:not([class*="col2-"]) > .img-caption, section .canvas > .img-caption { flex: 1; min-height: 0; }
+
+
+
+/* =========================================================
+   9. TWO-COLUMN SLIDES  <!-- _class: col2-61 -->
+   1% steps from col2-1 to col2-99
+   ========================================================= */
+
+section[class*="col2-"] { display: flex; flex-direction: column; min-height: 0; }
+section[class*="col2-"] .onecolumn { width: 100%; flex-shrink: 0; }
+
+section[class*="col2-"] .col-row {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 0;
+    overflow: hidden;
+    gap: 8px;
+    height: 0;
+}
+
+section[class*="col2-"] .col-left, section[class*="col2-"] .col-right {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    min-height: 0;
+    min-width: 0;
+    padding: 0 8px;
+}
+
+section[class*="col2-"] .col-left img, section[class*="col2-"] .col-right img {
+    max-width: 100%; max-height: 100%; width: auto; height: auto;
+    object-fit: contain; flex-shrink: 1; min-height: 0; display: block;
+}
+
+section[class*="col2-"] .col-left p:not(:has(img)), section[class*="col2-"] .col-right p:not(:has(img)) { width: 100%; flex-shrink: 0; text-align: left; }
+section[class*="col2-"] .col-left li, section[class*="col2-"] .col-right li { width: 100%; flex-shrink: 0; }
+
+section.col2-1 .col-left  { width: 1%; }
+section.col2-1 .col-right { width: 99%; }
+section.col2-2 .col-left  { width: 2%; }
+section.col2-2 .col-right { width: 98%; }
+section.col2-3 .col-left  { width: 3%; }
+section.col2-3 .col-right { width: 97%; }
+section.col2-4 .col-left  { width: 4%; }
+section.col2-4 .col-right { width: 96%; }
+section.col2-5 .col-left  { width: 5%; }
+section.col2-5 .col-right { width: 95%; }
+section.col2-6 .col-left  { width: 6%; }
+section.col2-6 .col-right { width: 94%; }
+section.col2-7 .col-left  { width: 7%; }
+section.col2-7 .col-right { width: 93%; }
+section.col2-8 .col-left  { width: 8%; }
+section.col2-8 .col-right { width: 92%; }
+section.col2-9 .col-left  { width: 9%; }
+section.col2-9 .col-right { width: 91%; }
+section.col2-10 .col-left  { width: 10%; }
+section.col2-10 .col-right { width: 90%; }
+section.col2-11 .col-left  { width: 11%; }
+section.col2-11 .col-right { width: 89%; }
+section.col2-12 .col-left  { width: 12%; }
+section.col2-12 .col-right { width: 88%; }
+section.col2-13 .col-left  { width: 13%; }
+section.col2-13 .col-right { width: 87%; }
+section.col2-14 .col-left  { width: 14%; }
+section.col2-14 .col-right { width: 86%; }
+section.col2-15 .col-left  { width: 15%; }
+section.col2-15 .col-right { width: 85%; }
+section.col2-16 .col-left  { width: 16%; }
+section.col2-16 .col-right { width: 84%; }
+section.col2-17 .col-left  { width: 17%; }
+section.col2-17 .col-right { width: 83%; }
+section.col2-18 .col-left  { width: 18%; }
+section.col2-18 .col-right { width: 82%; }
+section.col2-19 .col-left  { width: 19%; }
+section.col2-19 .col-right { width: 81%; }
+section.col2-20 .col-left  { width: 20%; }
+section.col2-20 .col-right { width: 80%; }
+section.col2-21 .col-left  { width: 21%; }
+section.col2-21 .col-right { width: 79%; }
+section.col2-22 .col-left  { width: 22%; }
+section.col2-22 .col-right { width: 78%; }
+section.col2-23 .col-left  { width: 23%; }
+section.col2-23 .col-right { width: 77%; }
+section.col2-24 .col-left  { width: 24%; }
+section.col2-24 .col-right { width: 76%; }
+section.col2-25 .col-left  { width: 25%; }
+section.col2-25 .col-right { width: 75%; }
+section.col2-26 .col-left  { width: 26%; }
+section.col2-26 .col-right { width: 74%; }
+section.col2-27 .col-left  { width: 27%; }
+section.col2-27 .col-right { width: 73%; }
+section.col2-28 .col-left  { width: 28%; }
+section.col2-28 .col-right { width: 72%; }
+section.col2-29 .col-left  { width: 29%; }
+section.col2-29 .col-right { width: 71%; }
+section.col2-30 .col-left  { width: 30%; }
+section.col2-30 .col-right { width: 70%; }
+section.col2-31 .col-left  { width: 31%; }
+section.col2-31 .col-right { width: 69%; }
+section.col2-32 .col-left  { width: 32%; }
+section.col2-32 .col-right { width: 68%; }
+section.col2-33 .col-left  { width: 33%; }
+section.col2-33 .col-right { width: 67%; }
+section.col2-34 .col-left  { width: 34%; }
+section.col2-34 .col-right { width: 66%; }
+section.col2-35 .col-left  { width: 35%; }
+section.col2-35 .col-right { width: 65%; }
+section.col2-36 .col-left  { width: 36%; }
+section.col2-36 .col-right { width: 64%; }
+section.col2-37 .col-left  { width: 37%; }
+section.col2-37 .col-right { width: 63%; }
+section.col2-38 .col-left  { width: 38%; }
+section.col2-38 .col-right { width: 62%; }
+section.col2-39 .col-left  { width: 39%; }
+section.col2-39 .col-right { width: 61%; }
+section.col2-40 .col-left  { width: 40%; }
+section.col2-40 .col-right { width: 60%; }
+section.col2-41 .col-left  { width: 41%; }
+section.col2-41 .col-right { width: 59%; }
+section.col2-42 .col-left  { width: 42%; }
+section.col2-42 .col-right { width: 58%; }
+section.col2-43 .col-left  { width: 43%; }
+section.col2-43 .col-right { width: 57%; }
+section.col2-44 .col-left  { width: 44%; }
+section.col2-44 .col-right { width: 56%; }
+section.col2-45 .col-left  { width: 45%; }
+section.col2-45 .col-right { width: 55%; }
+section.col2-46 .col-left  { width: 46%; }
+section.col2-46 .col-right { width: 54%; }
+section.col2-47 .col-left  { width: 47%; }
+section.col2-47 .col-right { width: 53%; }
+section.col2-48 .col-left  { width: 48%; }
+section.col2-48 .col-right { width: 52%; }
+section.col2-49 .col-left  { width: 49%; }
+section.col2-49 .col-right { width: 51%; }
+section.col2-50 .col-left  { width: 50%; }
+section.col2-50 .col-right { width: 50%; }
+section.col2-51 .col-left  { width: 51%; }
+section.col2-51 .col-right { width: 49%; }
+section.col2-52 .col-left  { width: 52%; }
+section.col2-52 .col-right { width: 48%; }
+section.col2-53 .col-left  { width: 53%; }
+section.col2-53 .col-right { width: 47%; }
+section.col2-54 .col-left  { width: 54%; }
+section.col2-54 .col-right { width: 46%; }
+section.col2-55 .col-left  { width: 55%; }
+section.col2-55 .col-right { width: 45%; }
+section.col2-56 .col-left  { width: 56%; }
+section.col2-56 .col-right { width: 44%; }
+section.col2-57 .col-left  { width: 57%; }
+section.col2-57 .col-right { width: 43%; }
+section.col2-58 .col-left  { width: 58%; }
+section.col2-58 .col-right { width: 42%; }
+section.col2-59 .col-left  { width: 59%; }
+section.col2-59 .col-right { width: 41%; }
+section.col2-60 .col-left  { width: 60%; }
+section.col2-60 .col-right { width: 40%; }
+section.col2-61 .col-left  { width: 61%; }
+section.col2-61 .col-right { width: 39%; }
+section.col2-62 .col-left  { width: 62%; }
+section.col2-62 .col-right { width: 38%; }
+section.col2-63 .col-left  { width: 63%; }
+section.col2-63 .col-right { width: 37%; }
+section.col2-64 .col-left  { width: 64%; }
+section.col2-64 .col-right { width: 36%; }
+section.col2-65 .col-left  { width: 65%; }
+section.col2-65 .col-right { width: 35%; }
+section.col2-66 .col-left  { width: 66%; }
+section.col2-66 .col-right { width: 34%; }
+section.col2-67 .col-left  { width: 67%; }
+section.col2-67 .col-right { width: 33%; }
+section.col2-68 .col-left  { width: 68%; }
+section.col2-68 .col-right { width: 32%; }
+section.col2-69 .col-left  { width: 69%; }
+section.col2-69 .col-right { width: 31%; }
+section.col2-70 .col-left  { width: 70%; }
+section.col2-70 .col-right { width: 30%; }
+section.col2-71 .col-left  { width: 71%; }
+section.col2-71 .col-right { width: 29%; }
+section.col2-72 .col-left  { width: 72%; }
+section.col2-72 .col-right { width: 28%; }
+section.col2-73 .col-left  { width: 73%; }
+section.col2-73 .col-right { width: 27%; }
+section.col2-74 .col-left  { width: 74%; }
+section.col2-74 .col-right { width: 26%; }
+section.col2-75 .col-left  { width: 75%; }
+section.col2-75 .col-right { width: 25%; }
+section.col2-76 .col-left  { width: 76%; }
+section.col2-76 .col-right { width: 24%; }
+section.col2-77 .col-left  { width: 77%; }
+section.col2-77 .col-right { width: 23%; }
+section.col2-78 .col-left  { width: 78%; }
+section.col2-78 .col-right { width: 22%; }
+section.col2-79 .col-left  { width: 79%; }
+section.col2-79 .col-right { width: 21%; }
+section.col2-80 .col-left  { width: 80%; }
+section.col2-80 .col-right { width: 20%; }
+section.col2-81 .col-left  { width: 81%; }
+section.col2-81 .col-right { width: 19%; }
+section.col2-82 .col-left  { width: 82%; }
+section.col2-82 .col-right { width: 18%; }
+section.col2-83 .col-left  { width: 83%; }
+section.col2-83 .col-right { width: 17%; }
+section.col2-84 .col-left  { width: 84%; }
+section.col2-84 .col-right { width: 16%; }
+section.col2-85 .col-left  { width: 85%; }
+section.col2-85 .col-right { width: 15%; }
+section.col2-86 .col-left  { width: 86%; }
+section.col2-86 .col-right { width: 14%; }
+section.col2-87 .col-left  { width: 87%; }
+section.col2-87 .col-right { width: 13%; }
+section.col2-88 .col-left  { width: 88%; }
+section.col2-88 .col-right { width: 12%; }
+section.col2-89 .col-left  { width: 89%; }
+section.col2-89 .col-right { width: 11%; }
+section.col2-90 .col-left  { width: 90%; }
+section.col2-90 .col-right { width: 10%; }
+section.col2-91 .col-left  { width: 91%; }
+section.col2-91 .col-right { width: 9%; }
+section.col2-92 .col-left  { width: 92%; }
+section.col2-92 .col-right { width: 8%; }
+section.col2-93 .col-left  { width: 93%; }
+section.col2-93 .col-right { width: 7%; }
+section.col2-94 .col-left  { width: 94%; }
+section.col2-94 .col-right { width: 6%; }
+section.col2-95 .col-left  { width: 95%; }
+section.col2-95 .col-right { width: 5%; }
+section.col2-96 .col-left  { width: 96%; }
+section.col2-96 .col-right { width: 4%; }
+section.col2-97 .col-left  { width: 97%; }
+section.col2-97 .col-right { width: 3%; }
+section.col2-98 .col-left  { width: 98%; }
+section.col2-98 .col-right { width: 2%; }
+section.col2-99 .col-left  { width: 99%; }
+section.col2-99 .col-right { width: 1%; }
+
+
+
+/* =========================================================
+   10. SPECIAL MODIFIER CLASSES
+   ========================================================= */
+
+/* ─── no-footer: hide footer + page number, reclaim space ── */
+section.no-footer { padding-bottom: 20px; }
+section.no-footer footer, section.no-footer footer::before, section.no-footer footer::after, section.no-footer::after { display: none !important; }
+
+/* ─── no-header: hide the top-right running header ───────── */
+section.no-header header { display: none !important; }
+
+/* ─── no-margin: remove all outer padding (full-bleed) ───── */
+section.no-margin { padding: 0 !important; }
+section.no-margin .canvas { padding: 0 !important; }
+section.no-margin:not(.no-footer) { padding-bottom: 60px !important; }
+section.no-margin.no-footer { padding: 0 !important; }
+
+/* ─── no-vcenter: start content at top instead of centring ── */
+/* (rules live in section 2 alongside .content-area)          */
+
+/* ─── bg-image: full-bleed background image ──────────────── */
+/* Usage:  <!-- _backgroundImage: url("path.jpg") -->         */
+/*         <!-- _class: bg-image -->                          */
+/* Combine with bg-image-dim for a legibility overlay.        */
+section.bg-image { background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; }
+section.bg-image-dim::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 1; }
+section.bg-image-dim > * { position: relative; z-index: 2; }
+
+
+
+/* =========================================================
+   11a. col-sync-img — images grow equally, captions stick below
+   Usage: <!-- _class: col2-50 col-sync-img -->
+   ========================================================= */
+
+section.col-sync-img .col-left, section.col-sync-img .col-right { justify-content: flex-start; align-items: stretch; gap: 0; }
+
+section.col-sync-img .col-left > p:has(img), section.col-sync-img .col-right > p:has(img) {
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    align-self: stretch;
+}
+
+section.col-sync-img .col-left > p:has(img) img, section.col-sync-img .col-right > p:has(img) img {
+    max-width: 100%; max-height: 100%; width: auto; height: auto;
+    object-fit: contain; min-height: 0; display: block;
+}
+
+/* Non-image paragraphs in col-sync-img — left-aligned body text */
+section.col-sync-img .col-left > p:not(:has(img)), section.col-sync-img .col-right > p:not(:has(img)) { flex-shrink: 0; width: 100%; text-align: left; }
+
+
+
+/* =========================================================
+   11b. img-align — both images locked to the same height
+   Usage: <!-- _class: col2-61 img-align img-align-63 -->
+   ========================================================= */
+
+/* Column centering: justify-content:center centres image+caption as a group vertically.
+   align-items:center centres images horizontally within their column width.
+   Both are flex-shrink:0 so they stay together and don't expand to fill height. */
+
+section.img-align .col-left, section.img-align .col-right { justify-content: center; align-items: center; gap: 0; align-self: stretch; }
+   
+/* Image wrapper — shrinks to its natural rendered size, does not grow */
+section.img-align .col-left > p:has(img), section.img-align .col-right > p:has(img) {
+    flex-shrink: 0;
+    min-height: 0;
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+}
+
+section.img-align .col-left > p:has(img) img, section.img-align .col-right > p:has(img) img {
+    max-width: 100%; max-height: 100%; width: auto; height: auto;
+    object-fit: contain; display: block; min-height: 0;
+}
+
+/* Non-image paragraphs — left-aligned body text */
+section.img-align .col-left > p:not(:has(img)), section.img-align .col-right > p:not(:has(img)) { flex-shrink: 0; width: 100%; text-align: left; }
+
+/* Caption directly after image */
+section.img-align .col-left > .caption, section.img-align .col-right > .caption { flex-shrink: 0; margin: 6px 0 0 0; font-size: 14pt; text-align: center; width: 100%; }
+
+/* ── img-align-N size overrides  (1% steps, 30–75) ──
+   Sets both the direct p:has(img) height AND --img-unit-height
+   for use inside .img-unit wrappers. */
+section.img-align-30 .col-left > p:has(img), section.img-align-30 .col-right > p:has(img), section.img-align-30 .col-left > div.img-bg-white, section.img-align-30 .col-right > div.img-bg-white { flex-shrink: 0; height: 173px; max-height: 173px; max-width: 100%; }
+section.img-align-30 .col-left > .img-unit > p:has(img), section.img-align-30 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 173px; max-height: 173px; }
+section.img-align-31 .col-left > p:has(img), section.img-align-31 .col-right > p:has(img), section.img-align-31 .col-left > div.img-bg-white, section.img-align-31 .col-right > div.img-bg-white { flex-shrink: 0; height: 179px; max-height: 179px; max-width: 100%; }
+section.img-align-31 .col-left > .img-unit > p:has(img), section.img-align-31 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 179px; max-height: 179px; }
+section.img-align-32 .col-left > p:has(img), section.img-align-32 .col-right > p:has(img), section.img-align-32 .col-left > div.img-bg-white, section.img-align-32 .col-right > div.img-bg-white { flex-shrink: 0; height: 184px; max-height: 184px; max-width: 100%; }
+section.img-align-32 .col-left > .img-unit > p:has(img), section.img-align-32 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 184px; max-height: 184px; }
+section.img-align-33 .col-left > p:has(img), section.img-align-33 .col-right > p:has(img), section.img-align-33 .col-left > div.img-bg-white, section.img-align-33 .col-right > div.img-bg-white { flex-shrink: 0; height: 190px; max-height: 190px; max-width: 100%; }
+section.img-align-33 .col-left > .img-unit > p:has(img), section.img-align-33 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 190px; max-height: 190px; }
+section.img-align-34 .col-left > p:has(img), section.img-align-34 .col-right > p:has(img), section.img-align-34 .col-left > div.img-bg-white, section.img-align-34 .col-right > div.img-bg-white { flex-shrink: 0; height: 196px; max-height: 196px; max-width: 100%; }
+section.img-align-34 .col-left > .img-unit > p:has(img), section.img-align-34 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 196px; max-height: 196px; }
+section.img-align-35 .col-left > p:has(img), section.img-align-35 .col-right > p:has(img), section.img-align-35 .col-left > div.img-bg-white, section.img-align-35 .col-right > div.img-bg-white { flex-shrink: 0; height: 202px; max-height: 202px; max-width: 100%; }
+section.img-align-35 .col-left > .img-unit > p:has(img), section.img-align-35 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 202px; max-height: 202px; }
+section.img-align-36 .col-left > p:has(img), section.img-align-36 .col-right > p:has(img), section.img-align-36 .col-left > div.img-bg-white, section.img-align-36 .col-right > div.img-bg-white { flex-shrink: 0; height: 207px; max-height: 207px; max-width: 100%; }
+section.img-align-36 .col-left > .img-unit > p:has(img), section.img-align-36 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 207px; max-height: 207px; }
+section.img-align-37 .col-left > p:has(img), section.img-align-37 .col-right > p:has(img), section.img-align-37 .col-left > div.img-bg-white, section.img-align-37 .col-right > div.img-bg-white { flex-shrink: 0; height: 213px; max-height: 213px; max-width: 100%; }
+section.img-align-37 .col-left > .img-unit > p:has(img), section.img-align-37 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 213px; max-height: 213px; }
+section.img-align-38 .col-left > p:has(img), section.img-align-38 .col-right > p:has(img), section.img-align-38 .col-left > div.img-bg-white, section.img-align-38 .col-right > div.img-bg-white { flex-shrink: 0; height: 219px; max-height: 219px; max-width: 100%; }
+section.img-align-38 .col-left > .img-unit > p:has(img), section.img-align-38 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 219px; max-height: 219px; }
+section.img-align-39 .col-left > p:has(img), section.img-align-39 .col-right > p:has(img), section.img-align-39 .col-left > div.img-bg-white, section.img-align-39 .col-right > div.img-bg-white { flex-shrink: 0; height: 225px; max-height: 225px; max-width: 100%; }
+section.img-align-39 .col-left > .img-unit > p:has(img), section.img-align-39 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 225px; max-height: 225px; }
+section.img-align-40 .col-left > p:has(img), section.img-align-40 .col-right > p:has(img), section.img-align-40 .col-left > div.img-bg-white, section.img-align-40 .col-right > div.img-bg-white { flex-shrink: 0; height: 230px; max-height: 230px; max-width: 100%; }
+section.img-align-40 .col-left > .img-unit > p:has(img), section.img-align-40 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 230px; max-height: 230px; }
+section.img-align-41 .col-left > p:has(img), section.img-align-41 .col-right > p:has(img), section.img-align-41 .col-left > div.img-bg-white, section.img-align-41 .col-right > div.img-bg-white { flex-shrink: 0; height: 236px; max-height: 236px; max-width: 100%; }
+section.img-align-41 .col-left > .img-unit > p:has(img), section.img-align-41 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 236px; max-height: 236px; }
+section.img-align-42 .col-left > p:has(img), section.img-align-42 .col-right > p:has(img), section.img-align-42 .col-left > div.img-bg-white, section.img-align-42 .col-right > div.img-bg-white { flex-shrink: 0; height: 242px; max-height: 242px; max-width: 100%; }
+section.img-align-42 .col-left > .img-unit > p:has(img), section.img-align-42 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 242px; max-height: 242px; }
+section.img-align-43 .col-left > p:has(img), section.img-align-43 .col-right > p:has(img), section.img-align-43 .col-left > div.img-bg-white, section.img-align-43 .col-right > div.img-bg-white { flex-shrink: 0; height: 248px; max-height: 248px; max-width: 100%; }
+section.img-align-43 .col-left > .img-unit > p:has(img), section.img-align-43 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 248px; max-height: 248px; }
+section.img-align-44 .col-left > p:has(img), section.img-align-44 .col-right > p:has(img), section.img-align-44 .col-left > div.img-bg-white, section.img-align-44 .col-right > div.img-bg-white { flex-shrink: 0; height: 253px; max-height: 253px; max-width: 100%; }
+section.img-align-44 .col-left > .img-unit > p:has(img), section.img-align-44 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 253px; max-height: 253px; }
+section.img-align-45 .col-left > p:has(img), section.img-align-45 .col-right > p:has(img), section.img-align-45 .col-left > div.img-bg-white, section.img-align-45 .col-right > div.img-bg-white { flex-shrink: 0; height: 259px; max-height: 259px; max-width: 100%; }
+section.img-align-45 .col-left > .img-unit > p:has(img), section.img-align-45 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 259px; max-height: 259px; }
+section.img-align-46 .col-left > p:has(img), section.img-align-46 .col-right > p:has(img), section.img-align-46 .col-left > div.img-bg-white, section.img-align-46 .col-right > div.img-bg-white { flex-shrink: 0; height: 265px; max-height: 265px; max-width: 100%; }
+section.img-align-46 .col-left > .img-unit > p:has(img), section.img-align-46 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 265px; max-height: 265px; }
+section.img-align-47 .col-left > p:has(img), section.img-align-47 .col-right > p:has(img), section.img-align-47 .col-left > div.img-bg-white, section.img-align-47 .col-right > div.img-bg-white { flex-shrink: 0; height: 271px; max-height: 271px; max-width: 100%; }
+section.img-align-47 .col-left > .img-unit > p:has(img), section.img-align-47 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 271px; max-height: 271px; }
+section.img-align-48 .col-left > p:has(img), section.img-align-48 .col-right > p:has(img), section.img-align-48 .col-left > div.img-bg-white, section.img-align-48 .col-right > div.img-bg-white { flex-shrink: 0; height: 276px; max-height: 276px; max-width: 100%; }
+section.img-align-48 .col-left > .img-unit > p:has(img), section.img-align-48 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 276px; max-height: 276px; }
+section.img-align-49 .col-left > p:has(img), section.img-align-49 .col-right > p:has(img), section.img-align-49 .col-left > div.img-bg-white, section.img-align-49 .col-right > div.img-bg-white { flex-shrink: 0; height: 282px; max-height: 282px; max-width: 100%; }
+section.img-align-49 .col-left > .img-unit > p:has(img), section.img-align-49 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 282px; max-height: 282px; }
+section.img-align-50 .col-left > p:has(img), section.img-align-50 .col-right > p:has(img), section.img-align-50 .col-left > div.img-bg-white, section.img-align-50 .col-right > div.img-bg-white { flex-shrink: 0; height: 288px; max-height: 288px; max-width: 100%; }
+section.img-align-50 .col-left > .img-unit > p:has(img), section.img-align-50 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 288px; max-height: 288px; }
+section.img-align-51 .col-left > p:has(img), section.img-align-51 .col-right > p:has(img), section.img-align-51 .col-left > div.img-bg-white, section.img-align-51 .col-right > div.img-bg-white { flex-shrink: 0; height: 294px; max-height: 294px; max-width: 100%; }
+section.img-align-51 .col-left > .img-unit > p:has(img), section.img-align-51 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 294px; max-height: 294px; }
+section.img-align-52 .col-left > p:has(img), section.img-align-52 .col-right > p:has(img), section.img-align-52 .col-left > div.img-bg-white, section.img-align-52 .col-right > div.img-bg-white { flex-shrink: 0; height: 299px; max-height: 299px; max-width: 100%; }
+section.img-align-52 .col-left > .img-unit > p:has(img), section.img-align-52 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 299px; max-height: 299px; }
+section.img-align-53 .col-left > p:has(img), section.img-align-53 .col-right > p:has(img), section.img-align-53 .col-left > div.img-bg-white, section.img-align-53 .col-right > div.img-bg-white { flex-shrink: 0; height: 305px; max-height: 305px; max-width: 100%; }
+section.img-align-53 .col-left > .img-unit > p:has(img), section.img-align-53 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 305px; max-height: 305px; }
+section.img-align-54 .col-left > p:has(img), section.img-align-54 .col-right > p:has(img), section.img-align-54 .col-left > div.img-bg-white, section.img-align-54 .col-right > div.img-bg-white { flex-shrink: 0; height: 311px; max-height: 311px; max-width: 100%; }
+section.img-align-54 .col-left > .img-unit > p:has(img), section.img-align-54 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 311px; max-height: 311px; }
+section.img-align-55 .col-left > p:has(img), section.img-align-55 .col-right > p:has(img), section.img-align-55 .col-left > div.img-bg-white, section.img-align-55 .col-right > div.img-bg-white { flex-shrink: 0; height: 317px; max-height: 317px; max-width: 100%; }
+section.img-align-55 .col-left > .img-unit > p:has(img), section.img-align-55 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 317px; max-height: 317px; }
+section.img-align-56 .col-left > p:has(img), section.img-align-56 .col-right > p:has(img), section.img-align-56 .col-left > div.img-bg-white, section.img-align-56 .col-right > div.img-bg-white { flex-shrink: 0; height: 323px; max-height: 323px; max-width: 100%; }
+section.img-align-56 .col-left > .img-unit > p:has(img), section.img-align-56 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 323px; max-height: 323px; }
+section.img-align-57 .col-left > p:has(img), section.img-align-57 .col-right > p:has(img), section.img-align-57 .col-left > div.img-bg-white, section.img-align-57 .col-right > div.img-bg-white { flex-shrink: 0; height: 328px; max-height: 328px; max-width: 100%; }
+section.img-align-57 .col-left > .img-unit > p:has(img), section.img-align-57 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 328px; max-height: 328px; }
+section.img-align-58 .col-left > p:has(img), section.img-align-58 .col-right > p:has(img), section.img-align-58 .col-left > div.img-bg-white, section.img-align-58 .col-right > div.img-bg-white { flex-shrink: 0; height: 334px; max-height: 334px; max-width: 100%; }
+section.img-align-58 .col-left > .img-unit > p:has(img), section.img-align-58 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 334px; max-height: 334px; }
+section.img-align-59 .col-left > p:has(img), section.img-align-59 .col-right > p:has(img), section.img-align-59 .col-left > div.img-bg-white, section.img-align-59 .col-right > div.img-bg-white { flex-shrink: 0; height: 340px; max-height: 340px; max-width: 100%; }
+section.img-align-59 .col-left > .img-unit > p:has(img), section.img-align-59 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 340px; max-height: 340px; }
+section.img-align-60 .col-left > p:has(img), section.img-align-60 .col-right > p:has(img), section.img-align-60 .col-left > div.img-bg-white, section.img-align-60 .col-right > div.img-bg-white { flex-shrink: 0; height: 346px; max-height: 346px; max-width: 100%; }
+section.img-align-60 .col-left > .img-unit > p:has(img), section.img-align-60 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 346px; max-height: 346px; }
+section.img-align-61 .col-left > p:has(img), section.img-align-61 .col-right > p:has(img), section.img-align-61 .col-left > div.img-bg-white, section.img-align-61 .col-right > div.img-bg-white { flex-shrink: 0; height: 351px; max-height: 351px; max-width: 100%; }
+section.img-align-61 .col-left > .img-unit > p:has(img), section.img-align-61 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 351px; max-height: 351px; }
+section.img-align-62 .col-left > p:has(img), section.img-align-62 .col-right > p:has(img), section.img-align-62 .col-left > div.img-bg-white, section.img-align-62 .col-right > div.img-bg-white { flex-shrink: 0; height: 357px; max-height: 357px; max-width: 100%; }
+section.img-align-62 .col-left > .img-unit > p:has(img), section.img-align-62 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 357px; max-height: 357px; }
+section.img-align-63 .col-left > p:has(img), section.img-align-63 .col-right > p:has(img), section.img-align-63 .col-left > div.img-bg-white, section.img-align-63 .col-right > div.img-bg-white { flex-shrink: 0; height: 363px; max-height: 363px; max-width: 100%; }
+section.img-align-63 .col-left > .img-unit > p:has(img), section.img-align-63 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 363px; max-height: 363px; }
+section.img-align-64 .col-left > p:has(img), section.img-align-64 .col-right > p:has(img), section.img-align-64 .col-left > div.img-bg-white, section.img-align-64 .col-right > div.img-bg-white { flex-shrink: 0; height: 369px; max-height: 369px; max-width: 100%; }
+section.img-align-64 .col-left > .img-unit > p:has(img), section.img-align-64 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 369px; max-height: 369px; }
+section.img-align-65 .col-left > p:has(img), section.img-align-65 .col-right > p:has(img), section.img-align-65 .col-left > div.img-bg-white, section.img-align-65 .col-right > div.img-bg-white { flex-shrink: 0; height: 374px; max-height: 374px; max-width: 100%; }
+section.img-align-65 .col-left > .img-unit > p:has(img), section.img-align-65 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 374px; max-height: 374px; }
+section.img-align-66 .col-left > p:has(img), section.img-align-66 .col-right > p:has(img), section.img-align-66 .col-left > div.img-bg-white, section.img-align-66 .col-right > div.img-bg-white { flex-shrink: 0; height: 380px; max-height: 380px; max-width: 100%; }
+section.img-align-66 .col-left > .img-unit > p:has(img), section.img-align-66 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 380px; max-height: 380px; }
+section.img-align-67 .col-left > p:has(img), section.img-align-67 .col-right > p:has(img), section.img-align-67 .col-left > div.img-bg-white, section.img-align-67 .col-right > div.img-bg-white { flex-shrink: 0; height: 386px; max-height: 386px; max-width: 100%; }
+section.img-align-67 .col-left > .img-unit > p:has(img), section.img-align-67 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 386px; max-height: 386px; }
+section.img-align-68 .col-left > p:has(img), section.img-align-68 .col-right > p:has(img), section.img-align-68 .col-left > div.img-bg-white, section.img-align-68 .col-right > div.img-bg-white { flex-shrink: 0; height: 392px; max-height: 392px; max-width: 100%; }
+section.img-align-68 .col-left > .img-unit > p:has(img), section.img-align-68 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 392px; max-height: 392px; }
+section.img-align-69 .col-left > p:has(img), section.img-align-69 .col-right > p:has(img), section.img-align-69 .col-left > div.img-bg-white, section.img-align-69 .col-right > div.img-bg-white { flex-shrink: 0; height: 397px; max-height: 397px; max-width: 100%; }
+section.img-align-69 .col-left > .img-unit > p:has(img), section.img-align-69 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 397px; max-height: 397px; }
+section.img-align-70 .col-left > p:has(img), section.img-align-70 .col-right > p:has(img), section.img-align-70 .col-left > div.img-bg-white, section.img-align-70 .col-right > div.img-bg-white { flex-shrink: 0; height: 403px; max-height: 403px; max-width: 100%; }
+section.img-align-70 .col-left > .img-unit > p:has(img), section.img-align-70 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 403px; max-height: 403px; }
+section.img-align-71 .col-left > p:has(img), section.img-align-71 .col-right > p:has(img), section.img-align-71 .col-left > div.img-bg-white, section.img-align-71 .col-right > div.img-bg-white { flex-shrink: 0; height: 409px; max-height: 409px; max-width: 100%; }
+section.img-align-71 .col-left > .img-unit > p:has(img), section.img-align-71 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 409px; max-height: 409px; }
+section.img-align-72 .col-left > p:has(img), section.img-align-72 .col-right > p:has(img), section.img-align-72 .col-left > div.img-bg-white, section.img-align-72 .col-right > div.img-bg-white { flex-shrink: 0; height: 415px; max-height: 415px; max-width: 100%; }
+section.img-align-72 .col-left > .img-unit > p:has(img), section.img-align-72 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 415px; max-height: 415px; }
+section.img-align-73 .col-left > p:has(img), section.img-align-73 .col-right > p:has(img), section.img-align-73 .col-left > div.img-bg-white, section.img-align-73 .col-right > div.img-bg-white { flex-shrink: 0; height: 420px; max-height: 420px; max-width: 100%; }
+section.img-align-73 .col-left > .img-unit > p:has(img), section.img-align-73 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 420px; max-height: 420px; }
+section.img-align-74 .col-left > p:has(img), section.img-align-74 .col-right > p:has(img), section.img-align-74 .col-left > div.img-bg-white, section.img-align-74 .col-right > div.img-bg-white { flex-shrink: 0; height: 426px; max-height: 426px; max-width: 100%; }
+section.img-align-74 .col-left > .img-unit > p:has(img), section.img-align-74 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 426px; max-height: 426px; }
+section.img-align-75 .col-left > p:has(img), section.img-align-75 .col-right > p:has(img), section.img-align-75 .col-left > div.img-bg-white, section.img-align-75 .col-right > div.img-bg-white { flex-shrink: 0; height: 432px; max-height: 432px; max-width: 100%; }
+section.img-align-75 .col-left > .img-unit > p:has(img), section.img-align-75 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 432px; max-height: 432px; }
+section.img-align-76 .col-left > p:has(img), section.img-align-76 .col-right > p:has(img), section.img-align-76 .col-left > div.img-bg-white, section.img-align-76 .col-right > div.img-bg-white { flex-shrink: 0; height: 438px; max-height: 438px; max-width: 100%; }
+section.img-align-76 .col-left > .img-unit > p:has(img), section.img-align-76 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 438px; max-height: 438px; }
+section.img-align-77 .col-left > p:has(img), section.img-align-77 .col-right > p:has(img), section.img-align-77 .col-left > div.img-bg-white, section.img-align-77 .col-right > div.img-bg-white { flex-shrink: 0; height: 443px; max-height: 443px; max-width: 100%; }
+section.img-align-77 .col-left > .img-unit > p:has(img), section.img-align-77 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 443px; max-height: 443px; }
+section.img-align-78 .col-left > p:has(img), section.img-align-78 .col-right > p:has(img), section.img-align-78 .col-left > div.img-bg-white, section.img-align-78 .col-right > div.img-bg-white { flex-shrink: 0; height: 449px; max-height: 449px; max-width: 100%; }
+section.img-align-78 .col-left > .img-unit > p:has(img), section.img-align-78 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 449px; max-height: 449px; }
+section.img-align-79 .col-left > p:has(img), section.img-align-79 .col-right > p:has(img), section.img-align-79 .col-left > div.img-bg-white, section.img-align-79 .col-right > div.img-bg-white { flex-shrink: 0; height: 455px; max-height: 455px; max-width: 100%; }
+section.img-align-79 .col-left > .img-unit > p:has(img), section.img-align-79 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 455px; max-height: 455px; }
+section.img-align-80 .col-left > p:has(img), section.img-align-80 .col-right > p:has(img), section.img-align-80 .col-left > div.img-bg-white, section.img-align-80 .col-right > div.img-bg-white { flex-shrink: 0; height: 461px; max-height: 461px; max-width: 100%; }
+section.img-align-80 .col-left > .img-unit > p:has(img), section.img-align-80 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 461px; max-height: 461px; }
+section.img-align-81 .col-left > p:has(img), section.img-align-81 .col-right > p:has(img), section.img-align-81 .col-left > div.img-bg-white, section.img-align-81 .col-right > div.img-bg-white { flex-shrink: 0; height: 466px; max-height: 466px; max-width: 100%; }
+section.img-align-81 .col-left > .img-unit > p:has(img), section.img-align-81 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 466px; max-height: 466px; }
+section.img-align-82 .col-left > p:has(img), section.img-align-82 .col-right > p:has(img), section.img-align-82 .col-left > div.img-bg-white, section.img-align-82 .col-right > div.img-bg-white { flex-shrink: 0; height: 472px; max-height: 472px; max-width: 100%; }
+section.img-align-82 .col-left > .img-unit > p:has(img), section.img-align-82 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 472px; max-height: 472px; }
+section.img-align-83 .col-left > p:has(img), section.img-align-83 .col-right > p:has(img), section.img-align-83 .col-left > div.img-bg-white, section.img-align-83 .col-right > div.img-bg-white { flex-shrink: 0; height: 478px; max-height: 478px; max-width: 100%; }
+section.img-align-83 .col-left > .img-unit > p:has(img), section.img-align-83 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 478px; max-height: 478px; }
+section.img-align-84 .col-left > p:has(img), section.img-align-84 .col-right > p:has(img), section.img-align-84 .col-left > div.img-bg-white, section.img-align-84 .col-right > div.img-bg-white { flex-shrink: 0; height: 484px; max-height: 484px; max-width: 100%; }
+section.img-align-84 .col-left > .img-unit > p:has(img), section.img-align-84 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 484px; max-height: 484px; }
+section.img-align-85 .col-left > p:has(img), section.img-align-85 .col-right > p:has(img), section.img-align-85 .col-left > div.img-bg-white, section.img-align-85 .col-right > div.img-bg-white { flex-shrink: 0; height: 490px; max-height: 490px; max-width: 100%; }
+section.img-align-85 .col-left > .img-unit > p:has(img), section.img-align-85 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 490px; max-height: 490px; }
+section.img-align-86 .col-left > p:has(img), section.img-align-86 .col-right > p:has(img), section.img-align-86 .col-left > div.img-bg-white, section.img-align-86 .col-right > div.img-bg-white { flex-shrink: 0; height: 495px; max-height: 495px; max-width: 100%; }
+section.img-align-86 .col-left > .img-unit > p:has(img), section.img-align-86 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 495px; max-height: 495px; }
+section.img-align-87 .col-left > p:has(img), section.img-align-87 .col-right > p:has(img), section.img-align-87 .col-left > div.img-bg-white, section.img-align-87 .col-right > div.img-bg-white { flex-shrink: 0; height: 501px; max-height: 501px; max-width: 100%; }
+section.img-align-87 .col-left > .img-unit > p:has(img), section.img-align-87 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 501px; max-height: 501px; }
+section.img-align-88 .col-left > p:has(img), section.img-align-88 .col-right > p:has(img), section.img-align-88 .col-left > div.img-bg-white, section.img-align-88 .col-right > div.img-bg-white { flex-shrink: 0; height: 507px; max-height: 507px; max-width: 100%; }
+section.img-align-88 .col-left > .img-unit > p:has(img), section.img-align-88 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 507px; max-height: 507px; }
+section.img-align-89 .col-left > p:has(img), section.img-align-89 .col-right > p:has(img), section.img-align-89 .col-left > div.img-bg-white, section.img-align-89 .col-right > div.img-bg-white { flex-shrink: 0; height: 513px; max-height: 513px; max-width: 100%; }
+section.img-align-89 .col-left > .img-unit > p:has(img), section.img-align-89 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 513px; max-height: 513px; }
+section.img-align-90 .col-left > p:has(img), section.img-align-90 .col-right > p:has(img), section.img-align-90 .col-left > div.img-bg-white, section.img-align-90 .col-right > div.img-bg-white { flex-shrink: 0; height: 518px; max-height: 518px; max-width: 100%; }
+section.img-align-90 .col-left > .img-unit > p:has(img), section.img-align-90 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 518px; max-height: 518px; }
+section.img-align-91 .col-left > p:has(img), section.img-align-91 .col-right > p:has(img), section.img-align-91 .col-left > div.img-bg-white, section.img-align-91 .col-right > div.img-bg-white { flex-shrink: 0; height: 524px; max-height: 524px; max-width: 100%; }
+section.img-align-91 .col-left > .img-unit > p:has(img), section.img-align-91 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 524px; max-height: 524px; }
+section.img-align-92 .col-left > p:has(img), section.img-align-92 .col-right > p:has(img), section.img-align-92 .col-left > div.img-bg-white, section.img-align-92 .col-right > div.img-bg-white { flex-shrink: 0; height: 530px; max-height: 530px; max-width: 100%; }
+section.img-align-92 .col-left > .img-unit > p:has(img), section.img-align-92 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 530px; max-height: 530px; }
+section.img-align-93 .col-left > p:has(img), section.img-align-93 .col-right > p:has(img), section.img-align-93 .col-left > div.img-bg-white, section.img-align-93 .col-right > div.img-bg-white { flex-shrink: 0; height: 536px; max-height: 536px; max-width: 100%; }
+section.img-align-93 .col-left > .img-unit > p:has(img), section.img-align-93 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 536px; max-height: 536px; }
+section.img-align-94 .col-left > p:has(img), section.img-align-94 .col-right > p:has(img), section.img-align-94 .col-left > div.img-bg-white, section.img-align-94 .col-right > div.img-bg-white { flex-shrink: 0; height: 541px; max-height: 541px; max-width: 100%; }
+section.img-align-94 .col-left > .img-unit > p:has(img), section.img-align-94 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 541px; max-height: 541px; }
+section.img-align-95 .col-left > p:has(img), section.img-align-95 .col-right > p:has(img), section.img-align-95 .col-left > div.img-bg-white, section.img-align-95 .col-right > div.img-bg-white { flex-shrink: 0; height: 547px; max-height: 547px; max-width: 100%; }
+section.img-align-95 .col-left > .img-unit > p:has(img), section.img-align-95 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 547px; max-height: 547px; }
+section.img-align-96 .col-left > p:has(img), section.img-align-96 .col-right > p:has(img), section.img-align-96 .col-left > div.img-bg-white, section.img-align-96 .col-right > div.img-bg-white { flex-shrink: 0; height: 553px; max-height: 553px; max-width: 100%; }
+section.img-align-96 .col-left > .img-unit > p:has(img), section.img-align-96 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 553px; max-height: 553px; }
+section.img-align-97 .col-left > p:has(img), section.img-align-97 .col-right > p:has(img), section.img-align-97 .col-left > div.img-bg-white, section.img-align-97 .col-right > div.img-bg-white { flex-shrink: 0; height: 559px; max-height: 559px; max-width: 100%; }
+section.img-align-97 .col-left > .img-unit > p:has(img), section.img-align-97 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 559px; max-height: 559px; }
+section.img-align-98 .col-left > p:has(img), section.img-align-98 .col-right > p:has(img), section.img-align-98 .col-left > div.img-bg-white, section.img-align-98 .col-right > div.img-bg-white { flex-shrink: 0; height: 564px; max-height: 564px; max-width: 100%; }
+section.img-align-98 .col-left > .img-unit > p:has(img), section.img-align-98 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 564px; max-height: 564px; }
+section.img-align-99 .col-left > p:has(img), section.img-align-99 .col-right > p:has(img), section.img-align-99 .col-left > div.img-bg-white, section.img-align-99 .col-right > div.img-bg-white { flex-shrink: 0; height: 570px; max-height: 570px; max-width: 100%; }
+section.img-align-99 .col-left > .img-unit > p:has(img), section.img-align-99 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 570px; max-height: 570px; }
+section.img-align-100 .col-left > p:has(img), section.img-align-100 .col-right > p:has(img), section.img-align-100 .col-left > div.img-bg-white, section.img-align-100 .col-right > div.img-bg-white { flex-shrink: 0; height: 576px; max-height: 576px; max-width: 100%; }
+section.img-align-100 .col-left > .img-unit > p:has(img), section.img-align-100 .col-right > .img-unit > p:has(img) { flex-shrink: 0; height: 576px; max-height: 576px; }
+/* =========================================================
+   IMAGE UTILITIES (custom additions)
+   ========================================================= */
+
+/* ── img-bg-white: white padded background, treated as part of the image ── */
+.img-bg-white {
+    background: white;
+    padding: var(--img-pad, 40px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Column must not stretch children horizontally */
+section.img-align .col-left,
+section.img-align .col-right {
+    align-items: center;
+}
+
+/* Box: height via flex-basis, width collapses to content */
+section.img-align .col-left > div.img-bg-white,
+section.img-align .col-right > div.img-bg-white {
+    min-height: 0;
+    min-width: 0;
+    width: fit-content;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* p passes sizing through without expanding */
+section.img-align .col-left > div.img-bg-white > p,
+section.img-align .col-right > div.img-bg-white > p {
+    margin: 0;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* img fills the box */
+section.img-align .col-left > div.img-bg-white > p > img,
+section.img-align .col-right > div.img-bg-white > p > img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 0;
+    object-fit: contain;
+}

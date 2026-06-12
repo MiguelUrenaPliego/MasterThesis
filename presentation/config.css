@@ -1,0 +1,66 @@
+/* config.css */
+@import "./logos/logo_positions.css";
+
+:root {
+  /* =========================================================
+     PALETTE
+     ========================================================= */
+  --dark-bg: #000000;
+  --dark-text: #ffffff;
+  --light-bg: #ffffff;
+  --light-text: #000000;
+
+  /* =========================================================
+     METADATA
+     ========================================================= */
+  --presentation-title: "MASTER THESIS: Towards a Seismic Digital and Hybrid Twin";
+  --presentation-subtitle: "An AI-Assisted Framework for Scalable Exposure and Vulnerability Assessment of Buildings in Data-Scarce Urban Environments";
+  --presentation-title-short: "Towards a Seismic Digital and Hybrid Twin";
+  --presenter-name-full: "Miguel Ureña Pliego - Master Student - Civil Engineering - UPM";
+  --presenter-name: "Miguel Ureña Pliego";
+  --other-names: "Supervisor: Miguel Marchamalo Sacristán - Advanced Geomatics Group (AGA) - UPM";
+  --font-spec: "Helvetica Regular 18/18";
+
+  /* =========================================================
+     LOGOS (STATIC + RELIABLE)
+     ========================================================= */
+
+  --logos-main-dark:
+    url("logos/logo/dark/UPM.png"),
+    url("logos/logo/dark/Caminos.png"),
+    url("logos/logo/dark/AGA.png");
+
+  --logos-main-light:
+    url("logos/logo/light/UPM.png"),
+    url("logos/logo/light/Caminos.png"),
+    url("logos/logo/light/AGA.png");
+
+  --symbols-footer-dark:
+    url("logos/symbol/dark/UPM.png"),
+    url("logos/symbol/dark/Caminos.png"),
+    url("logos/symbol/dark/AGA.png");
+
+  --symbols-footer-light:
+    url("logos/symbol/light/UPM.png"),
+    url("logos/symbol/light/Caminos.png"),
+    url("logos/symbol/light/AGA.png");
+
+  /* =========================================================
+     DEFAULT LAYOUT
+     ========================================================= */
+  --logos-1line-positions: var(--logo-3-1line-positions);
+  --logos-1line-sizes: var(--logo-3-1line-sizes);
+  --logos-1line-height: var(--logo-3-1line-height);
+
+  --logos-2lines-positions: var(--logo-3-2lines-positions);
+  --logos-2lines-sizes: var(--logo-3-2lines-sizes);
+  --logos-2lines-height: var(--logo-3-2lines-height);
+
+  --symbols-footer-positions: var(--symbol-3-footer-positions);
+  --symbols-footer-sizes: var(--symbol-3-footer-sizes);
+  --symbols-footer-total-width: var(--symbol-3-footer-total-width);
+
+  /* Links */
+  --link-dark: #1e90ff;
+  --link-light: #00008b;
+}

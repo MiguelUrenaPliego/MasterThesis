@@ -1,0 +1,84 @@
+
+:root {
+  /* =========================================================
+     MAIN LOGO LAYOUTS (1-6 LOGOS)
+     ========================================================= */
+
+  --logo-1-1line-positions: center center;
+  --logo-1-1line-sizes: auto 120px;
+  --logo-1-1line-height: 150px;
+
+  --logo-1-2lines-positions: center center;
+  --logo-1-2lines-sizes: auto 150px;
+  --logo-1-2lines-height: 200px;
+
+  --logo-2-1line-positions: 25% center, 75% center;
+  --logo-2-1line-sizes: auto 120px, auto 120px;
+  --logo-2-1line-height: 150px;
+
+  --logo-2-2lines-positions: 25% 25%, 75% 75%;
+  --logo-2-2lines-sizes: auto 100px, auto 100px;
+  --logo-2-2lines-height: 200px;
+
+  --logo-3-1line-positions: 16.66% center, 50% center, 83.33% center;
+  --logo-3-1line-sizes: auto 120px, auto 120px, auto 120px;
+  --logo-3-1line-height: 150px;
+
+  --logo-3-2lines-positions: 15% 15%, 75% 15%, 50% 85%;
+  --logo-3-2lines-sizes: auto 100px, auto 100px, auto 100px;
+  --logo-3-2lines-height: 200px;
+
+  --logo-4-1line-positions: 12.5% center, 37.5% center, 62.5% center, 87.5% center;
+  --logo-4-1line-sizes: auto 100px, auto 100px, auto 100px, auto 100px;
+  --logo-4-1line-height: 150px;
+
+  --logo-4-2lines-positions: 25% 25%, 75% 25%, 25% 75%, 75% 75%;
+  --logo-4-2lines-sizes: auto 90px, auto 90px, auto 90px, auto 90px;
+  --logo-4-2lines-height: 200px;
+
+  --logo-5-1line-positions: 10% center, 30% center, 50% center, 70% center, 90% center;
+  --logo-5-1line-sizes: auto 90px, auto 90px, auto 90px, auto 90px, auto 90px;
+  --logo-5-1line-height: 150px;
+
+  --logo-5-2lines-positions: 15% 25%, 50% 25%, 85% 25%, 35% 75%, 65% 75%;
+  --logo-5-2lines-sizes: auto 80px, auto 80px, auto 80px, auto 80px, auto 80px;
+  --logo-5-2lines-height: 220px;
+
+  --logo-6-1line-positions: 8.33% center, 25% center, 41.66% center, 58.33% center, 75% center, 91.66% center;
+  --logo-6-1line-sizes: auto 80px, auto 80px, auto 80px, auto 80px, auto 80px, auto 80px;
+  --logo-6-1line-height: 150px;
+
+  --logo-6-2lines-positions: 15% 25%, 50% 25%, 85% 25%, 15% 75%, 50% 75%, 85% 75%;
+  --logo-6-2lines-sizes: auto 70px, auto 70px, auto 70px, auto 70px, auto 70px, auto 70px;
+  --logo-6-2lines-height: 220px;
+
+
+  /* =========================================================
+     FOOTER SYMBOL LAYOUTS (1-6 SYMBOLS)
+     ========================================================= */
+
+  --symbol-1-footer-positions: 0 center;
+  --symbol-1-footer-sizes: auto 50px;
+  --symbol-1-footer-total-width: 80px;
+
+  --symbol-2-footer-positions: 0 center, 80px center;
+  --symbol-2-footer-sizes: auto 50px, auto 50px;
+  --symbol-2-footer-total-width: 160px;
+
+  --symbol-3-footer-positions: 0 center, 80px center, 160px center;
+  --symbol-3-footer-sizes: auto 50px, auto 50px, auto 50px;
+  --symbol-3-footer-total-width: 240px;
+
+  --symbol-4-footer-positions: 0 center, 80px center, 160px center, 240px center;
+  --symbol-4-footer-sizes: auto 50px, auto 50px, auto 50px, auto 50px;
+  --symbol-4-footer-total-width: 320px;
+
+  --symbol-5-footer-positions: 0 center, 80px center, 160px center, 240px center, 320px center;
+  --symbol-5-footer-sizes: auto 50px, auto 50px, auto 50px, auto 50px, auto 50px;
+  --symbol-5-footer-total-width: 400px;
+
+  --symbol-6-footer-positions: 0 center, 80px center, 160px center, 240px center, 320px center, 400px center;
+  --symbol-6-footer-sizes: auto 50px, auto 50px, auto 50px, auto 50px, auto 50px, auto 50px;
+  --symbol-6-footer-total-width: 480px;
+
+}

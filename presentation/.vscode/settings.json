@@ -1,0 +1,6 @@
+{
+  "markdown.marp.themes": [
+    "./themes/themes.css"
+  ],
+  "markdown.marp.html": "all"
+}
